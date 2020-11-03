@@ -63,8 +63,11 @@ class multimiFunctionale {
                         break;
                 }
 
-                if (!array_key_exists($element1, $this->rules))
-                    $ok = true;
+                if(!empty($this->rules != null)) {
+                    if (!array_key_exists($element1, $this->rules))
+                        $ok = true;
+                }
+                else $ok = true;
             }
 
             // alage elementul din dreapta regulii
@@ -103,18 +106,17 @@ class multimiFunctionale {
 
         for($i = 0; $i < 6; $i++) {
             if(in_array($i, $heuristics)) {
+                if(!empty($this->options))
+                    while(array_key_exists($heuristicOptions[$heuristicIndex][0], $this->options))
+                        $heuristicIndex++;
                 $this->options[$heuristicOptions[$heuristicIndex][0]] = $heuristicOptions[$heuristicIndex][1];
                 $this->leftOptions[$i] = $heuristicOptions[$heuristicIndex][0];
                 $this->solutions[$heuristicOptions[$heuristicIndex][0]] = array();
                 for($l = 0; $l < strlen($heuristicOptions[$heuristicIndex][0]); $l++)
                     array_push($this->solutions[$heuristicOptions[$heuristicIndex][0]], $heuristicOptions[$heuristicIndex][0][$l]);
                 $heuristicIndex++;
-                echo '1111';
-                echo '<br>';
             }
             else {
-                echo '2222';
-                echo '<br>';
                 $ok = false;
                 // alege elementul din stanga optiunii
                 // se adauga in multimea elementului din dreapta toate literele elementului din stanga
@@ -168,9 +170,12 @@ class multimiFunctionale {
                             \array_splice($lettersCopy, $rand_keys[2] - 2, 1);
                             break;
                     }
+                    if(!empty($this->options)) {
+                        if (!array_key_exists($option1, $this->options))
+                            $ok = true;
+                    }
+                    else $ok = true;
 
-                    if (!array_key_exists($option1, $this->rules))
-                        $ok = true;
                 }
 
 
@@ -292,19 +297,21 @@ class multimiFunctionale {
         $resultCopy = $result;
         $result = array();
         $index = 0;
+        $withTwoLetters = false;
         // prima optiune euristica va fi cu 2 litere, a doua neaparat cu 1 litera
         foreach(array_keys($resultCopy) as $key) {
-            if($index == 0) {
+            if(strlen($key) == 2 && $withTwoLetters == false) {
+                sort($resultCopy[$key][0]);
+                array_push($result, array($key, $resultCopy[$key][0]));
+                $withTwoLetters = true;
+                $index++;
+            }
+            if(strlen($key) == 1) {
                 sort($resultCopy[$key][0]);
                 array_push($result, array($key, $resultCopy[$key][0]));
                 $index++;
             }
-            if($index == 1 && strlen($key) == 1) {
-                sort($resultCopy[$key][0]);
-                array_push($result, array($key, $resultCopy[$key][0]));
-                $index++;
-            }
-            if($index == 2) break;
+            if($index == 6) break;
         }
         return $result;
     }
@@ -342,36 +349,34 @@ class multimiFunctionale {
         return $this->solutions;
     }
 }
-/*
-$ex2 = new multimiFunctionale();
-print_r($ex2->getRules());
-echo "<br>";
-echo "<br>";
-print_r($ex2->getOptions());
-echo "<br>";
-echo "<br>";
-print_r($ex2->getSolutions());*/
 
 $generator = new multimiFunctionale();
 print_r($generator->generate());
-echo '<br>';
-echo '<br>';
-print_r($generator->getSolutions());
-echo '<br>';
-echo '<br>';
-print_r($generator->calculate());
 
 
 
+// *** Verificare cu site-ul vcosmin ***
+
+// EXEMPLUL 1
+/*$left = array(array('B','D'), array('A','B','C'), array('E'), array('E'));
+$right = array(array('A'), array('D'), array('A','C','D'), array('C'));
+$solution = array('BD' => array('B', 'D'), 'CD' => array('C','D'), 'BD' => array('B','D'),
+    'ABC' => array('A','B','C'),  'ABD' => array('A','B','D'), 'AC' => array('A','C'));*/
+
+//EXEMPLUL 2
 /*
-// Verificare cu site-ul vcosmin
-//, array('B','E', 'F'), array('A','D','E')
-//, array('A','D'), array('B')
-$left = array(array('A','B'), array('A'), array('B','C'), array('B', 'D'));
-$right = array(array('D'), array('B','D'), array('A'), array('C'));
-$solution = array('AB' => array('A', 'B'), 'D' => array('D'), 'D' => array('D'),
-    'BC' => array('B','C'),  'AD' => array('A','D'), 'CD' => array('C','D'));
+$left = array(array('B'), array('C','D'), array('A'), array('B'));
+$right = array(array('D'), array('B'), array('C','D'), array('A','C','D'));
+$solution = array('C' => array('C'), 'BC' => array('B','C'), 'BD' => array('B','D'),
+    'C' => array('C'),  'AC' => array('A','C'), 'BC' => array('B','C'));*/
 
+//EXEMPLUL 3
+/*
+$left = array(array('A','C'), array('A','C','D'), array('B','C'), array('C'),array('A','C'));
+$right = array(array('D'), array('B'), array('A','D'), array('A','B','D'), array('B','D'));
+$solution = array('AC' => array('A', 'C'), 'AD' => array('A','D'), 'CD' => array('C','D'),
+    'ACD' => array('A','C','D'),  'BCD' => array('B','C','D'), 'ABC' => array('A','B','C'));*/
+/*
 foreach(array_keys($solution) as $key) {
     $solutionBuilder = $solution[$key];
     $freq = array_fill(0, 6, 0);
