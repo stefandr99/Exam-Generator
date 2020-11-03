@@ -6,7 +6,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="1e2cc130-b4c7-46c8-b87d-c2fa6d5bc93e" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/generator/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/generator/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/generator/dependente2.php" beforeDir="false" afterPath="$PROJECT_DIR$/generator/dependente2.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -42,7 +42,7 @@
       <option name="presentableId" value="Default" />
       <updated>1604334435644</updated>
       <workItem from="1604334437564" duration="14257000" />
-      <workItem from="1604405188020" duration="4175000" />
+      <workItem from="1604405188020" duration="16138000" />
     </task>
     <servers />
   </component>
@@ -60,5 +60,11 @@
       </map>
     </option>
     <option name="oldMeFiltersMigrated" value="true" />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="346" y="49" width="672" height="678" key="search.everywhere.popup" timestamp="1604413555096">
+      <screen x="0" y="0" width="1366" height="728" />
+    </state>
+    <state x="346" y="49" width="672" height="678" key="search.everywhere.popup/0.0.1366.728@0.0.1366.728" timestamp="1604413555096" />
   </component>
 </project>
