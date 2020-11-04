@@ -24,16 +24,16 @@ class dependencies {
                         array(9, 0, 5, 1, 5),
                         array(6, 2, 7, 3, 9));
 
-        $this->solution = array("*A  >  B",
-                        "*D  >  >  CE",
-                        "DC  >  E",
-                        "D  >  CE",
-                        "E  >  >  CB",
-                        "*DCE  >  >  AB",
-                        "*C  >  >  AB",
-                        "D  >  DB",
-                        "CB  >  E",
-                        "*EA  >  >  DB");
+        $this->solution = array(array("A  >  B", true),
+                        array("D  >  >  CE", true),
+                        array("DC  >  E", false),
+                        array("D  >  CE", false),
+                        array("E  >  >  CB", false),
+                        array("DCE  >  >  AB", true),
+                        array("C  >  >  AB", true),
+                        array("D  >  DB", false),
+                        array("CB  >  E", false),
+                        array("EA  >  >  DB", false));
 
         $this->matrixCopy = $this->matrix;
         $this->solutionCopy = $this->solution;
@@ -85,12 +85,13 @@ class dependencies {
      */
     private function permuteSolution($permutation) {
         for($i = 0; $i < count($this->solution); $i++) {
-            for($j = 0; $j < strlen($this->solution[$i]); $j++) {
-                if(ord($this->solution[$i][$j]) >= 65 && ord($this->solution[$i][$j]) <= 90) {
-                    $this->solutionCopy[$i][$j] = $permutation[ord($this->solution[$i][$j]) - 65];
+            for($j = 0; $j < strlen($this->solution[$i][0]); $j++) {
+                if(ord($this->solution[$i][0][$j]) >= 65 && ord($this->solution[$i][0][$j]) <= 90) {
+                    $this->solutionCopy[$i][0][$j] = $permutation[ord($this->solution[$i][0][$j]) - 65];
                 }
             }
         }
+        $this->solution = $this->solutionCopy;
     }
 
     private function moveSolutionLines() {

@@ -7,7 +7,7 @@
   <component name="ChangeListManager">
     <list default="true" id="1e2cc130-b4c7-46c8-b87d-c2fa6d5bc93e" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/generator/dependente2.php" beforeDir="false" afterPath="$PROJECT_DIR$/generator/dependente2.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/generator/dependente1.php" beforeDir="false" afterPath="$PROJECT_DIR$/generator/dependente1.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -43,7 +43,8 @@
       <updated>1604334435644</updated>
       <workItem from="1604334437564" duration="14257000" />
       <workItem from="1604405188020" duration="20658000" />
-      <workItem from="1604485406333" duration="5390000" />
+      <workItem from="1604485406333" duration="7779000" />
+      <workItem from="1604508362987" duration="381000" />
     </task>
     <servers />
   </component>
