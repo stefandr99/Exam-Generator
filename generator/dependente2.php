@@ -3,19 +3,19 @@
 
 class multimiFunctionale {
     private $letters; // literele exercitiului
-    private $rules; // array de reguli
-    private $leftRulesArray; // partea stanga a regulilor doar ca in format de array
-    private $rightRulesArray; // partea dreapta a regulilor doar ca in format de array
+    private $dependencies; // array de reguli
+    private $leftDependenciesArray; // partea stanga a regulilor doar ca in format de array
+    private $rightDependenciesArray; // partea dreapta a regulilor doar ca in format de array
     private $options; // optiunile exercitiului. Mereu vor fi 6
     private $solutions; // array de solutii pentru toate optiunile
     private $answer; // array-ul ce contine se va returna pentru optiuni. Va fi returnat de forma [[optiune], true/false]
     private $numberOfLetters; // numarul de litere din exercitiu (5/6)
-    private $numberOfRules; // numarul de reguli (5/6)
+    private $numberOfDependencies; // numarul de reguli (5/6)
 
     /**
      * multimiFunctionale constructor.
      * Se alege random daca vor fi 5 sau 6 litere. La fel si pentru numarul de reguli
-     * Se apeleaza pe rand: createRules() - metoda care va crea regulile exercitiului
+     * Se apeleaza pe rand: createDependencies() - metoda care va crea regulile exercitiului
      *                      generateOptions() - se genereaza optiunile din care trebuie alese cele corecte.
      *                              Aici se apeleaza si functia euristica pentru 2 optiunni care vor fi mereu TRUE.
      *                      createSolutions() - se calculeaza solutia pentru fiecare optiune
@@ -28,9 +28,9 @@ class multimiFunctionale {
         else
             $this->letters = array('A', 'B', 'C', 'D', 'E', 'F');
         $this->solutions = array();
-        $this->numberOfRules = rand(5, 6);
-        $this->rules = array();
-        $this->createRules();
+        $this->numberOfDependencies = rand(5, 6);
+        $this->dependencies = array();
+        $this->createDependencies();
         $this->generateOptions();
         $this->createSolutions();
         $this->correctsProblem();
@@ -50,8 +50,8 @@ class multimiFunctionale {
      *      Array-ul elementRight - multimea de litere din care este alcatuita partea dreapta a regulii. Aceasta va fi folosita
      *      pentru determinarea solutiei.
      */
-    private function createRules() {
-        for($i = 0; $i < $this->numberOfRules; $i++) {
+    private function createDependencies() {
+        for($i = 0; $i < $this->numberOfDependencies; $i++) {
             // alege elementul din stanga regulii
             $ok = false;
             $elementLeft = array();
@@ -83,8 +83,8 @@ class multimiFunctionale {
                         break;
                 }
 
-                if(!empty($this->rules != null)) {
-                    if (!array_key_exists($element1, $this->rules))
+                if(!empty($this->dependencies != null)) {
+                    if (!array_key_exists($element1, $this->dependencies))
                         $ok = true;
                 }
                 else $ok = true;
@@ -108,10 +108,10 @@ class multimiFunctionale {
                     array_push($elementRight, $lettersCopy[$rand_keys[$j]]);
                 }
 
-            $this->rules[$element1] = $element2;
+            $this->dependencies[$element1] = $element2;
             // Componentele de mai jos sunt regulile doar ca in forma de array in loc de string
-            $this->leftRulesArray[$i] = $elementLeft;
-            $this->rightRulesArray[$i] = $elementRight;
+            $this->leftDependenciesArray[$i] = $elementLeft;
+            $this->rightDependenciesArray[$i] = $elementRight;
         }
     }
 
@@ -233,14 +233,14 @@ class multimiFunctionale {
     private function createSolutions() {
         foreach(array_keys($this->solutions) as $key) {
             $solutionBuilder = $this->solutions[$key];
-            $freq = array_fill(0, $this->numberOfRules, 0);
+            $freq = array_fill(0, $this->numberOfDependencies, 0);
             $checkDone = false;
             while (!$checkDone && !$this->verifyFull($solutionBuilder)) {
                 $checkDone = true;
-                for($rule = 0; $rule < count($this->leftRulesArray); $rule++) {
+                for($rule = 0; $rule < count($this->leftDependenciesArray); $rule++) {
                     if($freq[$rule] == 0) {
-                        if(count(array_intersect($solutionBuilder, $this->leftRulesArray[$rule])) == count($this->leftRulesArray[$rule])) {
-                            $this->addToSolution($solutionBuilder, $this->rightRulesArray[$rule]);
+                        if(count(array_intersect($solutionBuilder, $this->leftDependenciesArray[$rule])) == count($this->leftDependenciesArray[$rule])) {
+                            $this->addToSolution($solutionBuilder, $this->rightDependenciesArray[$rule]);
                             $freq[$rule] = 1;
                             $checkDone = false;
                         }
@@ -260,23 +260,13 @@ class multimiFunctionale {
         $result = array();
         foreach(array_keys($this->options) as $key) {
             if($this->options[$key] == $this->solutions[$key])
-                array_push($result, array(array($key => $this->options[$key]), true));
+                array_push($result, array($key, implode($this->options[$key]), true));
             else
-                array_push($result, array(array($key => $this->options[$key]), false));
+                array_push($result, array($key, implode($this->options[$key]), false));
         }
         $this->answer = $result;
     }
 
-    /**
-     * Se returneaza JSON cu intreg exercitul
-     */
-    public function generate() {
-        $result = array(
-            "rules" => $this->rules,
-            "solution" => $this->answer
-        );
-        return json_encode($result);
-    }
 
     /**
      * Se creeaza toate stringurile de 1, 2 litere (EX: A, B, C, AB, AC, BC)
@@ -299,15 +289,15 @@ class multimiFunctionale {
      */
     private function heuristic(&$sol) {
         $solutionBuilder = $sol;
-        $freq = array_fill(0, $this->numberOfRules, 0);
+        $freq = array_fill(0, $this->numberOfDependencies, 0);
         $repeat = 0;
         $checkDone = false;
         while (!$checkDone && !$this->verifyFull($solutionBuilder)) {
             $checkDone = true;
-            for($rule = 0; $rule < count($this->leftRulesArray); $rule++) {
+            for($rule = 0; $rule < count($this->leftDependenciesArray); $rule++) {
                 if($freq[$rule] == 0) {
-                    if(count(array_intersect($solutionBuilder, $this->leftRulesArray[$rule])) == count($this->leftRulesArray[$rule])) {
-                        $this->addToSolution($solutionBuilder, $this->rightRulesArray[$rule]);
+                    if(count(array_intersect($solutionBuilder, $this->leftDependenciesArray[$rule])) == count($this->leftDependenciesArray[$rule])) {
+                        $this->addToSolution($solutionBuilder, $this->rightDependenciesArray[$rule]);
                         $freq[$rule] = 1;
                         $repeat++;
                         $checkDone = false;
@@ -392,7 +382,7 @@ class multimiFunctionale {
     }
 
     public function getRules() {
-        return $this->rules;
+        return $this->dependencies;
     }
 
     public function getOptions() {
@@ -402,60 +392,34 @@ class multimiFunctionale {
     public function getSolutions() {
         return $this->solutions;
     }
+
+    /**
+     * Se returneaza JSON cu intreg exercitul
+     */
+    public function generate() {
+        $i = 0;
+        foreach(array_keys($this->dependencies) as $key) {
+            $sigmaBuilder[$i] = array("leftside" => $key, "rightside" => $this->dependencies[$key]);
+            $i++;
+        }
+        $sigma["count"] = $this->numberOfDependencies;
+        $sigma["dependencies"] = (object)$sigmaBuilder;
+
+
+        for($i = 0; $i < 6; $i++) {
+            $optionBuilder[$i] = array("attr" => $this->answer[$i][0], "attr+" => $this->answer[$i][1],
+                "answer" => $this->answer[$i][2]);
+        }
+
+        $result = array(
+            "sigma" => $sigma,
+            "options" => (object)$optionBuilder
+        );
+        return json_encode($result);
+    }
 }
 
 $generator = new multimiFunctionale();
 print_r($generator->generate());
 
 
-
-// *** Verificare cu site-ul vcosmin ***
-
-// EXEMPLUL 1
-/*$left = array(array('B','D'), array('A','B','C'), array('E'), array('E'));
-$right = array(array('A'), array('D'), array('A','C','D'), array('C'));
-$solution = array('BD' => array('B', 'D'), 'CD' => array('C','D'), 'BD' => array('B','D'),
-    'ABC' => array('A','B','C'),  'ABD' => array('A','B','D'), 'AC' => array('A','C'));*/
-
-//EXEMPLUL 2
-/*
-$left = array(array('B'), array('C','D'), array('A'), array('B'));
-$right = array(array('D'), array('B'), array('C','D'), array('A','C','D'));
-$solution = array('C' => array('C'), 'BC' => array('B','C'), 'BD' => array('B','D'),
-    'C' => array('C'),  'AC' => array('A','C'), 'BC' => array('B','C'));*/
-
-//EXEMPLUL 3
-/*
-$left = array(array('A','C'), array('A','C','D'), array('B','C'), array('C'),array('A','C'));
-$right = array(array('D'), array('B'), array('A','D'), array('A','B','D'), array('B','D'));
-$solution = array('AC' => array('A', 'C'), 'AD' => array('A','D'), 'CD' => array('C','D'),
-    'ACD' => array('A','C','D'),  'BCD' => array('B','C','D'), 'ABC' => array('A','B','C'));*/
-/*
-foreach(array_keys($solution) as $key) {
-    $solutionBuilder = $solution[$key];
-    $freq = array_fill(0, 6, 0);
-    $checkDone = false;
-    while (!$checkDone && count($solutionBuilder) != 4) {
-        $checkDone = true;
-        for($rule = 0; $rule < count($left); $rule++) {
-            if($freq[$rule] == 0) {
-                if(count(array_intersect($solutionBuilder, $left[$rule])) == count($left[$rule])) {
-                    addSolution($solutionBuilder, $right[$rule]);
-                    $freq[$rule] = 1;
-                    $checkDone = false;
-                }
-            }
-        }
-    }
-    $solution[$key] = $solutionBuilder;
-}
-function addSolution(&$solution, $toAdd) {
-    $solution = array_unique(array_merge($solution, $toAdd));
-}
-
-foreach (array_keys($solution) as $key) {
-    sort($solution[$key]);
-}
-
-print_r($solution);
-*/
