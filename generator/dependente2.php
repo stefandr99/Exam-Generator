@@ -8,6 +8,7 @@ class multimiFunctionale {
     private $rightDependenciesArray; // partea dreapta a regulilor doar ca in format de array
     private $options; // optiunile exercitiului. Mereu vor fi 6
     private $solutions; // array de solutii pentru toate optiunile
+    private $solutionsCopy;
     private $answer; // array-ul ce contine se va returna pentru optiuni. Va fi returnat de forma [[optiune], true/false]
     private $numberOfLetters; // numarul de litere din exercitiu (5/6)
     private $numberOfDependencies; // numarul de reguli (5/6)
@@ -126,99 +127,95 @@ class multimiFunctionale {
      * Dreapta optiunii: se alege intre 0-2 litere pentru a fi adaugate in multimea de raspuns a fiecarei optiuni
      */
     private function generateOptions() {
-        $r = range(0, 5);
-        shuffle($r);
-        $heuristics = array($r[0], $r[1]); // indecsii unde se vor pune optiunile euristice
-        $heuristicIndex = 0;
-        $heuristicOptions = $this->calculate();
 
         for($i = 0; $i < 6; $i++) {
-            if(in_array($i, $heuristics)) {
-                if(!empty($this->options))
-                    while(array_key_exists($heuristicOptions[$heuristicIndex][0], $this->options))
-                        $heuristicIndex++;
-                $this->options[$heuristicOptions[$heuristicIndex][0]] = $heuristicOptions[$heuristicIndex][1];
-                $this->solutions[$heuristicOptions[$heuristicIndex][0]] = array();
-                for($l = 0; $l < strlen($heuristicOptions[$heuristicIndex][0]); $l++)
-                    array_push($this->solutions[$heuristicOptions[$heuristicIndex][0]], $heuristicOptions[$heuristicIndex][0][$l]);
-                $heuristicIndex++;
-            }
-            else {
-                $ok = false;
-                // alege elementul din stanga optiunii
-                // se adauga in multimea elementului din dreapta toate literele elementului din stanga
-                // ramane in bucla pana gaseste o optiune ce NU a fost folosita deja
-                while (!$ok) {
-                    // numarul de litere din elementul1 al regulii curente
-                    $n = rand(1, 3);
-                    $lettersCopy = $this->letters;
-                    $rand_keys = array_rand($this->letters, $n);
-                    $option2 = array();
-                    switch ($n) {
-                        case 1:
-                            $option1 = $this->letters[$rand_keys];
+            $this->insertHeuristicOptions();
+            $ok = false;
+            // alege elementul din stanga optiunii
+            // se adauga in multimea elementului din dreapta toate literele elementului din stanga
+            // ramane in bucla pana gaseste o optiune ce NU a fost folosita deja
+            while (!$ok) {
+                // numarul de litere din elementul1 al regulii curente
+                $n = rand(1, 3);
+                $lettersCopy = $this->letters;
+                $rand_keys = array_rand($this->letters, $n);
+                $option2 = array();
+                switch ($n) {
+                    case 1:
+                        $option1 = $this->letters[$rand_keys];
 
-                            // adaugam in multimea din dreapta a optiunii literele care apar in stanga optiunii
-                            array_push($option2, $this->letters[$rand_keys]);
+                        // adaugam in multimea din dreapta a optiunii literele care apar in stanga optiunii
+                        array_push($option2, $this->letters[$rand_keys]);
 
-                            // adaugam si in solutie literele elementului din stanga
-                            $this->solutions[$option1] = array($this->letters[$rand_keys]);
+                        // adaugam si in solutie literele elementului din stanga
+                        $this->solutions[$option1] = array($this->letters[$rand_keys]);
 
-                            // scoatem din lista de litere literele pe care le-am folosit
-                            \array_splice($lettersCopy, $rand_keys, 1);
-                            break;
-                        case 2:
-                            $option1 = $this->letters[$rand_keys[0]] . $this->letters[$rand_keys[1]];
+                        // scoatem din lista de litere literele pe care le-am folosit
+                        \array_splice($lettersCopy, $rand_keys, 1);
+                        break;
+                    case 2:
+                        $option1 = $this->letters[$rand_keys[0]] . $this->letters[$rand_keys[1]];
 
-                            // adaugam in multimea din dreapta a optiunii literele care apar in stanga optiunii
-                            array_push($option2, $this->letters[$rand_keys[0]], $this->letters[$rand_keys[1]]);
+                        // adaugam in multimea din dreapta a optiunii literele care apar in stanga optiunii
+                        array_push($option2, $this->letters[$rand_keys[0]], $this->letters[$rand_keys[1]]);
 
-                            // adaugam si in solutie literele elementului din stanga
-                            $this->solutions[$option1] = array($this->letters[$rand_keys[0]], $this->letters[$rand_keys[1]]);
+                        // adaugam si in solutie literele elementului din stanga
+                        $this->solutions[$option1] = array($this->letters[$rand_keys[0]], $this->letters[$rand_keys[1]]);
 
-                            // scoatem din lista de litere literele pe care le-am folosit
-                            \array_splice($lettersCopy, $rand_keys[0], 1);
-                            \array_splice($lettersCopy, $rand_keys[1] - 1, 1);
-                            break;
-                        case 3:
-                            $option1 = $this->letters[$rand_keys[0]] . $this->letters[$rand_keys[1]] . $this->letters[$rand_keys[2]];
+                        // scoatem din lista de litere literele pe care le-am folosit
+                        \array_splice($lettersCopy, $rand_keys[0], 1);
+                        \array_splice($lettersCopy, $rand_keys[1] - 1, 1);
+                        break;
+                    case 3:
+                        $option1 = $this->letters[$rand_keys[0]] . $this->letters[$rand_keys[1]] . $this->letters[$rand_keys[2]];
 
-                            // adaugam in multimea din dreapta a optiunii literele care apar in stanga optiunii
-                            array_push($option2, $this->letters[$rand_keys[0]], $this->letters[$rand_keys[1]],
-                                $this->letters[$rand_keys[2]]);
+                        // adaugam in multimea din dreapta a optiunii literele care apar in stanga optiunii
+                        array_push($option2, $this->letters[$rand_keys[0]], $this->letters[$rand_keys[1]],
+                            $this->letters[$rand_keys[2]]);
 
-                            // adaugam si in solutie literele elementului din stanga
-                            $this->solutions[$option1] = array($this->letters[$rand_keys[0]], $this->letters[$rand_keys[1]],
-                                $this->letters[$rand_keys[2]]);
+                        // adaugam si in solutie literele elementului din stanga
+                        $this->solutions[$option1] = array($this->letters[$rand_keys[0]], $this->letters[$rand_keys[1]],
+                            $this->letters[$rand_keys[2]]);
 
-                            // scoatem din lista de litere literele pe care le-am folosit
-                            \array_splice($lettersCopy, $rand_keys[0], 1);
-                            \array_splice($lettersCopy, $rand_keys[1] - 1, 1);
-                            \array_splice($lettersCopy, $rand_keys[2] - 2, 1);
-                            break;
-                    }
-                    if(!empty($this->options)) {
-                        if (!array_key_exists($option1, $this->options))
-                            $ok = true;
-                    }
-                    else $ok = true;
-
+                        // scoatem din lista de litere literele pe care le-am folosit
+                        \array_splice($lettersCopy, $rand_keys[0], 1);
+                        \array_splice($lettersCopy, $rand_keys[1] - 1, 1);
+                        \array_splice($lettersCopy, $rand_keys[2] - 2, 1);
+                        break;
                 }
 
-
-                // adauga in elementul din dreapta optiunii (sau nu)
-                $n = rand(0, 2);
-                if ($n) {
-                    $rand_keys = array_rand($lettersCopy, $n);
-                    if ($n == 1)
-                        array_push($option2, $lettersCopy[$rand_keys]);
-                    else
-                        array_push($option2, $lettersCopy[$rand_keys[0]], $lettersCopy[$rand_keys[1]]);
+                if (!empty($this->options)) {
+                    if (!array_key_exists($option1, $this->options))
+                        $ok = true;
                 }
-
-                $this->sortOptions($option2);
-                $this->options[$option1] = $option2;
+                else $ok = true;
             }
+
+
+
+            // adauga in elementul din dreapta optiunii (sau nu)
+            $n = rand(0, 2);
+            if ($n) {
+                $rand_keys = array_rand($lettersCopy, $n);
+                if ($n == 1)
+                    array_push($option2, $lettersCopy[$rand_keys]);
+                else
+                    array_push($option2, $lettersCopy[$rand_keys[0]], $lettersCopy[$rand_keys[1]]);
+            }
+
+            $this->sortOptions($option2);
+            $this->options[$option1] = $option2;
+        }
+    }
+
+    private function insertHeuristicOptions() {
+        $heuristicOptions = $this->calculate();
+
+        for($heuristicIndex = 0; $heuristicIndex < 3; $heuristicIndex++) {
+            $this->options[$heuristicOptions[$heuristicIndex][0]] = $heuristicOptions[$heuristicIndex][1];
+            $this->solutions[$heuristicOptions[$heuristicIndex][0]] = array();
+            for ($l = 0; $l < strlen($heuristicOptions[$heuristicIndex][0]); $l++)
+                array_push($this->solutions[$heuristicOptions[$heuristicIndex][0]], $heuristicOptions[$heuristicIndex][0][$l]);
         }
     }
 
@@ -258,11 +255,13 @@ class multimiFunctionale {
      */
     private function correctsProblem() {
         $result = array();
+        $this->solutionsCopy = array();
         foreach(array_keys($this->options) as $key) {
             if($this->options[$key] == $this->solutions[$key])
                 array_push($result, array($key, implode($this->options[$key]), true));
             else
                 array_push($result, array($key, implode($this->options[$key]), false));
+            array_push($this->solutionsCopy, implode($this->solutions[$key]));
         }
         $this->answer = $result;
     }
@@ -333,25 +332,30 @@ class multimiFunctionale {
         $maxi = array_column($result, 1);
         array_multisort($maxi, SORT_DESC, $result);
 
-        // returnez doar primele 2 solutii. Cele mai complicate (complexe) :)
+        // returnez doar primele 2 solutii corecte. Cele mai complicate (complexe) :) Dar si 2 solutii aproape complete (ultimul element elminiat)
         $resultCopy = $result;
         $result = array();
         $index = 0;
-        $withTwoLetters = false;
-        // prima optiune euristica va fi cu 2 litere, a doua neaparat cu 1 litera (sau invers)
+        $withTwoLetters = 0;
+        $withOneLetter = 0;
+        // vor fi 4 optiuni euristice: 2 solutii corecte, 2 solutii incorecte(incomplete) din care s-a scos ultima litera
         foreach(array_keys($resultCopy) as $key) {
-            if(strlen($key) == 2 && $withTwoLetters == false) {
+            if(strlen($key) == 2 && $withTwoLetters < 3) { // verific daca cheia are 2 litere si daca nu s-a depasit deja limita de 3 optiuni cu 2 liter
+                if($withTwoLetters > 0 && count($resultCopy[$key][0]) > strlen($key)) {
+                    array_pop($resultCopy[$key][0]);
+                }
                 sort($resultCopy[$key][0]);
                 array_push($result, array($key, $resultCopy[$key][0]));
-                $withTwoLetters = true;
+                $withTwoLetters++;
                 $index++;
             }
-            if(strlen($key) == 1) {
+            if(strlen($key) == 1 && !$withOneLetter) {
                 sort($resultCopy[$key][0]);
                 array_push($result, array($key, $resultCopy[$key][0]));
                 $index++;
+                $withOneLetter++;
             }
-            if($index == 6) break;
+            if($index == 4) break;
         }
         return $result;
     }
@@ -408,7 +412,7 @@ class multimiFunctionale {
         $optionBuilder["counter"] = 6;
         for($i = 1; $i <= 6; $i++) {
             $optionBuilder["attributes"][$i] = array("attr" => $this->answer[$i - 1][0], "attr+" => $this->answer[$i - 1][1],
-                "answer" => $this->answer[$i - 1][2]);
+                "real_attr+" => $this->solutionsCopy[$i - 1], "answer" => $this->answer[$i - 1][2]);
         }
 
         $result = array(
