@@ -128,7 +128,8 @@ class dependencies {
         $this->moveSolutionLines();
         $this->changeNumbers();
 
-        for($i = 0; $i < 6; $i++) {
+
+        for($i = 1; $i <= 6; $i++) {
             if(substr_count($this->solutionCopy[$i][0], '>') == 1)
                 $optionBuilder[$i]["type"] = "FD";
             else $optionBuilder[$i]["type"] = "MVD";
@@ -136,12 +137,16 @@ class dependencies {
             $optionBuilder[$i]["answer"] = $this->solutionCopy[$i][1];
         }
 
-        $options["count"] = 6;
+        $options["counter"] = 6;
         $options["solution"] = (object)$optionBuilder;
 
+        $relation["counter"] = 8;
+        for($i = 1; $i <= 8; $i++)
+            $relation["table"][$i] = $this->matrixCopy[$i];
+
         $result = array(
-            "letters" => $this->matrixCopy[0],
-            "matrix" => array_slice($this->matrixCopy, 1),
+            "attributes" => $this->matrixCopy[0],
+            "relation" => $relation,
             "options" => $options
         );
         return json_encode($result);

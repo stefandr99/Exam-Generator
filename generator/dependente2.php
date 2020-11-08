@@ -397,18 +397,18 @@ class multimiFunctionale {
      * Se returneaza JSON cu intreg exercitul
      */
     public function generate() {
-        $i = 0;
+        $i = 1;
         foreach(array_keys($this->dependencies) as $key) {
             $sigmaBuilder[$i] = array("leftside" => $key, "rightside" => $this->dependencies[$key]);
             $i++;
         }
-        $sigma["count"] = $this->numberOfDependencies;
+        $sigma["counter"] = $this->numberOfDependencies;
         $sigma["dependencies"] = (object)$sigmaBuilder;
 
-
-        for($i = 0; $i < 6; $i++) {
-            $optionBuilder[$i] = array("attr" => $this->answer[$i][0], "attr+" => $this->answer[$i][1],
-                "answer" => $this->answer[$i][2]);
+        $optionBuilder["counter"] = 6;
+        for($i = 1; $i <= 6; $i++) {
+            $optionBuilder["attributes"][$i] = array("attr" => $this->answer[$i - 1][0], "attr+" => $this->answer[$i - 1][1],
+                "answer" => $this->answer[$i - 1][2]);
         }
 
         $result = array(
