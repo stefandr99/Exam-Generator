@@ -1,7 +1,7 @@
 <?php
 
 
-class dependencies {
+class Dependencies {
 
     private $letters;
     private $matrix;
@@ -154,7 +154,7 @@ class dependencies {
 
 }
 
-$generator = new dependencies();
+$generator = new Dependencies();
 print_r($generator->generate());
 
 

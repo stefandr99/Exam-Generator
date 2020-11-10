@@ -1,7 +1,7 @@
 <?php
 
 
-class multimiFunctionale {
+class MultimiFunctionale {
     private $letters; // literele exercitiului
     private $dependencies; // array de reguli
     private $leftDependenciesArray; // partea stanga a regulilor doar ca in format de array
@@ -423,7 +423,7 @@ class multimiFunctionale {
     }
 }
 
-$generator = new multimiFunctionale();
+$generator = new MultimiFunctionale();
 print_r($generator->generate());
 
 
