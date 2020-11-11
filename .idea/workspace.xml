@@ -6,10 +6,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="1e2cc130-b4c7-46c8-b87d-c2fa6d5bc93e" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/generator/generator3.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/generator/dependente1.php" beforeDir="false" afterPath="$PROJECT_DIR$/generator/dependente1.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/generator/dependente2.php" beforeDir="false" afterPath="$PROJECT_DIR$/generator/dependente2.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/generator/generator3.php" beforeDir="false" afterPath="$PROJECT_DIR$/generator/generator3.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -53,7 +51,8 @@
       <workItem from="1604848994941" duration="535000" />
       <workItem from="1604859538926" duration="5237000" />
       <workItem from="1605035507495" duration="2110000" />
-      <workItem from="1605042324007" duration="8588000" />
+      <workItem from="1605042324007" duration="8825000" />
+      <workItem from="1605086696106" duration="6951000" />
     </task>
     <servers />
   </component>
