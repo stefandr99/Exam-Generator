@@ -17,4 +17,9 @@ class UserController extends Controller
     public function showAll() {
         return view('showUsers', ['users' => $this->user->getAll()]);
     }
+
+    public function updateUserRole($id, $newRole) {
+        $this->user->changeRole($id, $newRole);
+        return redirect()->route('users');
+    }
 }

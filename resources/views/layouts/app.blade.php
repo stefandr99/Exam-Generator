@@ -7,7 +7,7 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name', 'Laravel') }}</title>
+    <title>{{ config('app.name', 'Examiner') }}</title>
 
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}" defer></script>
@@ -45,7 +45,7 @@
                             </li>
                             @if (Route::has('register'))
                                 <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
+                                    <a class="nav-link" href="{{ route('register') }}">{{ __('Inregistrare') }}</a>
                                 </li>
                             @endif
                         @else
@@ -66,7 +66,7 @@
 
                                     @if (Auth::user()->role == 1)
                                         <a class="dropdown-item" href="{{ route('users') }}">
-                                            {{ __('Users') }}
+                                            {{ __('Utilizatori') }}
                                         </a>
                                     @endif
 

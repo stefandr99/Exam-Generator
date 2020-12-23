@@ -19,6 +19,6 @@ Route::get('/', function () {
 
 Auth::routes();
 
+Route::put('/users/update/{id}/newRole={newRole}', 'UserController@updateUserRole')->name('update_role');
 Route::get('/home', 'HomeController@index')->name('home');
-
 Route::get('/users', 'UserController@showAll')->name('users');
