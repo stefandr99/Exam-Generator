@@ -1,6 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
+    <form>
     <div class="container my-4">
         <h1 style="text-align: center"><b>Partial baze de date</b></h1>
         <br>
@@ -30,8 +31,8 @@
                 <div class="col py-5 px-lg-5 bg-light">
                     @for($option = 1; $option <= $exercise1['options']['counter']; $option++)
                         <div class="form-check dependencies_options">
-                            <input class="form-check-input" type="checkbox" value="" id="defaultCheck1"  style="transform: scale(1.5)">
-                            <label class="form-check-label" for="defaultCheck1">
+                            <input class="form-check-input" type="checkbox" value="" id="ex1option{{$option}}"  style="transform: scale(1.5)">
+                            <label class="form-check-label" for="ex1option{{$option}}">
                                 {{ chr(96 + $option) }}) {{ $exercise1['options']['solution'][$option]['option'] }}
                             </label>
                         </div>
@@ -58,9 +59,9 @@
         <div class="px-lg-5">
             @for($option = 1; $option <= $exercise2['options']['counter']; $option++)
                 <div class="form-check dependencies_options">
-                    <input class="form-check-input" type="checkbox" value="" id="defaultCheck1" style="transform: scale(1.5)">
-                    <label class="form-check-label" for="defaultCheck1">
-                        {{ chr(96 + $option) }}) {{ $exercise2['options'][$option]['option'] }}
+                    <input class="form-check-input" type="checkbox" value="" id="ex2option{{$option}}" style="transform: scale(1.5)">
+                    <label class="form-check-label" for="ex2option{{$option}}">
+                        {{ chr(96 + $option) }}) {{ $exercise2['options']['solution'][$option]['option'] }}
                     </label>
                 </div>
             @endfor
@@ -78,9 +79,9 @@
         <div class="px-lg-5">
             @for($option = 1; $option <= $exercise3['options']['counter']; $option++)
                 <div class="form-check dependencies_options">
-                    <input class="form-check-input" type="checkbox" value="" id="defaultCheck1" style="transform: scale(1.5)">
-                    <label class="form-check-label" for="defaultCheck1">
-                        {{ chr(96 + $option) }}) {{ $exercise3['options']['attributes'][$option]['attr'] }}<sup>+</sup> = {{ $exercise3['options']['attributes'][$option]['attr+'] }}
+                    <input class="form-check-input" type="checkbox" value="" id="ex3option{{$option}}" style="transform: scale(1.5)">
+                    <label class="form-check-label" for="ex3option{{$option}}">
+                        {{ chr(96 + $option) }}) {{ $exercise3['options']['solution'][$option]['attr'] }}<sup>+</sup> = {{ $exercise3['options']['solution'][$option]['attr+'] }}
                     </label>
                 </div>
             @endfor
@@ -94,12 +95,19 @@
         <div class="px-lg-5">
             @for($option = 1; $option <= $exercise4['options']['counter']; $option++)
                 <div class="form-check dependencies_options">
-                    <input class="form-check-input" type="checkbox" value="" id="defaultCheck1" style="transform: scale(1.5)">
-                    <label class="form-check-label" for="defaultCheck1">
-                        {{ chr(96 + $option) }}) {{ $exercise4['options'][$option]['option'] }}
+                    <input class="form-check-input" type="checkbox" value="" id="ex4option{{$option}}" style="transform: scale(1.5)">
+                    <label class="form-check-label" for="ex4option{{$option}}">
+                        {{ chr(96 + $option) }}) {{ $exercise4['options']['solution'][$option]['option'] }}
                     </label>
                 </div>
             @endfor
         </div>
+        <br>
+        <div class="r_relationship">
+            <button type="button" class="btn btn-primary r_relationship" onclick="checkTest({{json_encode($exercise1)}}, {{json_encode($exercise2)}}, {{json_encode($exercise3)}}, {{json_encode($exercise4)}})">Verifica partialul</button>
+        </div>
     </div>
+
+
+    </form>
 @endsection

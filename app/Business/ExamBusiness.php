@@ -7,7 +7,7 @@ namespace App\Business;
 class ExamBusiness
 {
     public function generateFirst() {
-        $url = "http://localhost/bd/dependente1.php";
+        $url = "http://localhost/bd/generator1.php";
 
         $c = curl_init($url);
         curl_setopt($c, CURLOPT_RETURNTRANSFER, true);
@@ -18,7 +18,7 @@ class ExamBusiness
     }
 
     public function generateSecond() {
-        $url = "http://localhost/bd/generator4.php";
+        $url = "http://localhost/bd/generator2.php";
         $json = file_get_contents("./resources/json_data/exercise2.json",0,null,null);
 
         $c = curl_init($url);
@@ -32,7 +32,7 @@ class ExamBusiness
     }
 
     public function generateThird() {
-        $url = "http://localhost/bd/dependente2.php";
+        $url = "http://localhost/bd/generator3.php";
 
         $c = curl_init($url);
         curl_setopt($c, CURLOPT_RETURNTRANSFER, true);
@@ -43,7 +43,7 @@ class ExamBusiness
     }
 
     public function generateFourth() {
-        $url = "http://localhost/bd/generator3.php";
+        $url = "http://localhost/bd/generator4.php";
         $json = file_get_contents("./resources/json_data/exercise4.json",0,null,null);
 
         $c = curl_init($url);
