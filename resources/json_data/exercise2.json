@@ -1,0 +1,178 @@
+{
+    "problem_text1": "Fie schema de relatie: Catalog(elev, nota, materie, dataNotare, profesor) ce indica faptul ca un elev a luat o anumita nota la o materie, nota pusa de catre profesor in ziua testului. Urmatoarele restrictii au loc in aceasta relatie: ",
+    "sentences":{
+        "counter": "8",
+        "1": "Elevul nu poate avea doua note la o aceeasi materie.",
+        "2": "Toate notele la o materie au fost puse intr-o aceeasi zi (a testului).",
+        "3": "Un profesor poate preda mai multe materii.",
+        "4": "Un profesor poate pune note in mai multe zile diferite.",
+        "5": "Elevul va avea note la mai multe materii.",
+        "6": "O nota nu poate fi pusa in zile diferite.",
+        "7": "O materie poate avea mai multe note.",
+        "8": "Intr-o zi un profesor poate pune note la mai multe materii."
+    },
+    "problem_text2": "Care din urmatoarele dependente au loc in relatia Catalog? (<b>Atentie</b>: nu toate frazele de mai sus creeaza dependente; se vor considera si consecintele)",
+    "options":{
+        "counter":"20",
+        "1": "materie ->-> elev, nota, profesor",
+        "2": "dataNotare -> materie",
+        "3": "materie -> dataNotare",
+        "4": "profesor, nota -> materie",
+        "5": "profesor, materie -> nota",
+        "6": "nota -> profesor",
+        "7": "nota -> elev",
+        "8": "materie ->-> dataNotare",
+        "9": "elev, nota ->-> materie",
+        "10": "elev, nota ->-> dataNotare",
+        "11": "profesor, materie -> dataNotare",
+        "12": "elev, materie ->-> nota",
+        "13": "materie, dataNotare -> profesor, elev",
+        "14": "nota ->-> elev, materie, dataNotare",
+        "15": "materie -> profesor",
+        "16": "profesor, materie ->-> dataNotare",
+        "17": "dataNotare ->-> materie",
+        "18": "elev, dataNotare, materie -> profesor",
+        "19": "nota, dataNotare ->-> materie",
+        "20": "elev -> dataNotare, materie"
+    },
+    "combinations":{
+        "correct":{
+            "counter": "8",
+            "1":{
+                "sentences":"1,2",
+                "answer":"1"
+            },
+            "2":{
+                "sentences":"3",
+                "answer":"13"
+            },
+            "3":{
+                "sentences":"3,5,6",
+                "answer":"5"
+            },
+            "4":{
+                "sentences":"4",
+                "answer":"16"
+            },
+            "5":{
+                "sentences":"1",
+                "answer":"9"
+            },
+            "6":{
+                "sentences":"2,4",
+                "answer":"20"
+            },
+            "7":{
+                "sentences":"7",
+                "answer":"14"
+            },
+            "8":{
+                "sentences":"4,8",
+                "answer":"18"
+            }
+        },
+        "incorrect":{
+            "counter": "25",
+            "1":{
+                "sentences":"2,4",
+                "answer":"12"
+            },
+            "2":{
+                "sentences":"1,8",
+                "answer":"16"
+            },
+            "3":{
+                "sentences":"8",
+                "answer":"5"
+            },
+            "4":{
+                "sentences":"2,4,7",
+                "answer":"10"
+            },
+            "5":{
+                "sentences":"7",
+                "answer":"4"
+            },
+            "6":{
+                "sentences":"1,6,7",
+                "answer":"1"
+            },
+            "7":{
+                "sentences":"1,4",
+                "answer":"8"
+            },
+            "8":{
+                "sentences":"4,7",
+                "answer":"19"
+            },
+            "9":{
+                "sentences":"1,2",
+                "answer":"11"
+            },
+            "10":{
+                "sentences":"3",
+                "answer":"3"
+            },
+            "11":{
+                "sentences":"4",
+                "answer":"9"
+            },
+            "12":{
+                "sentences":"1,3,6",
+                "answer":"5"
+            },
+            "13":{
+                "sentences":"1",
+                "answer":"20"
+            },
+            "14":{
+                "sentences":"5,6",
+                "answer":"2"
+            },
+            "15":{
+                "sentences":"4,5,8",
+                "answer":"10"
+            },
+            "16":{
+                "sentences":"2",
+                "answer":"16"
+            },
+            "17":{
+                "sentences":"3,5",
+                "answer":"15"
+            },
+            "18":{
+                "sentences":"2",
+                "answer":"11"
+            },
+            "19":{
+                "sentences":"5",
+                "answer":"9"
+            },
+            "20":{
+                "sentences":"6",
+                "answer":"1"
+            },
+            "21":{
+                "sentences":"7",
+                "answer":"7"
+            },
+            "22":{
+                "sentences":"8",
+                "answer":"4"
+            },
+            "23":{
+                "sentences":"1,5",
+                "answer":"12"
+            },
+            "24":{
+                "sentences":"4,7",
+                "answer":"17"
+            },
+            "25":{
+                "sentences":"1,2,5",
+                "answer":"6"
+            }
+        }
+    }
+}

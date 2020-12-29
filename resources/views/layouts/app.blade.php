@@ -18,6 +18,7 @@
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/generator.css') }}" rel="stylesheet">
 </head>
 <body>
     <div id="app">
@@ -67,6 +68,12 @@
                                     @if (Auth::user()->role == 1)
                                         <a class="dropdown-item" href="{{ route('users') }}">
                                             {{ __('Utilizatori') }}
+                                        </a>
+                                    @endif
+
+                                    @if (Auth::user()->role < 3)
+                                        <a class="dropdown-item" href="{{ route('generate_exam') }}">
+                                            {{ __('Genereaza subiect') }}
                                         </a>
                                     @endif
 

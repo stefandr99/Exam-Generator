@@ -2,24 +2,25 @@
 
 namespace App\Http\Controllers;
 
+use App\Business\UserBusiness;
 use App\User;
 use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
-    public $user;
+    public $uBusiness;
     public function __construct()
     {
         $this->middleware('auth');
-        $this->user = new User();
+        $this->uBusiness = new UserBusiness();
     }
 
     public function showAll() {
-        return view('showUsers', ['users' => $this->user->getAll()]);
+        return view('showUsers', ['users' => $this->uBusiness->getAll()]);
     }
 
     public function updateUserRole($id, $newRole) {
-        $this->user->changeRole($id, $newRole);
+        $this->uBusiness->changeRole($id, $newRole);
         return redirect()->route('users');
     }
 }

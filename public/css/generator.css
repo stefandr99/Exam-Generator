@@ -1,0 +1,15 @@
+.r_relationship {
+    font-size: large;
+    text-align: center;
+    align-content: center;
+}
+
+.dependencies_options {
+    font-size: large;
+}
+
+
+input[type="checkbox"] {
+    position: relative;
+    top: 2px;
+}
