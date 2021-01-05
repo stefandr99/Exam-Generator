@@ -3,7 +3,7 @@
 @section('content')
     <form>
     <div class="container my-4">
-        <h1 style="text-align: center"><b>Partial baze de date</b></h1>
+        <h1 style="text-align: center"><b>Partial baze de date, <?php echo strftime("%A, %e %B, %Y");?></b></h1>
         <br>
         <h2><b>Exercitiul 1 (3 puncte)</b></h2><h4> Sa se stabileasca care dintre urmatoarele dependente sunt satisfacute de catre relatia <i>r</i> data tabelar:</h4>
         <div class="container px-lg-5">
@@ -104,7 +104,7 @@
         </div>
         <br>
         <div class="r_relationship">
-            <button type="button" class="btn btn-primary r_relationship" onclick="checkTest({{json_encode($exercise1)}}, {{json_encode($exercise2)}}, {{json_encode($exercise3)}}, {{json_encode($exercise4)}})">Verifica partialul</button>
+            <button type="button" class="btn btn-primary r_relationship" onclick="checkTest()">Verifica partialul</button>
         </div>
     </div>
 
