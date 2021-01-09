@@ -40,8 +40,8 @@ function checkTest() {
         }
     })
 
-    $.post("/examgenerator/exam/result", answers, function (data) {
-        console.log(data);
+    $.post("/examgenerator/exam/correct", answers, function (id) {
+        window.location.href = "/examgenerator/exam/result/" + id;
     })
 
 }

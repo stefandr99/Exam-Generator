@@ -23,4 +23,5 @@ Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/users', 'UserController@showAll')->name('users');
 Route::put('/users/update/{id}/newRole={newRole}', 'UserController@updateUserRole')->name('update_role');
 Route::get('/exam', 'ExamController@generate')->name('generate_exam');
-Route::post('/exam/result', 'ExamController@correctPartial')->name('correct_partial');
+Route::post('/exam/correct', 'ExamController@correctPartial')->name('correct_partial');
+Route::get('/exam/result/{id}', 'ExamController@showResult')->name('show_partial_result');

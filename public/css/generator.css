@@ -12,4 +12,43 @@
 input[type="checkbox"] {
     position: relative;
     top: 2px;
+    transform: scale(1.5)
+}
+
+#partial_title {
+    text-align: center;
+}
+
+#partial_result {
+    text-align: center;
+    color: red;
+    font-size: xx-large;
+}
+
+#partial_failed {
+    text-align: center;
+    color: red;
+    font-size: 60px;
+}
+
+#partial_passed {
+    text-align: center;
+    color: lawngreen;
+    font-size: 60px;
+}
+
+#correct_answer {
+    background-color: lawngreen;
+}
+
+#wrong_answer {
+    background-color: red;
+}
+
+#correct-answer-text {
+    color: lawngreen;
+}
+
+#wrong-answer-text {
+    color: red;
 }

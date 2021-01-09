@@ -10,7 +10,6 @@ use Illuminate\Support\Facades\Session;
 class ExamController extends Controller
 {
     private $examBusiness;
-    private $exercise1, $exercise2, $exercise3, $exercise4;
 
     public function __construct()
     {
@@ -19,26 +18,31 @@ class ExamController extends Controller
     }
 
     public function generate() {
-        $this->exercise1 = $this->examBusiness->generateFirst();
-        $this->exercise2 = $this->examBusiness->generateSecond();
-        $this->exercise3 = $this->examBusiness->generateThird();
-        $this->exercise4 = $this->examBusiness->generateFourth();
-        Session::put('exercises', array($this->exercise1, $this->exercise2, $this->exercise3, $this->exercise4));
-        return view('exam', ['exercise1' => $this->exercise1, 'exercise2' => $this->exercise2,
-            'exercise3' => $this->exercise3, 'exercise4' => $this->exercise4]);
+        $exercises = $this->examBusiness->generate();
+        return view('exam', ['exercise1' => json_decode($exercises[0], true), 'exercise2' => json_decode($exercises[1], true),
+            'exercise3' => json_decode($exercises[2], true), 'exercise4' => json_decode($exercises[3], true)]);
     }
 
     public function correctPartial(Request $request) {
 
         if($request->ajax()) {
-            $answers = $request->input('arg');
-            $answers = json_decode($answers);
-            $data = $this->examBusiness->correct($answers);
-            $correctedPartial = $data['correctedPartial'];
-            $points = $data['points'];
-            return $points;
+            $studentAnswers = $request->input('arg');
+            $studentAnswers = json_decode($studentAnswers);
+            $userId = $this->examBusiness->correct($studentAnswers);
+            return $userId;
         }
         else
-            return "ERROR!";
+            return 0;
+    }
+
+    public function showResult($id) {
+        $subject = $this->examBusiness->getPartialResult($id);
+        return view('examResult', ['points' => $subject->points,
+            'exercise1' => json_decode($subject->exercise_1, true),
+            'exercise2' => json_decode($subject->exercise_2, true),
+            'exercise3' => json_decode($subject->exercise_3, true),
+            'exercise4' => json_decode($subject->exercise_4, true),
+            'studentAnswers' => json_decode($subject->student_answers, true),
+            'results' => json_decode($subject->results, true)]);
     }
 }

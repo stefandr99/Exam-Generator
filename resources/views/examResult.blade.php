@@ -3,7 +3,13 @@
 @section('content')
     <form>
         <div class="container my-4">
-            <h1 style="text-align: center"><b>Partial baze de date, <?php echo strftime("%A, %e %B, %Y");?> - {{ $points }}</b></h1>
+            <h1 id="partial_title"><b>Partial baze de date, <?php echo strftime("%A, %e %B, %Y");?></b></h1>
+            <h1 id="partial_result"><b>Rezultat: {{ $points }} puncte</b></h1>
+            @if($points <= 11.5)
+                <h1 id="partial_failed"><b>Ai picat! Ne vedem in restanta! 🔙</b></h1>
+            @else
+                <h1 id="partial_passed"><b>Felicitari, ai trecut! 🎉</b></h1>
+            @endif
             <br>
             <h2><b>Exercitiul 1 (3 puncte)</b></h2><h4> Sa se stabileasca care dintre urmatoarele dependente sunt satisfacute de catre relatia <i>r</i> data tabelar:</h4>
             <div class="container px-lg-5">
@@ -31,9 +37,29 @@
                     <div class="col py-5 px-lg-5 bg-light">
                         @for($option = 1; $option <= $exercise1['options']['counter']; $option++)
                             <div class="form-check dependencies_options">
-                                <input class="form-check-input" type="checkbox" value="" id="ex1option{{$option}}"  style="transform: scale(1.5)">
-                                <label class="form-check-label" for="ex1option{{$option}}">
-                                    {{ chr(96 + $option) }}) {{ $exercise1['options']['solution'][$option]['option'] }}
+                                @if($studentAnswers[1][$option])
+                                    <input class="form-check-input" type="checkbox" value="" checked onclick="return false;">
+                                @else
+                                    <input class="form-check-input" type="checkbox" value="" onclick="return false;">
+                                @endif
+                                <label class="form-check-label">
+                                    @if($results[1][$option])
+                                        <span id="correct_answer">{{ chr(96 + $option) }}) {{ $exercise1['options']['solution'][$option]['option'] }}</span>
+                                        ✅
+                                        @if($studentAnswers[1][$option])
+                                            <span id="correct-answer-text"><b>*Corect bifat!*</b></span>
+                                        @else
+                                            <span id="correct-answer-text"><b>*Da, acesta era un raspuns gresit!*</b></span>
+                                        @endif
+                                    @else
+                                        <span id="wrong_answer">{{ chr(96 + $option) }}) {{ $exercise1['options']['solution'][$option]['option'] }}</span>
+                                        ❌
+                                        @if($studentAnswers[1][$option])
+                                            <span id="wrong-answer-text"><b>Gresit bifat!</b></span>
+                                        @else
+                                            <span id="wrong-answer-text"><b>*Acest raspuns trebuia bifat!*</b></span>
+                                        @endif
+                                    @endif
                                 </label>
                             </div>
                         @endfor
@@ -59,9 +85,29 @@
             <div class="px-lg-5">
                 @for($option = 1; $option <= $exercise2['options']['counter']; $option++)
                     <div class="form-check dependencies_options">
-                        <input class="form-check-input" type="checkbox" value="" id="ex2option{{$option}}" style="transform: scale(1.5)">
-                        <label class="form-check-label" for="ex2option{{$option}}">
-                            {{ chr(96 + $option) }}) {{ $exercise2['options']['solution'][$option]['option'] }}
+                        @if($studentAnswers[2][$option])
+                            <input class="form-check-input" type="checkbox" value="" checked onclick="return false;">
+                        @else
+                            <input class="form-check-input" type="checkbox" value="" onclick="return false;">
+                        @endif
+                        <label class="form-check-label">
+                            @if($results[2][$option])
+                                <span id="correct_answer">{{ chr(96 + $option) }}) {{ $exercise2['options']['solution'][$option]['option'] }}</span>
+                                ✅
+                                @if($studentAnswers[2][$option])
+                                    <span id="correct-answer-text"><b>*Corect bifat!*</b></span>
+                                @else
+                                    <span id="correct-answer-text"><b>*Da, acesta era un raspuns gresit!*</b></span>
+                                @endif
+                            @else
+                                <span id="wrong_answer">{{ chr(96 + $option) }}) {{ $exercise2['options']['solution'][$option]['option'] }}</span>
+                                ❌
+                                @if($studentAnswers[2][$option])
+                                    <span id="wrong-answer-text"><b>Gresit bifat!</b></span>
+                                @else
+                                    <span id="wrong-answer-text"><b>*Acest raspuns trebuia bifat!*</b></span>
+                                @endif
+                            @endif
                         </label>
                     </div>
                 @endfor
@@ -79,9 +125,31 @@
             <div class="px-lg-5">
                 @for($option = 1; $option <= $exercise3['options']['counter']; $option++)
                     <div class="form-check dependencies_options">
-                        <input class="form-check-input" type="checkbox" value="" id="ex3option{{$option}}" style="transform: scale(1.5)">
-                        <label class="form-check-label" for="ex3option{{$option}}">
-                            {{ chr(96 + $option) }}) {{ $exercise3['options']['solution'][$option]['attr'] }}<sup>+</sup> = {{ $exercise3['options']['solution'][$option]['attr+'] }}
+                        @if($studentAnswers[3][$option])
+                            <input class="form-check-input" type="checkbox" value="" checked onclick="return false;">
+                        @else
+                            <input class="form-check-input" type="checkbox" value="" onclick="return false;">
+                        @endif
+                        <label class="form-check-label">
+                            @if($results[3][$option])
+                                <span id="correct_answer">{{ chr(96 + $option) }}) {{ $exercise3['options']['solution'][$option]['attr'] }}<sup>+</sup> = {{ $exercise3['options']['solution'][$option]['attr+'] }}</span>
+                                ✅
+                                @if($studentAnswers[3][$option])
+                                    <span id="correct-answer-text"><b>*Corect bifat!*</b></span>
+                                @else
+                                    <span id="correct-answer-text"><b>*Da, acesta era un raspuns gresit!*</b></span>
+                                    (Raspunsul corect: {{ $exercise3['options']['solution'][$option]['attr'] }}<sup>+</sup> = {{ $exercise3['options']['solution'][$option]['real_attr+'] }})
+                                @endif
+                            @else
+                                <span id="wrong_answer">{{ chr(96 + $option) }}) {{ $exercise3['options']['solution'][$option]['attr'] }}<sup>+</sup> = {{ $exercise3['options']['solution'][$option]['attr+'] }}</span>
+                                ❌
+                                @if($studentAnswers[3][$option])
+                                    <span id="wrong-answer-text"><b>Gresit bifat!</b></span>
+                                    (Raspunsul corect: {{ $exercise3['options']['solution'][$option]['attr'] }}<sup>+</sup> = {{ $exercise3['options']['solution'][$option]['real_attr+'] }})
+                                @else
+                                    <span id="wrong-answer-text"><b>*Acest raspuns trebuia bifat!*</b></span>
+                                @endif
+                            @endif
                         </label>
                     </div>
                 @endfor
@@ -95,9 +163,29 @@
             <div class="px-lg-5">
                 @for($option = 1; $option <= $exercise4['options']['counter']; $option++)
                     <div class="form-check dependencies_options">
-                        <input class="form-check-input" type="checkbox" value="" id="ex4option{{$option}}" style="transform: scale(1.5)">
-                        <label class="form-check-label" for="ex4option{{$option}}">
-                            {{ chr(96 + $option) }}) {{ $exercise4['options']['solution'][$option]['option'] }}
+                        @if($studentAnswers[4][$option])
+                            <input class="form-check-input" type="checkbox" value="" checked onclick="return false;">
+                        @else
+                            <input class="form-check-input" type="checkbox" value="" onclick="return false;">
+                        @endif
+                        <label class="form-check-label">
+                            @if($results[4][$option])
+                                <span id="correct_answer">{{ chr(96 + $option) }}) {{ $exercise4['options']['solution'][$option]['option'] }}</span>
+                                ✅
+                                @if($studentAnswers[4][$option])
+                                    <span id="correct-answer-text"><b>*Corect bifat!*</b></span>
+                                @else
+                                    <span id="correct-answer-text"><b>*Da, acesta era un raspuns gresit!*</b></span>
+                                @endif
+                            @else
+                                <span id="wrong_answer">{{ chr(96 + $option) }}) {{ $exercise4['options']['solution'][$option]['option'] }}</span>
+                                ❌
+                                @if($studentAnswers[4][$option])
+                                    <span id="wrong-answer-text"><b>Gresit bifat!</b></span>
+                                @else
+                                    <span id="wrong-answer-text"><b>*Acest raspuns trebuia bifat!*</b></span>
+                                @endif
+                            @endif
                         </label>
                     </div>
                 @endfor
