@@ -72,7 +72,7 @@
                                         </a>
                                     @endif
 
-                                    @if (Auth::user()->role < 3)
+                                    @if (Auth::user()->role == 2)
                                         <a class="dropdown-item" href="{{ route('generate_exam') }}">
                                             {{ __('Genereaza subiect') }}
                                         </a>

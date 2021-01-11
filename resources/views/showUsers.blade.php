@@ -22,13 +22,15 @@
                             <span class="btn btn-danger" style="pointer-events: none">Administrator</span>
                         @endif
                         @if ($user->role == 2)
-                            <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                Profesor
-                            </button>
-                            <div class="dropdown-menu" style="min-width: 80px; border: none">
-                                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
-                                    Student
+                            <div class="dropdown show">
+                                <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    Profesor
                                 </button>
+                                <div class="dropdown-menu" style="min-width: 80px; border: none;">
+                                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+                                        Student
+                                    </button>
+                                </div>
                             </div>
 
                             <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -56,13 +58,15 @@
                             </div>
                         @endif
                         @if ($user->role == 3)
-                            <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                Student
-                            </button>
-                            <div class="dropdown-menu" style="min-width: 80px; border: none">
-                                <button type="button" class="btn btn-success" data-toggle="modal" data-target="#exampleModal">
-                                    Profesor
+                            <div class="dropdown show">
+                                <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    Student
                                 </button>
+                                <div class="dropdown-menu" style="min-width: 80px; border: none">
+                                    <button type="button" class="btn btn-success" data-toggle="modal" data-target="#exampleModal">
+                                        Profesor
+                                    </button>
+                                </div>
                             </div>
 
                                 <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">

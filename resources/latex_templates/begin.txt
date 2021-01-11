@@ -1,0 +1,16 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage{titling}
+\usepackage{lipsum}
+\usepackage{multicol}
+\usepackage[a4paper, total={8in, 13in}]{geometry}
+\usepackage{enumitem}
+
+\title{Partial Baze de date}
+\renewcommand\maketitlehookc{\vspace{-12ex}}
+\date{Ianuarie 2021}
+
+\begin{document}
+
+\maketitle
+\begin{multicols}{2}
