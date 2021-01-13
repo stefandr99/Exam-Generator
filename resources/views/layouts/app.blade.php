@@ -66,7 +66,7 @@
                                         @csrf
                                     </form>
 
-                                    @if (Auth::user()->role == 1)
+                                    @if (Auth::user()->role != 3)
                                         <a class="dropdown-item" href="{{ route('users') }}">
                                             {{ __('Utilizatori') }}
                                         </a>

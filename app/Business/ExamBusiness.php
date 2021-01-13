@@ -11,7 +11,6 @@ use Illuminate\Support\Facades\DB;
 
 class ExamBusiness
 {
-    private $exercises;
     private $numberOfExercises = 4;
 
     private function generateFirst() {

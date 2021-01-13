@@ -19,8 +19,15 @@ class ExamController extends Controller
 
     public function generate() {
         $exercises = $this->examBusiness->generate();
-        return view('exam', ['exercise1' => json_decode($exercises[0], true), 'exercise2' => json_decode($exercises[1], true),
-            'exercise3' => json_decode($exercises[2], true), 'exercise4' => json_decode($exercises[3], true)]);
+        $exercisesToView = array(
+            json_decode($exercises[0], true),
+            json_decode($exercises[1], true),
+            json_decode($exercises[2], true),
+            json_decode($exercises[3], true)
+        );
+        return view('exam', ['exercises' => $exercisesToView]);
+        //return view('exam', ['exercise1' => json_decode($exercises[0], true), 'exercise2' => json_decode($exercises[1], true),
+        //    'exercise3' => json_decode($exercises[2], true), 'exercise4' => json_decode($exercises[3], true)]);
     }
 
     public function correctPartial(Request $request) {

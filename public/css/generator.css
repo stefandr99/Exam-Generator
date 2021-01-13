@@ -4,10 +4,9 @@
     align-content: center;
 }
 
-.dependencies_options {
+.dependencies-options {
     font-size: large;
 }
-
 
 input[type="checkbox"] {
     position: relative;
@@ -15,33 +14,33 @@ input[type="checkbox"] {
     transform: scale(1.5)
 }
 
-#partial_title {
+#partial-title {
     text-align: center;
 }
 
-#partial_result {
+#min-points {
     text-align: center;
     color: red;
     font-size: xx-large;
 }
 
-#partial_failed {
+#partial-failed {
     text-align: center;
     color: red;
     font-size: 60px;
 }
 
-#partial_passed {
+#partial-passed {
     text-align: center;
     color: lawngreen;
     font-size: 60px;
 }
 
-#correct_answer {
+#correct-answer {
     background-color: lawngreen;
 }
 
-#wrong_answer {
+#wrong-answer {
     background-color: red;
 }
 
