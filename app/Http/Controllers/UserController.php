@@ -16,7 +16,7 @@ class UserController extends Controller
     }
 
     public function showAll() {
-        return view('showUsers', ['users' => $this->uBusiness->getAll()]);
+        return view('user/showUsers', ['users' => $this->uBusiness->getAll()]);
     }
 
     public function updateUserRole($id, $newRole) {

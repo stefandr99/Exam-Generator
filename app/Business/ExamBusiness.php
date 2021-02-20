@@ -4,6 +4,8 @@
 namespace App\Business;
 
 
+use App\Courses;
+use App\Exam;
 use App\Subject;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
@@ -11,7 +13,12 @@ use Illuminate\Support\Facades\DB;
 
 class ExamBusiness
 {
+    private $userBusiness;
     private $numberOfExercises = 4;
+
+    public function __construct() {
+        $this->userBusiness = new UserBusiness();
+    }
 
     private function generateFirst() {
         $url = "http://localhost/bd/generator1.php";
@@ -68,14 +75,19 @@ class ExamBusiness
         $exercise2 = $this->generateSecond();
         $exercise3 = $this->generateThird();
         $exercise4 = $this->generateFourth();
+        $exercises = array(
+            'exercise1' => $exercise1,
+            'exercise2' => $exercise2,
+            'exercise3' => $exercise3,
+            'exercise4' => $exercise4
+        );
         $userId = Auth::id();
-        $subject = new Subject;
-        $subject->user_id = $userId;
-        $subject->exercise_1 = $exercise1;
-        $subject->exercise_2 = $exercise2;
-        $subject->exercise_3 = $exercise3;
-        $subject->exercise_4 = $exercise4;
-        $subject->save();
+        Subject::create([
+            'user_id' => $userId,
+            'exam_id' => 1, // de refacut la momentul potrivit
+            'exercises' => $exercises, // la fel
+            'total_points' => 12 // la fel
+        ]);
 
         $result = array($exercise1, $exercise2, $exercise3, $exercise4);
         return $result;
@@ -128,5 +140,61 @@ class ExamBusiness
             ->first();
 
         return $result;
+    }
+
+    public function schedule($info, $exercises) {
+        $courseId = $this->getCourseId($info[0]);
+        $teacherId = Auth::id();
+        return Exam::create([
+            'course_id' => $courseId->first()->id,
+            'teacher_id' => $teacherId,
+            'type' => $info[1],
+            'date' => $info[2],
+            'hours' => $info[3],
+            'minutes' => $info[4],
+            'number_of_exercises' => $exercises[0],
+            'exercises_type' => json_encode($exercises[1]),
+            'total_points' => $exercises[2]
+        ]);
+    }
+
+    private function getCourseId($course) {
+        $result = DB::table('courses')
+            ->select('id')
+            ->where('name', $course)
+            ->get();
+
+        return $result;
+    }
+
+    public function getExams() {
+        $userId = Auth::id();
+        $userRole = $this->userBusiness->getRole($userId);
+
+        if($userRole[0]->role == 2) {
+            $exams = DB::table('users')
+                ->join('exams', 'users.id', '=', 'exams.teacher_id')
+                ->join('courses', 'courses.id', '=', 'exams.course_id')
+                ->select('users.name as teacher_name', 'courses.name as course_name', 'exams.type', 'exams.date',
+                    'exams.hours', 'exams.minutes', 'exams.number_of_exercises', 'exams.total_points')
+                ->where('users.id', $userId)
+                ->get();
+            return $exams;
+        }
+        elseif ($userRole[0]->role == 3) {
+            $yearAndSemester = $this->userBusiness->getYearAndSemester($userId);
+
+            $exams = DB::table('users')
+                ->join('exams', 'users.id', '=', 'exams.teacher_id')
+                ->join('courses', 'courses.id', '=', 'exams.course_id')
+                ->select('users.name as teacher_name', 'courses.name as course_name', 'exams.type', 'exams.date',
+                    'exams.hours', 'exams.minutes', 'exams.number_of_exercises', 'exams.total_points')
+                ->where('courses.year', $yearAndSemester[0]->year)
+                ->where('courses.semester', $yearAndSemester[0]->semester)
+                ->get();
+
+            return $exams;
+        }
+        return null;
     }
 }

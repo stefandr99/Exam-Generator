@@ -16,4 +16,21 @@ class UserBusiness
             ->where('id', $id)
             ->update(['role' => $newRole]);
     }
+
+    public function getRole($id) {
+        $userId = User::select('role')
+            ->where('id', $id)
+            ->get();
+
+        return $userId;
+    }
+
+    public function getYearAndSemester($userId) {
+        $yearAndSem = $userId = DB::table('users')
+            ->select('year', 'semester')
+            ->where('id', $userId)
+            ->get();
+
+        return $yearAndSem;
+    }
 }

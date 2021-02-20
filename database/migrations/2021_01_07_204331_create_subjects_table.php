@@ -16,11 +16,10 @@ class CreateSubjectsTable extends Migration
         Schema::create('subjects', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained('users');
-            $table->float('points')->default(0);
-            $table->text('exercise_1');
-            $table->text('exercise_2');
-            $table->text('exercise_3');
-            $table->text('exercise_4');
+            $table->foreignId('exam_id')->constrained('exams');
+            $table->mediumText('exercises')->default('');
+            $table->float('total_points')->default(0);
+            $table->float('obtained_points')->default(0);
             $table->text('student_answers')->default('');
             $table->text('results')->default('');
             $table->timestamps();

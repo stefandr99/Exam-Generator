@@ -26,7 +26,7 @@
                                 <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     Profesor
                                 </button>
-                                <div class="dropdown-menu" style="min-width: 80px; border: none;">
+                                <div class="dropdown-menu dropdown-role">
                                     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
                                         Student
                                     </button>
@@ -62,7 +62,7 @@
                                 <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     Student
                                 </button>
-                                <div class="dropdown-menu" style="min-width: 80px; border: none">
+                                <div class="dropdown-menu  dropdown-role" style="min-width: 80px; border: none">
                                     <button type="button" class="btn btn-success" data-toggle="modal" data-target="#exampleModal">
                                         Profesor
                                     </button>

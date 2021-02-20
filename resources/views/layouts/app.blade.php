@@ -12,6 +12,9 @@
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}" defer></script>
     <script src="{{ asset('js/generator.js') }}" defer></script>
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
@@ -20,6 +23,10 @@
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     <link href="{{ asset('css/generator.css') }}" rel="stylesheet">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/timepicker/1.3.5/jquery.timepicker.min.css">
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+
+
 </head>
 <body>
     <div id="app">
@@ -47,7 +54,7 @@
                             </li>
                             @if (Route::has('register'))
                                 <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('register') }}">{{ __('Inregistrare') }}</a>
+                                    <a class="nav-link" href="{{ route('register') }}">{{ __('Înregistrare') }}</a>
                                 </li>
                             @endif
                         @else
@@ -78,6 +85,17 @@
                                         </a>
                                     @endif
 
+                                    @if (Auth::user()->role == 2)
+                                        <a class="dropdown-item" href="{{ route('prepare_exam') }}">
+                                            {{ __('Pregateste examen') }}
+                                        </a>
+                                    @endif
+
+                                    @if (Auth::user()->role != 1)
+                                        <a class="dropdown-item" href="{{ route('show_exams') }}">
+                                            {{ __('Examenele mele') }}
+                                        </a>
+                                    @endif
 
                                 </div>
                             </li>
@@ -91,5 +109,6 @@
             @yield('content')
         </main>
     </div>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/timepicker/1.3.5/jquery.timepicker.min.js"></script>
 </body>
 </html>

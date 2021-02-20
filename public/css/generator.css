@@ -51,3 +51,20 @@ input[type="checkbox"] {
 #wrong-answer-text {
     color: red;
 }
+
+.dropdown-role {
+    border: none;
+    background: transparent;
+}
+
+#exercise-select-same-line {
+    display: inline-block;
+}
+
+.exam-button {
+    font-size: large;
+    text-align: center;
+    align-content: center;
+}
+
+

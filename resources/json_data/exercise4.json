@@ -1,5 +1,5 @@
 {
-    "exercise": "Fie schema de relatie R(*#[*$[*_[A]],*$[*_[B]],*$[*_[C]],*$[*_[D]],*$[*_[E]]]) impreuna cu multimile de dependente: <br>&Sigma;={*~[*$[*_[B]*_[C]*_[D] > *_[A]], *$[*_[C]*_[D] > *_[B]],  *$[*_[B] > *_[C]*_[E]],   *$[*_[B]*_[E] > *_[D]]]} &Delta;={*~[*$[*_[B] > > *_[C]*_[D]]]}. <br>Care din urmatoarele sunt chei candidat pentru schema de relatie R?",
+    "exercise": "Fie schema de relatie R(*#[*$[*_[A]],*$[*_[B]],*$[*_[C]],*$[*_[D]],*$[*_[E]]]) impreuna cu multimile de dependente: <br>&Sigma;={*~[*$[*_[B]*_[C]*_[D] -> *_[A]], *$[*_[C]*_[D] -> *_[B]],  *$[*_[B] -> *_[C]*_[E]],   *$[*_[B]*_[E] -> *_[D]]]} &Delta;={*~[*$[*_[B] -> -> *_[C]*_[D]]]}. <br>Care din urmatoarele sunt chei candidat pentru schema de relatie R?",
     "options": {
         "counter": 3,
         "1": {
