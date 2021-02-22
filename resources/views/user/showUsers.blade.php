@@ -6,7 +6,9 @@
             <thead class="table-primary">
             <tr>
                 <th scope="col">Nume</th>
-                <th scope="col">Numar matricol</th>
+                <th scope="col">Număr matricol</th>
+                <th scope="col">An</th>
+                <th scope="col">Grupă</th>
                 <th scope="col">Email</th>
                 <th scope="col">Rol</th>
             </tr>
@@ -16,6 +18,8 @@
                 <tr>
                     <td>{{ $user->name }}</td>
                     <td>{{ $user->registration_number }}</td>
+                    <td>{{ $user->year }}</td>
+                    <td>{{ $user->group }}</td>
                     <td>{{ $user->email }}</td>
                     <td>
                         @if ($user->role == 1)
@@ -43,7 +47,7 @@
                                             </button>
                                         </div>
                                         <div class="modal-body">
-                                            Sunteti sigur ca doriti sa il faceti STUDENT pe {{ $user->name }}?
+                                            Sunteți sigur că doriți să îl faceți STUDENT pe {{ $user->name }}?
                                         </div>
                                         <div class="modal-footer">
                                             <a class="btn btn-primary" href="{{ route('update_role', ['id' => $user->id, 'newRole' => 3]) }}" onclick="event.preventDefault(); document.getElementById('make-student').submit();">Da</a>
@@ -79,7 +83,7 @@
                                                 </button>
                                             </div>
                                             <div class="modal-body">
-                                                Sunteti sigur ca doriti sa il faceti PROFESOR pe {{ $user->name }}?
+                                                Sunteți sigur că doriți să îl faceți PROFESOR pe {{ $user->name }}?
                                             </div>
                                             <div class="modal-footer">
                                                 <a class="btn btn-primary" href="{{ route('update_role', ['id' => $user->id, 'newRole' => 2]) }}" onclick="event.preventDefault(); document.getElementById('make-teacher').submit();">Da</a>

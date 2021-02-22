@@ -2,13 +2,16 @@
 
 @section('content')
     <div class="container my-4">
-        <h1 id="partial-title"><b>Pregatiti examenul</b></h1>
+        <h1 id="partial-title"><b>Pregătiți examenul</b></h1>
         <br>
         <form class="form-group">
             <label for="exam-subject" class="dependencies-options">Materia:
                 <select id="exam-subject" class="form-control">
                     <option value="no-subject">--</option>
                     <option value="Baze de date">Baze de date</option>
+                    <option value="Proiectarea algoritmilor">Proiectarea algoritmilor</option>
+                    <option value="Rețele de calculatoare">Rețele de calculatoare</option>
+                    <option value="Programare avansată">Programare avansată</option>
                 </select>
             </label>
             <br>
@@ -24,7 +27,7 @@
             <br>
 
             <label for="exam-date" class="dependencies-options">
-                Data si ora examenului:
+                Data și ora examenului:
                 <input class="form-control" type="datetime-local" value="2021-02-18T08:00:00" id="exam-date">
             </label>
             <br>
@@ -42,24 +45,24 @@
             <br>
 
             <div class="dependencies-options">
-                <b>Exercitii:</b>
+                <b>Exerciții:</b>
                 <br>
-                Exercitiul 0.
+                Exercițiul 0.
                 <br>
-                <label for="exam-exercise-0" class="dependencies-options">Tipul exercitiului:
+                <label for="exam-exercise-0" class="dependencies-options">Tipul exercițiului:
                     <select id="exam-exercise-0" class="form-control" style="text-overflow: ellipsis; overflow: hidden">
                         <option value="no-exercise">--</option>
                         <option value="exercise-type-1">
-                            Determinarea dependetelor in functie de o relatie "r" data tabelar
+                            Determinarea dependețelor în funcție de o relație "r" dată tabelar
                         </option>
                         <option value="exercise-type-2">
-                            Determinarea dependetelor in functie de o relatie "Catalog(elev, nota, materie, dataNotare, profesor)" ce impune anumite restrictii
+                            Determinarea dependețelor în funcție de o relație "Catalog(elev, notă, materie, datăNotare, profesor)" ce impune anumite restricții
                         </option>
                         <option value="exercise-type-3">
-                            Determinarea X+ in functie de o schema de relatie "R" si o multime &Sigma; de dependente functionale
+                            Determinarea X+ în funcție de o schemă de relație "R" și o mulțime &Sigma; de dependențe funcționale
                         </option>
                         <option value="exercise-type-4">
-                            Determinarea cheilor candidat pentru o schema de relatie "R" si multimile de dependenta &Sigma; si &Delta;
+                            Determinarea cheilor candidat pentru o schemă de relație "R" și mulțimile de dependență &Sigma; și &Delta;
                         </option>
                     </select>
                 </label>
@@ -71,22 +74,22 @@
                 <div class="extra-exercises">
                     @for($ex = 1; $ex < 100; $ex++)
                         <div hidden id="exercise-{{$ex}}">
-                            Exercitiul {{ $ex }}.
+                            Exercițiul {{ $ex }}.
                             <br>
                             <label for="exam-exercise-{{$ex}}" class="dependencies-options">Tipul exercitiului:
                                 <select id="exam-exercise-{{$ex}}" class="form-control">
                                     <option value="no-exercise">--</option>
                                     <option value="exercise-type-1">
-                                        Determinarea dependetelor in functie de o relatie "r" data tabelar
+                                        Determinarea dependețelor în funcție de o relație "r" dată tabelar
                                     </option>
                                     <option value="exercise-type-2">
-                                        Determinarea dependetelor in functie de o relatie "Catalog(elev, nota, materie, dataNotare, profesor)" ce impune anumite restrictii
+                                        Determinarea dependețelor în funcție de o relație "Catalog(elev, notă, materie, datăNotare, profesor)" ce impune anumite restricții
                                     </option>
                                     <option value="exercise-type-3">
-                                        Determinarea X+ in functie de o schema de relatie "R" si o multime &Sigma; de dependente functionale
+                                        Determinarea X+ în funcție de o schemă de relație "R" și o mulțime &Sigma; de dependențe funcționale
                                     </option>
                                     <option value="exercise-type-4">
-                                        Determinarea cheilor candidat pentru o schema de relatie "R" si multimile de dependenta &Sigma; si &Delta;
+                                        Determinarea cheilor candidat pentru o schemă de relație "R" și mulțimile de dependență &Sigma; și &Delta;
                                     </option>
                                 </select>
                             </label>
@@ -100,12 +103,12 @@
             </div>
 
             <br>
-            <button type="button" class="btn btn-primary" onclick="addExercise()">Adaugati inca un exercitiu</button>
-            <button type="button" class="btn btn-danger" onclick="removeExercise()">Stergeti ultimul exercitiu</button>
+            <button type="button" class="btn btn-primary" onclick="addExercise()">Adăugați încă un exercițiu</button>
+            <button type="button" class="btn btn-danger" onclick="removeExercise()">Stergeți ultimul exercițiu</button>
             <br>
             <br>
             <div class="r_relationship">
-                <button type="button" class="btn btn-success btn-lg btn-block" onclick="scheduleExam()">Programati examenul</button>
+                <button type="button" class="btn btn-success btn-lg btn-block" onclick="scheduleExam()">Programați examenul</button>
             </div>
         </form>
 

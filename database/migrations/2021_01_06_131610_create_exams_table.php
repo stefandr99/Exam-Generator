@@ -16,7 +16,6 @@ class CreateExamsTable extends Migration
         Schema::create('exams', function (Blueprint $table) {
             $table->id();
             $table->foreignId('course_id')->constrained('courses');
-            $table->foreignId('teacher_id')->constrained('users');
             $table->text('type')->default('examen');
             $table->dateTime('date')->useCurrent();
             $table->integer('hours')->default(0);

@@ -46,7 +46,7 @@ function checkTest() {
 
 }
 
-var exerciseNumber = 1;
+var exerciseNumber = 0;
 
 function addExercise() {
     exerciseNumber++;
@@ -73,7 +73,7 @@ function scheduleExam() {
     examData[3] = document.getElementById("exam-duration-hours").value;
     examData[4] = document.getElementById("exam-duration-minutes").value;
     let exercises = [];
-    exercises[0] = exerciseNumber;
+    exercises[0] = ++exerciseNumber;
     exercises[1] = [];
     for(let i = 0; i < exerciseNumber; i++) {
         exercises[1][i] = [];

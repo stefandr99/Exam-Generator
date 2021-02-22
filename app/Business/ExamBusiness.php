@@ -144,10 +144,8 @@ class ExamBusiness
 
     public function schedule($info, $exercises) {
         $courseId = $this->getCourseId($info[0]);
-        $teacherId = Auth::id();
         return Exam::create([
             'course_id' => $courseId->first()->id,
-            'teacher_id' => $teacherId,
             'type' => $info[1],
             'date' => $info[2],
             'hours' => $info[3],
@@ -173,8 +171,9 @@ class ExamBusiness
 
         if($userRole[0]->role == 2) {
             $exams = DB::table('users')
-                ->join('exams', 'users.id', '=', 'exams.teacher_id')
-                ->join('courses', 'courses.id', '=', 'exams.course_id')
+                ->join('didactics', 'users.id', '=', 'didactics.teacher_id')
+                ->join('courses', 'courses.id', '=', 'didactics.course_id')
+                ->join('exams', 'courses.id', '=', 'exams.course_id')
                 ->select('users.name as teacher_name', 'courses.name as course_name', 'exams.type', 'exams.date',
                     'exams.hours', 'exams.minutes', 'exams.number_of_exercises', 'exams.total_points')
                 ->where('users.id', $userId)
@@ -185,8 +184,9 @@ class ExamBusiness
             $yearAndSemester = $this->userBusiness->getYearAndSemester($userId);
 
             $exams = DB::table('users')
-                ->join('exams', 'users.id', '=', 'exams.teacher_id')
-                ->join('courses', 'courses.id', '=', 'exams.course_id')
+                ->join('didactics', 'users.id', '=', 'didactics.teacher_id')
+                ->join('courses', 'courses.id', '=', 'didactics.course_id')
+                ->join('exams', 'courses.id', '=', 'exams.course_id')
                 ->select('users.name as teacher_name', 'courses.name as course_name', 'exams.type', 'exams.date',
                     'exams.hours', 'exams.minutes', 'exams.number_of_exercises', 'exams.total_points')
                 ->where('courses.year', $yearAndSemester[0]->year)
