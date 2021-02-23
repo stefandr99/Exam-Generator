@@ -19,8 +19,8 @@ function checkTest(numberOfExercises, optionsNumber, examId) {
         }
     })
 
-    $.post("/examgenerator/exam/correct", result, function (id) {
-        window.location.href = "/examgenerator/exam/result/" + id;
+    $.post("/examgenerator/exam/correct", result, function (info) {
+        window.location.href = "/examgenerator/exam/" + info[0] + "/result/" + info[1];
     })
 
 }
@@ -35,7 +35,7 @@ function addExercise() {
 }
 
 function removeExercise() {
-    if(exerciseNumber > 1) {
+    if(exerciseNumber > 0) {
         let exerciseId = "exercise-" + exerciseNumber;
         let ex = document.getElementById(exerciseId);
         ex.hidden = true;
@@ -51,6 +51,7 @@ function scheduleExam() {
     examData[2] = document.getElementById("exam-date").value;
     examData[3] = document.getElementById("exam-duration-hours").value;
     examData[4] = document.getElementById("exam-duration-minutes").value;
+    examData[5] = document.getElementById("exam-minimum").value;
     let exercises = [];
     exercises[0] = ++exerciseNumber;
     exercises[1] = [];
@@ -69,6 +70,7 @@ function scheduleExam() {
 
     exercises = {info: JSON.stringify(examData), exercises: JSON.stringify(exercises)};
 
+    alert(exercises);
     jQuery.ajaxSetup({
         headers: {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')

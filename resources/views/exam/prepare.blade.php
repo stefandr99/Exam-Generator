@@ -107,6 +107,11 @@
             <button type="button" class="btn btn-danger" onclick="removeExercise()">Stergeți ultimul exercițiu</button>
             <br>
             <br>
+            <label for="exam-minimum" class="dependencies-options">Punctajul minim:
+                <input type="text" class="form-control" placeholder="Punctaj minim" id="exam-minimum">
+            </label>
+            <br>
+            <br>
             <div class="r_relationship">
                 <button type="button" class="btn btn-success btn-lg btn-block" onclick="scheduleExam()">Programați examenul</button>
             </div>

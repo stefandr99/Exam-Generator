@@ -4,9 +4,11 @@
     <form>
     <div class="container my-4">
         <h1 id="partial-title">
-            <b>{{ $info->type }} {{ $info->course_name }}
+            <b>
+                {{ $info->type }} {{ $info->course_name }}
                 <br>
-                {{ date_format(date_create($info->date), 'l, d-m-Y, H:i') }}</b>
+                {{ date_format(date_create($info->date), 'l, d-m-Y, H:i') }}
+            </b>
         </h1>
         <br>
         @for($index = 0; $index < count($exercises); $index++)

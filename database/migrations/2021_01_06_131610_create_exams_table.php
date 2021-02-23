@@ -23,6 +23,7 @@ class CreateExamsTable extends Migration
             $table->integer('number_of_exercises')->default(0);
             $table->text('exercises_type')->default('');
             $table->integer('total_points')->default(0);
+            $table->integer('minimum_points')->default(0);
             $table->timestamps();
         });
     }

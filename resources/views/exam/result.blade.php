@@ -3,14 +3,21 @@
 @section('content')
     <form>
         <div class="container my-4">
-            <h1 id="partial-title"><b>Partial baze de date, <?php echo strftime("%A, %e %B, %Y");?></b></h1>
-            <h1 id="min-points">Puncte necesare pentru a promova: 12 puncte</h1>
-            @if($points < 12)
-                <h1 id="partial-failed"><b>Rezultat: {{ $points }} puncte</b></h1>
+            <h1 id="partial-title">
+                <b>
+                    {{ $info->type }} {{ $info->course_name }}
+                    <br>
+                    {{ date_format(date_create($info->date), 'l, d-m-Y, H:i') }}
+                </b>
+            </h1>
+            <h1 id="min-points">Puncte necesare pentru a promova: {{ $info->minimum_points }} puncte</h1>
+            @if($info->obtained_points < $info->minimum_points)
+                <h1 id="partial-failed"><b>Rezultat: {{ $info->obtained_points }} puncte</b></h1>
             @else
-                <h1 id="partial-passed"><b>Rezultat: {{ $points }} puncte</b></h1>
+                <h1 id="partial-passed"><b>Rezultat: {{ $info->obtained_points }} puncte</b></h1>
             @endif
             <br>
+            {{ // DE FACUT: un template pentru corectarea si afisarea optiunilor fiecarui exercitiu!!! }}
             <h2><b>Exercitiul 1 (3 puncte)</b></h2><h4> Sa se stabileasca care dintre urmatoarele dependente sunt satisfacute de catre relatia <i>r</i> data tabelar:</h4>
             <div class="container px-lg-5">
                 <div class="row mx-lg-n3">

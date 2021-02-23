@@ -147,7 +147,7 @@ class ExamBusiness
         return $result;
     }
 
-    public function correct($studentAnswers, $exercisesNumber, $optionsNumber, $examId): int
+    public function correct($studentAnswers, $exercisesNumber, $optionsNumber, $examId): array
     {
         $userId = Auth::id();
         $results = DB::table('subjects')
@@ -175,7 +175,7 @@ class ExamBusiness
             ->where('exam_id', $examId)
             ->update(['obtained_points' => $points, 'student_answers' => $studentAnswers, 'results' => $correctedExam]);
 
-        return $userId;
+        return array($examId, $userId);
     }
 
     private function getPoints($exam): int
@@ -189,9 +189,14 @@ class ExamBusiness
         return $points;
     }
 
-    public function getExamResult($userId) {
-        $result = DB::table('subjects')
-            ->where('user_id', $userId)
+    public function getExamResult($examId, $userId) {
+        $result = DB::table('subjects as s')
+            ->join('exams as e', 'e.id', '=', 's.exam_id')
+            ->join('courses as c', 'c.id', '=', 'e.course_id')
+            ->select('c.name', 'e.type', 'e.date', 'e.number_of_exercises', 'e.total_points', 'e.minimum_points',
+                        's.exercises', 's.obtained_poitns', 's.student_answers', 's.results')
+            ->where('s.exam_id', $examId)
+            ->where('s.user_id', $userId)
             ->get()
             ->first();
 
@@ -200,16 +205,18 @@ class ExamBusiness
 
     public function schedule($info, $exercises) {
         $courseId = $this->getCourseId($info[0]);
-        return Exam::create([
-            'course_id' => $courseId->first()->id,
-            'type' => $info[1],
-            'date' => $info[2],
-            'hours' => $info[3],
-            'minutes' => $info[4],
-            'number_of_exercises' => $exercises[0],
-            'exercises_type' => json_encode($exercises[1]),
-            'total_points' => $exercises[2]
-        ]);
+
+        $exam = new Exam;
+        $exam->course_id = $courseId->first()->id;
+        $exam->type = $info[1];
+        $exam->date = $info[2];
+        $exam->hours = $info[3];
+        $exam->minutes = $info[4];
+        $exam->number_of_exercises = $exercises[0];
+        $exam->exercises_type = json_encode($exercises[1]);
+        $exam->total_points = $exercises[2];
+        $exam->minimum_points = $info[5];
+        $exam->save();
     }
 
     private function getCourseId($courseName) {
@@ -231,7 +238,7 @@ class ExamBusiness
                 ->join('courses', 'courses.id', '=', 'didactics.course_id')
                 ->join('exams', 'courses.id', '=', 'exams.course_id')
                 ->select('exams.id as exam_id', 'users.name as teacher_name', 'courses.name as course_name',
-                    'exams.type', 'exams.date', 'exams.hours', 'exams.minutes', 'exams.number_of_exercises', 'exams.total_points')
+                    'exams.type', 'exams.date', 'exams.hours', 'exams.minutes', 'exams.number_of_exercises', 'exams.total_points', 'exams.minimum_points')
                 ->where('users.id', $userId)
                 ->orderBy('exams.date')
                 ->get();
@@ -245,7 +252,7 @@ class ExamBusiness
                 ->join('courses', 'courses.id', '=', 'didactics.course_id')
                 ->join('exams', 'courses.id', '=', 'exams.course_id')
                 ->select('exams.id as exam_id', 'users.name as teacher_name', 'courses.name as course_name',
-                    'exams.type', 'exams.date', 'exams.hours', 'exams.minutes', 'exams.number_of_exercises', 'exams.total_points')
+                    'exams.type', 'exams.date', 'exams.hours', 'exams.minutes', 'exams.number_of_exercises', 'exams.total_points', 'exams.minimum_points')
                 ->where('courses.year', $yearAndSemester[0]->year)
                 ->where('courses.semester', $yearAndSemester[0]->semester)
                 ->orderBy('exams.date')

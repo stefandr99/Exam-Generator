@@ -16,9 +16,10 @@
                         @elseif($exam->hours > 1)
                             {{ $exam->hours }} ore și
                         @endif
-                        {{ $exam->minutes }} minute,
-                        <b>Număr de exerciții</b>: {{ $exam->number_of_exercises }},
-                        <b>Punctaj</b>: {{$exam->total_points}}
+                        {{ $exam->minutes }} minute;
+                        <b>Număr de exerciții</b>: {{ $exam->number_of_exercises }};
+                        <b>Punctaj</b>: {{$exam->total_points}};
+                        <b>Punctaj minim necesar</b>: {{$exam->minimum_points}}
                     </p>
                     <a href="{{ route('generate_exam', $exam->exam_id) }}" class="btn btn-primary">Începe</a>
                 </div>

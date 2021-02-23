@@ -42,22 +42,33 @@ class ExamController extends Controller
             $optionsNumber = $request->input('optionsNr');
             $examId = $request->input('examId');
             $studentAnswers = json_decode($studentAnswers);
-            $userId = $this->examBusiness->correct($studentAnswers, $exercisesNumber, $optionsNumber, $examId);
-            return $userId;
+            $subjectInfo = $this->examBusiness->correct($studentAnswers, $exercisesNumber, $optionsNumber, $examId);
+            return $subjectInfo;
         }
         else
             return 0;
     }
 
-    public function showResult($id) {
-        $subject = $this->examBusiness->getExamResult($id);
-        return view('exam/result', ['points' => $subject->points,
-            'exercise1' => json_decode($subject->exercise_1, true),
-            'exercise2' => json_decode($subject->exercise_2, true),
-            'exercise3' => json_decode($subject->exercise_3, true),
-            'exercise4' => json_decode($subject->exercise_4, true),
-            'studentAnswers' => json_decode($subject->student_answers, true),
-            'results' => json_decode($subject->results, true)]);
+    public function showResult($examId, $userId) {
+        $subjectInfo = $this->examBusiness->getExamResult($examId, $userId);
+
+        $subjectInfo->exercises = json_decode($subjectInfo->exercises, true);
+        $subjectInfo->student_answers = json_decode($subjectInfo->student_answers, true);
+        $subjectInfo->results = json_decode($subjectInfo->results, true);
+
+        return view('exam/result', [
+            /*'courseName' => $subjectInfo->name,
+            'exercises' => json_decode($subjectInfo->exercises, true),
+            'examType' => $subjectInfo->type,
+            'examDate' => $subjectInfo->date,
+            'NumberOfExercises' => $subjectInfo->number_of_exercises,
+            'totalPoints' => $subjectInfo->total_points,
+            'minimumPoints' => $subjectInfo->minimum_points,
+            'obtainedPoints' => $subjectInfo->obtained_points,
+            'studentAnswers' => json_decode($subjectInfo->student_answers, true),
+            'results' => json_decode($subjectInfo->results, true)*/
+            'info' => $subjectInfo
+        ]);
     }
 
     public function prepare() {
