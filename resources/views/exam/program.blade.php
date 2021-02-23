@@ -16,14 +16,14 @@
                         @elseif($exam->hours > 1)
                             {{ $exam->hours }} ore și
                         @endif
-                        {{ $exam->minutes }} minute.
-                        <b>Număr de exerciții</b>: {{ $exam->number_of_exercises }}.
-                        <b>Punctaj</b>: {{$exam->total_points}}.
+                        {{ $exam->minutes }} minute,
+                        <b>Număr de exerciții</b>: {{ $exam->number_of_exercises }},
+                        <b>Punctaj</b>: {{$exam->total_points}}
                     </p>
                     <a href="{{ route('generate_exam', $exam->exam_id) }}" class="btn btn-primary">Începe</a>
                 </div>
                 <div class="card-footer text-muted">
-                    <h4>Data: {{ date_format(date_create($exam->date), 'l, d-m-Y, H:i') }}</h4>
+                    <h4><b>Data:</b> {{ date_format(date_create($exam->date), 'd-m-Y') }} <b>Ora:</b> {{ date_format(date_create($exam->date), 'H:i') }}</h4>
                 </div>
             </div>
             <br>
