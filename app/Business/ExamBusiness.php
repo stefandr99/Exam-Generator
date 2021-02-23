@@ -14,13 +14,12 @@ use Illuminate\Support\Facades\DB;
 class ExamBusiness
 {
     private $userBusiness;
-    private $numberOfExercises = 4;
 
     public function __construct() {
         $this->userBusiness = new UserBusiness();
     }
 
-    private function generateFirst() {
+    private function generateDBType1() {
         $url = "http://localhost/bd/generator1.php";
 
         $c = curl_init($url);
@@ -31,7 +30,7 @@ class ExamBusiness
         return $response;
     }
 
-    private function generateSecond() {
+    private function generateDBType2() {
         $url = "http://localhost/bd/generator2.php";
         $json = file_get_contents("./resources/json_data/exercise2.json",0,null,null);
 
@@ -45,7 +44,7 @@ class ExamBusiness
         return $response;
     }
 
-    private function generateThird() {
+    private function generateDBType3() {
         $url = "http://localhost/bd/generator3.php";
 
         $c = curl_init($url);
@@ -56,7 +55,7 @@ class ExamBusiness
         return $response;
     }
 
-    private function generateFourth() {
+    private function generateDBType4() {
         $url = "http://localhost/bd/generator4.php";
         $json = file_get_contents("./resources/json_data/exercise4.json",0,null,null);
 
@@ -70,62 +69,119 @@ class ExamBusiness
         return $response;
     }
 
-    public function generate() {
-        $exercise1 = $this->generateFirst();
-        $exercise2 = $this->generateSecond();
-        $exercise3 = $this->generateThird();
-        $exercise4 = $this->generateFourth();
-        $exercises = array(
-            'exercise1' => $exercise1,
-            'exercise2' => $exercise2,
-            'exercise3' => $exercise3,
-            'exercise4' => $exercise4
-        );
-        $userId = Auth::id();
-        Subject::create([
-            'user_id' => $userId,
-            'exam_id' => 1, // de refacut la momentul potrivit
-            'exercises' => $exercises, // la fel
-            'total_points' => 12 // la fel
-        ]);
+    public function generate($examId) {
+        $examInfo = $this->getExamInfo($examId);
+        $examInfo[0]->exercises_type = json_decode($examInfo[0]->exercises_type);
+        $this->examId = $examId;
 
-        $result = array($exercise1, $exercise2, $exercise3, $exercise4);
+        switch ($examInfo[0]->course_name) {
+            case 'Baze de date':
+                $exercises = $this->generateDBSubject($examInfo[0]);
+                break;
+            case 'Proiectarea Algoritmilor':
+                break;
+        }
+
+        $exercisesJson = json_encode($exercises);
+        $userId = Auth::id();
+
+        $subject = new Subject;
+        $subject->user_id = $userId;
+        $subject->exam_id = $examId;
+        $subject->exercises = $exercisesJson;
+        $subject->total_points = $examInfo[0]->total_points;
+        $subject->save();
+
+        return array($exercises, $examInfo[0]);
+    }
+
+    private function generateDBSubject($examInfo) {
+        $exercises = array();
+
+        for($ex = 0; $ex < $examInfo->number_of_exercises; $ex++) {
+            $exercises[$ex] = array();
+            switch ($examInfo->exercises_type[$ex][0]) {
+                case 'type-1':
+                    $exercise = $this->generateDBType1();
+                    $exercises[$ex]['exercise'] = json_decode($exercise, true);
+                    $exercises[$ex]['points'] = $examInfo->exercises_type[$ex][1];
+                    break;
+                case 'type-2':
+                    $exercise = $this->generateDBType2();
+                    $exercises[$ex]['exercise'] = json_decode($exercise, true);
+                    $exercises[$ex]['points'] = $examInfo->exercises_type[$ex][1];
+                    break;
+                case 'type-3':
+                    $exercise = $this->generateDBType3();
+                    $exercises[$ex]['exercise'] = json_decode($exercise, true);
+                    $exercises[$ex]['points'] = $examInfo->exercises_type[$ex][1];
+                    break;
+                case 'type-4':
+                    $exercise = $this->generateDBType4();
+                    $exercises[$ex]['exercise'] = json_decode($exercise, true);
+                    $exercises[$ex]['points'] = $examInfo->exercises_type[$ex][1];
+                    break;
+            }
+
+        }
+        return $exercises;
+    }
+
+    private function getExamInfo($examId) {
+        $result = DB::table('exams')
+            ->join('courses', 'courses.id', '=', 'exams.course_id')
+            ->select('courses.name as course_name', 'type', 'date', 'hours', 'minutes',
+                'number_of_exercises', 'exercises_type', 'total_points')
+            ->where('exams.id', $examId)
+            ->get();
+
         return $result;
     }
 
-    public function correct($studentAnswers): int
+    private function getCourseName($examId) {
+        $result = DB::table('exams')
+            ->join('courses', 'courses.id', '=', 'exams.course_id')
+            ->select('courses.name')
+            ->where('exams.id', $examId)
+            ->get();
+        return $result;
+    }
+
+    public function correct($studentAnswers, $exercisesNumber, $optionsNumber, $examId): int
     {
         $userId = Auth::id();
         $results = DB::table('subjects')
-            ->select('exercise_1', 'exercise_2', 'exercise_3', 'exercise_4')
+            ->select('exercises', 'total_points')
             ->where('user_id', $userId)
-            ->get()
-            ->first();
-        $this->exercises = array(json_decode($results->exercise_1, true), json_decode($results->exercise_2, true),
-                                    json_decode($results->exercise_3, true), json_decode($results->exercise_4, true));
-        $correctedPartial = [];
-        for ($currentExercise = 1; $currentExercise <= $this->numberOfExercises; $currentExercise++) {
-            $correctedPartial[$currentExercise] = [];
-            for ($i = 1; $i <= $this->exercises[$currentExercise - 1]['options']['counter']; $i++) {
-                $correctedPartial[$currentExercise][$i] =
-                    ($studentAnswers[$currentExercise][$i] === $this->exercises[$currentExercise - 1]['options']['solution'][$i]['answer']);
+            ->where('exam_id', $examId)
+            ->get();
+
+        $exercises = json_decode($results[0]->exercises, true);
+        var_dump($optionsNumber);
+        $correctedExam = [];
+        for ($currentExercise = 0; $currentExercise < $exercisesNumber; $currentExercise++) {
+            $correctedExam[$currentExercise] = [];
+            for ($i = 0; $i < $optionsNumber[$currentExercise]; $i++) {
+                $correctedExam[$currentExercise][$i] = ($studentAnswers[$currentExercise][$i]
+                    === $exercises[$currentExercise]['exercise']['options']['solution'][$i + 1]['answer']);
             }
         }
-        $points = $this->getPoints($correctedPartial);
-        $correctedPartial = json_encode($correctedPartial);
+        $points = $this->getPoints($correctedExam);
+        $correctedExam = json_encode($correctedExam);
         $studentAnswers = json_encode($studentAnswers);
 
         DB::table('subjects')
             ->where('user_id', $userId)
-            ->update(['points' => $points, 'student_answers' => $studentAnswers, 'results' => $correctedPartial]);
+            ->where('exam_id', $examId)
+            ->update(['obtained_points' => $points, 'student_answers' => $studentAnswers, 'results' => $correctedExam]);
 
         return $userId;
     }
 
-    private function getPoints($partial): int
+    private function getPoints($exam): int
     {
         $points = 0;
-        foreach ($partial as $exercise) {
+        foreach ($exam as $exercise) {
             $trues = count(array_filter($exercise));
             $falses = count($exercise) - $trues;
             $points += (3 - $falses > 0) ? (3 - $falses) : 0;
@@ -133,7 +189,7 @@ class ExamBusiness
         return $points;
     }
 
-    public function getPartialResult($userId) {
+    public function getExamResult($userId) {
         $result = DB::table('subjects')
             ->where('user_id', $userId)
             ->get()
@@ -156,10 +212,10 @@ class ExamBusiness
         ]);
     }
 
-    private function getCourseId($course) {
+    private function getCourseId($courseName) {
         $result = DB::table('courses')
             ->select('id')
-            ->where('name', $course)
+            ->where('name', $courseName)
             ->get();
 
         return $result;
@@ -174,9 +230,10 @@ class ExamBusiness
                 ->join('didactics', 'users.id', '=', 'didactics.teacher_id')
                 ->join('courses', 'courses.id', '=', 'didactics.course_id')
                 ->join('exams', 'courses.id', '=', 'exams.course_id')
-                ->select('users.name as teacher_name', 'courses.name as course_name', 'exams.type', 'exams.date',
-                    'exams.hours', 'exams.minutes', 'exams.number_of_exercises', 'exams.total_points')
+                ->select('exams.id as exam_id', 'users.name as teacher_name', 'courses.name as course_name',
+                    'exams.type', 'exams.date', 'exams.hours', 'exams.minutes', 'exams.number_of_exercises', 'exams.total_points')
                 ->where('users.id', $userId)
+                ->orderBy('exams.date')
                 ->get();
             return $exams;
         }
@@ -187,10 +244,11 @@ class ExamBusiness
                 ->join('didactics', 'users.id', '=', 'didactics.teacher_id')
                 ->join('courses', 'courses.id', '=', 'didactics.course_id')
                 ->join('exams', 'courses.id', '=', 'exams.course_id')
-                ->select('users.name as teacher_name', 'courses.name as course_name', 'exams.type', 'exams.date',
-                    'exams.hours', 'exams.minutes', 'exams.number_of_exercises', 'exams.total_points')
+                ->select('exams.id as exam_id', 'users.name as teacher_name', 'courses.name as course_name',
+                    'exams.type', 'exams.date', 'exams.hours', 'exams.minutes', 'exams.number_of_exercises', 'exams.total_points')
                 ->where('courses.year', $yearAndSemester[0]->year)
                 ->where('courses.semester', $yearAndSemester[0]->semester)
+                ->orderBy('exams.date')
                 ->get();
 
             return $exams;

@@ -1,4 +1,4 @@
-<!-- Aici se primeste $table ,$options si $number care este numarul exercitiului -->
+<!-- Aici se primeste $table, $options si $number care este numarul exercitiului -->
 
 <div class="container px-lg-5">
     <div class="row mx-lg-n3">
@@ -23,11 +23,11 @@
             </table>
         </div>
         <div class="col py-5 px-lg-5 bg-light">
-            @for($option = 1; $option <= $options["counter"]; $option++)
+            @for($option = 0; $option < $options["counter"]; $option++)
                 <div class="form-check dependencies-options">
                     <input class="form-check-input" type="checkbox" value="" id="ex{{$number}}option{{$option}}">
                     <label class="form-check-label" for="ex{{$number}}option{{$option}}">
-                        {!! $options["solution"][$option]["option"] !!}
+                        {!! $options["solution"][$option + 1]["option"] !!}
                     </label>
                 </div>
             @endfor

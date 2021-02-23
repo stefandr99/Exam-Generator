@@ -20,10 +20,10 @@
                         <b>Număr de exerciții</b>: {{ $exam->number_of_exercises }}.
                         <b>Punctaj</b>: {{$exam->total_points}}.
                     </p>
-                    <a href="#" class="btn btn-primary disabled">Începe</a>
+                    <a href="{{ route('generate_exam', $exam->exam_id) }}" class="btn btn-primary">Începe</a>
                 </div>
                 <div class="card-footer text-muted">
-                    <h4>Data: {{ $exam->date }}</h4>
+                    <h4>Data: {{ date_format(date_create($exam->date), 'l, d-m-Y, H:i') }}</h4>
                 </div>
             </div>
             <br>

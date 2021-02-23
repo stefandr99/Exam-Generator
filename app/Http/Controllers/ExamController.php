@@ -21,25 +21,28 @@ class ExamController extends Controller
         $this->userBusiness = new UserBusiness();
     }
 
-    public function generate() {
-        $exercises = $this->examBusiness->generate();
-        $exercisesToView = array(
-            json_decode($exercises[0], true),
-            json_decode($exercises[1], true),
-            json_decode($exercises[2], true),
-            json_decode($exercises[3], true)
-        );
-        return view('exam/exam', ['exercises' => $exercisesToView]);
-        //return view('exam', ['exercise1' => json_decode($exercises[0], true), 'exercise2' => json_decode($exercises[1], true),
-        //    'exercise3' => json_decode($exercises[2], true), 'exercise4' => json_decode($exercises[3], true)]);
+    public function generate($id) {
+        echo "<script>console.log(abc" . $id . ");</script>";
+        $examInfo = $this->examBusiness->generate($id);
+
+        $optionsNumber = array();
+        for($index = 0; $index < count($examInfo[0]); $index++) {
+            $optionsNumber[$index] = $examInfo[0][$index]['exercise']['options']['counter'];
+        }
+
+        return view('exam/exam', ['exercises' => $examInfo[0], 'info' => $examInfo[1],
+            'optionsNumber' => $optionsNumber, 'examId' => $id]);
     }
 
     public function correctPartial(Request $request) {
 
         if($request->ajax()) {
-            $studentAnswers = $request->input('arg');
+            $studentAnswers = $request->input('answers');
+            $exercisesNumber = $request->input('exercisesNr');
+            $optionsNumber = $request->input('optionsNr');
+            $examId = $request->input('examId');
             $studentAnswers = json_decode($studentAnswers);
-            $userId = $this->examBusiness->correct($studentAnswers);
+            $userId = $this->examBusiness->correct($studentAnswers, $exercisesNumber, $optionsNumber, $examId);
             return $userId;
         }
         else
@@ -47,7 +50,7 @@ class ExamController extends Controller
     }
 
     public function showResult($id) {
-        $subject = $this->examBusiness->getPartialResult($id);
+        $subject = $this->examBusiness->getExamResult($id);
         return view('exam/result', ['points' => $subject->points,
             'exercise1' => json_decode($subject->exercise_1, true),
             'exercise2' => json_decode($subject->exercise_2, true),
@@ -66,14 +69,13 @@ class ExamController extends Controller
         if ($request->ajax()) {
             $examInfo = $request->input('info');
             $examExercises = $request->input('exercises');
-            $examInfo = json_decode($examInfo);
-            $examExercises = json_decode($examExercises);
+            $examInfo = json_decode($examInfo, true);
+            $examExercises = json_decode($examExercises, true);
             $this->examBusiness->schedule($examInfo, $examExercises);
         }
     }
 
     public function showExams() {
-        $userId = Auth::id();
         $exams = $this->examBusiness->getExams();
         return view('exam/program', ['exams' => $exams]);
     }

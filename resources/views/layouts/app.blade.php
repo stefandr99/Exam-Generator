@@ -80,14 +80,8 @@
                                     @endif
 
                                     @if (Auth::user()->role == 2)
-                                        <a class="dropdown-item" href="{{ route('generate_exam') }}">
-                                            {{ __('Genereaza subiect') }}
-                                        </a>
-                                    @endif
-
-                                    @if (Auth::user()->role == 2)
                                         <a class="dropdown-item" href="{{ route('prepare_exam') }}">
-                                            {{ __('Pregateste examen') }}
+                                            {{ __('Pregatește examen') }}
                                         </a>
                                     @endif
 

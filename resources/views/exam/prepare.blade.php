@@ -52,16 +52,16 @@
                 <label for="exam-exercise-0" class="dependencies-options">Tipul exercițiului:
                     <select id="exam-exercise-0" class="form-control" style="text-overflow: ellipsis; overflow: hidden">
                         <option value="no-exercise">--</option>
-                        <option value="exercise-type-1">
+                        <option value="type-1">
                             Determinarea dependețelor în funcție de o relație "r" dată tabelar
                         </option>
-                        <option value="exercise-type-2">
+                        <option value="type-2">
                             Determinarea dependețelor în funcție de o relație "Catalog(elev, notă, materie, datăNotare, profesor)" ce impune anumite restricții
                         </option>
-                        <option value="exercise-type-3">
+                        <option value="type-3">
                             Determinarea X+ în funcție de o schemă de relație "R" și o mulțime &Sigma; de dependențe funcționale
                         </option>
-                        <option value="exercise-type-4">
+                        <option value="type-4">
                             Determinarea cheilor candidat pentru o schemă de relație "R" și mulțimile de dependență &Sigma; și &Delta;
                         </option>
                     </select>
@@ -79,16 +79,16 @@
                             <label for="exam-exercise-{{$ex}}" class="dependencies-options">Tipul exercitiului:
                                 <select id="exam-exercise-{{$ex}}" class="form-control">
                                     <option value="no-exercise">--</option>
-                                    <option value="exercise-type-1">
+                                    <option value="type-1">
                                         Determinarea dependețelor în funcție de o relație "r" dată tabelar
                                     </option>
-                                    <option value="exercise-type-2">
+                                    <option value="type-2">
                                         Determinarea dependețelor în funcție de o relație "Catalog(elev, notă, materie, datăNotare, profesor)" ce impune anumite restricții
                                     </option>
-                                    <option value="exercise-type-3">
+                                    <option value="type-3">
                                         Determinarea X+ în funcție de o schemă de relație "R" și o mulțime &Sigma; de dependențe funcționale
                                     </option>
-                                    <option value="exercise-type-4">
+                                    <option value="type-4">
                                         Determinarea cheilor candidat pentru o schemă de relație "R" și mulțimile de dependență &Sigma; și &Delta;
                                     </option>
                                 </select>

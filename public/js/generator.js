@@ -1,38 +1,17 @@
-function checkTest() {
+function checkTest(numberOfExercises, optionsNumber, examId) {
     let i;
-    let nrMaxOfOptions = 20;
     let answers = [];
-    let numberOfExercises = 4;
-    let NR_OF_OPTIONS_1 = 6, NR_OF_OPTIONS_2 = 10, NR_OF_OPTIONS_3 = 6, NR_OF_OPTIONS_4 = 3;
-    answers[0] = [];
-    let currentExercise = 1;
-    answers[currentExercise] = [];
-    for(i = 1; i <= NR_OF_OPTIONS_1; i++) {
-        let id = "ex1option".concat(i.toString());
-        answers[currentExercise][i] = document.getElementById(id).checked;
-    }
+    optionsNumber = JSON.parse(optionsNumber);
 
-    currentExercise = 2;
-    answers[currentExercise] = [];
-    for(i = 1; i <= NR_OF_OPTIONS_2; i++) {
-        let id = "ex2option".concat(i.toString());
-        answers[currentExercise][i] = document.getElementById(id).checked;
+    for (exercise = 0; exercise < numberOfExercises; exercise++) {
+        answers[exercise] = [];
+        for (i = 0; i < optionsNumber[exercise]; i++) {
+            let id = "ex".concat(exercise.toString()).concat("option").concat(i.toString());
+            answers[exercise][i] = document.getElementById(id).checked;
+        }
     }
-
-    currentExercise = 3;
-    answers[currentExercise] = [];
-    for(i = 1; i <= NR_OF_OPTIONS_3; i++) {
-        let id = "ex3option".concat(i.toString());
-        answers[currentExercise][i] = document.getElementById(id).checked;
-    }
-
-    currentExercise = 4;
-    answers[currentExercise] = [];
-    for(i = 1; i <= NR_OF_OPTIONS_4; i++) {
-        let id = "ex4option".concat(i.toString());
-        answers[currentExercise][i] = document.getElementById(id).checked;
-    }
-    answers = {arg: JSON.stringify(answers)};
+    result = {answers: JSON.stringify(answers), exercisesNr: numberOfExercises,
+        optionsNr: optionsNumber, examId: examId};
 
     jQuery.ajaxSetup({
         headers: {
@@ -40,7 +19,7 @@ function checkTest() {
         }
     })
 
-    $.post("/examgenerator/exam/correct", answers, function (id) {
+    $.post("/examgenerator/exam/correct", result, function (id) {
         window.location.href = "/examgenerator/exam/result/" + id;
     })
 
