@@ -20,7 +20,8 @@ function checkTest(numberOfExercises, optionsNumber, examId) {
     })
 
     $.post("/examgenerator/exam/correct", result, function (info) {
-        window.location.href = "/examgenerator/exam/" + info[0] + "/result/" + info[1];
+        info = JSON.parse(info);
+        window.location.href = "/examgenerator/exam/" + parseInt(info[0]).toString() + "/result/" + parseInt(info[1]).toString();
     })
 
 }

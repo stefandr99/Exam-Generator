@@ -39,7 +39,7 @@
         @endfor
         <div class="r_relationship">
             <button type="button" class="btn btn-primary r_relationship" onclick="checkTest('{{ $info->number_of_exercises }}', '{{ json_encode($optionsNumber) }}', '{{ $examId }}')">
-                Verifica partialul
+                Trimite raspunsurile
             </button>
         </div>
     </div>

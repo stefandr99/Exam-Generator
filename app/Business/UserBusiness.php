@@ -26,11 +26,21 @@ class UserBusiness
     }
 
     public function getYearAndSemester($userId) {
-        $yearAndSem = $userId = DB::table('users')
+        $yearAndSem = DB::table('users')
             ->select('year', 'semester')
             ->where('id', $userId)
             ->get();
 
         return $yearAndSem;
+    }
+
+    public function getName($userId) {
+        $name = DB::table('users')
+            ->select('name')
+            ->where('id', $userId)
+            ->get()
+            ->first();
+
+        return $name;
     }
 }

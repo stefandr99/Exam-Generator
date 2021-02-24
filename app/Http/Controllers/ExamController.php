@@ -22,15 +22,18 @@ class ExamController extends Controller
     }
 
     public function generate($id) {
-        echo "<script>console.log(abc" . $id . ");</script>";
-        $examInfo = $this->examBusiness->generate($id);
+        $examInfo = $this->examBusiness->getExamInfo($id);
+        $userId = Auth::id();
+        if(date("d-m-Y H:i:s", strtotime('+2 hours')) < date_format(date_create($examInfo[0]->date), "d-m-Y H:i:s"))
+            return redirect()->route('steal_start_exam', array('examId' => $id, 'userId' => $userId));
 
+        $exercises = $this->examBusiness->generate($id, $examInfo);
         $optionsNumber = array();
         for($index = 0; $index < count($examInfo[0]); $index++) {
             $optionsNumber[$index] = $examInfo[0][$index]['exercise']['options']['counter'];
         }
 
-        return view('exam/exam', ['exercises' => $examInfo[0], 'info' => $examInfo[1],
+        return view('exam/exam', ['exercises' => $exercises, 'info' => $examInfo[0],
             'optionsNumber' => $optionsNumber, 'examId' => $id]);
     }
 
@@ -43,6 +46,7 @@ class ExamController extends Controller
             $examId = $request->input('examId');
             $studentAnswers = json_decode($studentAnswers);
             $subjectInfo = $this->examBusiness->correct($studentAnswers, $exercisesNumber, $optionsNumber, $examId);
+            $subjectInfo = json_encode($subjectInfo);
             return $subjectInfo;
         }
         else
@@ -89,5 +93,12 @@ class ExamController extends Controller
     public function showExams() {
         $exams = $this->examBusiness->getExams();
         return view('exam/program', ['exams' => $exams]);
+    }
+
+    public function stealStart($examId, $userId) {
+        // de salvat in viitor in baza de date a fraudelor :))
+        $userName = $this->userBusiness->getName($userId);
+
+        return view('exam/stealTheStart', ['name' => $userName->name]);
     }
 }

@@ -69,8 +69,7 @@ class ExamBusiness
         return $response;
     }
 
-    public function generate($examId) {
-        $examInfo = $this->getExamInfo($examId);
+    public function generate($examId, $examInfo) {
         $examInfo[0]->exercises_type = json_decode($examInfo[0]->exercises_type);
         $this->examId = $examId;
 
@@ -127,7 +126,7 @@ class ExamBusiness
         return $exercises;
     }
 
-    private function getExamInfo($examId) {
+    public function getExamInfo($examId) {
         $result = DB::table('exams')
             ->join('courses', 'courses.id', '=', 'exams.course_id')
             ->select('courses.name as course_name', 'type', 'date', 'hours', 'minutes',
@@ -157,7 +156,7 @@ class ExamBusiness
             ->get();
 
         $exercises = json_decode($results[0]->exercises, true);
-        var_dump($optionsNumber);
+
         $correctedExam = [];
         for ($currentExercise = 0; $currentExercise < $exercisesNumber; $currentExercise++) {
             $correctedExam[$currentExercise] = [];
@@ -175,7 +174,7 @@ class ExamBusiness
             ->where('exam_id', $examId)
             ->update(['obtained_points' => $points, 'student_answers' => $studentAnswers, 'results' => $correctedExam]);
 
-        return array($examId, $userId);
+        return array(0 => $examId, 1 => $userId);
     }
 
     private function getPoints($exam): int
@@ -193,8 +192,8 @@ class ExamBusiness
         $result = DB::table('subjects as s')
             ->join('exams as e', 'e.id', '=', 's.exam_id')
             ->join('courses as c', 'c.id', '=', 'e.course_id')
-            ->select('c.name', 'e.type', 'e.date', 'e.number_of_exercises', 'e.total_points', 'e.minimum_points',
-                        's.exercises', 's.obtained_poitns', 's.student_answers', 's.results')
+            ->select('c.name as course_name', 'e.type', 'e.date', 'e.number_of_exercises', 'e.total_points', 'e.minimum_points',
+                        's.exercises', 's.obtained_points', 's.student_answers', 's.results')
             ->where('s.exam_id', $examId)
             ->where('s.user_id', $userId)
             ->get()

@@ -25,6 +25,7 @@ Route::put('/users/update/{id}/newRole={newRole}', 'UserController@updateUserRol
 Route::get('/exam/prepare', 'ExamController@prepare')->name('prepare_exam');
 Route::post('/exam/correct', 'ExamController@correctPartial')->name('correct_partial');
 Route::post('/exam/schedule', 'ExamController@scheduleExam')->name('schedule_exam');
+Route::get('/exam/{examId}/steal_the_start/{userId}', 'ExamController@stealStart')->name('steal_start_exam');
 Route::get('/exam/{examId}/result/{userId}', 'ExamController@showResult')->name('show_partial_result');
 Route::get('/exam/{id}', 'ExamController@generate')->name('generate_exam');
 Route::get('/program', 'ExamController@showExams')->name('show_exams');
