@@ -12,6 +12,8 @@
                 {{ $info->type }} {{ $info->course_name }}
                 <br>
                 {{ date_format(date_create($info->date), 'l, d-m-Y, H:i') }}
+                <br>
+                Timp ramas: <span id="time">{{ $info->hours }}:{{ $info->minutes }}</span>
             </b>
         </h1>
         <br>
@@ -42,7 +44,7 @@
             <br>
         @endfor
         <div class="r_relationship">
-            <button type="button" class="btn btn-primary r_relationship" onclick="checkTest('{{ $info->number_of_exercises }}', '{{ json_encode($optionsNumber) }}', '{{ $examId }}')">
+            <button id="submitExam" type="button" class="btn btn-primary r_relationship" onclick="checkTest('{{ $info->number_of_exercises }}', '{{ json_encode($optionsNumber) }}', '{{ $examId }}')">
                 Trimite raspunsurile
             </button>
         </div>
@@ -51,3 +53,11 @@
 
     </form>
 @endsection
+
+<script>
+    window.onload = function () {
+        var fiveMinutes = '{{3600 * $info->hours + 60 * $info->minutes}}',
+            display = document.querySelector('#time');
+        startTimer(fiveMinutes, display);
+    };
+</script>
