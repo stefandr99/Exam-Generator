@@ -1,5 +1,9 @@
 @extends('layouts.app')
 
+@section('title')
+    <title>Frauda - Ai furat startul</title>
+@endsection
+
 @section('content')
     <div class="container my-4">
         <h2>

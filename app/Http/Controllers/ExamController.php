@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Business\ExamBusiness;
 use App\Business\UserBusiness;
+use DateInterval;
+use DateTime;
+use DateTimeZone;
 use http\Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -24,16 +27,20 @@ class ExamController extends Controller
     public function generate($id) {
         $examInfo = $this->examBusiness->getExamInfo($id);
         $userId = Auth::id();
-        if(date("d-m-Y H:i:s", strtotime('+2 hours')) < date_format(date_create($examInfo[0]->date), "d-m-Y H:i:s"))
+
+        $examDate = new DateTime($examInfo[0]->date);
+        $presentDate = new DateTime("now", new DateTimeZone('UTC'));
+        $presentDate->add(new DateInterval('PT2H'));
+        if($presentDate < $examDate)
             return redirect()->route('steal_start_exam', array('examId' => $id, 'userId' => $userId));
 
         $exercises = $this->examBusiness->generate($id, $examInfo);
         $optionsNumber = array();
-        for($index = 0; $index < count($examInfo[0]); $index++) {
-            $optionsNumber[$index] = $examInfo[0][$index]['exercise']['options']['counter'];
+        for($index = 0; $index < count($exercises[0]); $index++) {
+            $optionsNumber[$index] = $exercises[0][$index]['exercise']['options']['counter'];
         }
 
-        return view('exam/exam', ['exercises' => $exercises, 'info' => $examInfo[0],
+        return view('exam/exam', ['exercises' => $exercises[0], 'info' => $examInfo[0],
             'optionsNumber' => $optionsNumber, 'examId' => $id]);
     }
 
@@ -91,8 +98,15 @@ class ExamController extends Controller
     }
 
     public function showExams() {
-        $exams = $this->examBusiness->getExams();
-        return view('exam/program', ['exams' => $exams]);
+        $examsInformation = $this->examBusiness->getExams();
+        $presentDate = new DateTime("now");
+        $presentDate->add(new DateInterval('PT2H'));
+
+        if($examsInformation[0] == 2)
+            return view('program/TeachersProgram', ['exams' => $examsInformation[1], 'presentDate' => $presentDate]);
+        else
+            return view('program/studentsProgram', ['exams' => $examsInformation[1], 'teachers' => $examsInformation[2],
+                'presentDate' => $presentDate]);
     }
 
     public function stealStart($examId, $userId) {
@@ -100,5 +114,23 @@ class ExamController extends Controller
         $userName = $this->userBusiness->getName($userId);
 
         return view('exam/stealTheStart', ['name' => $userName->name]);
+    }
+
+
+    public function modifyExam($examId) {
+        $exam = $this->examBusiness->getExamById($examId);
+        $exam[0]->exercises_type = json_decode($exam[0]->exercises_type, true);
+        return view('exam/modify', ['exam' => $exam[0]]);
+    }
+
+    public function updateExam(Request $request) {
+        if ($request->ajax()) {
+            $examInfo = $request->input('info');
+            $examExercises = $request->input('exercises');
+            $examId = $request->input('id');
+            $examInfo = json_decode($examInfo, true);
+            $examExercises = json_decode($examExercises, true);
+            $this->examBusiness->update($examInfo, $examExercises, $examId);
+        }
     }
 }

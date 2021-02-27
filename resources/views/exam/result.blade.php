@@ -1,5 +1,9 @@
 @extends('layouts.app')
 
+@section('title')
+    <title>Rezultat</title>
+@endsection
+
 @section('content')
     <form>
         <div class="container my-4">
@@ -19,7 +23,7 @@
             <br>
 
             @for($index = 0; $index < count($info->exercises); $index++)
-                <h2><b>Exercitiul {{ $index }} ({{$info->exercises[$index]['points']}} puncte)</b></h2>
+                <h2><b>Exercitiul {{ $index + 1 }} ({{$info->exercises[$index]['points']}} puncte)</b></h2>
                 @foreach($info->exercises[$index]['exercise']["content"] as $field)
                     @if(str_starts_with($field, 'text'))
                         @include('examTemplates.text', ['text' => $info->exercises[$index]['exercise']['text'][intval($field[4])]])

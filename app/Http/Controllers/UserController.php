@@ -8,19 +8,26 @@ use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
-    public $uBusiness;
+    public $userBusiness;
     public function __construct()
     {
         $this->middleware('auth');
-        $this->uBusiness = new UserBusiness();
+        $this->userBusiness = new UserBusiness();
     }
 
     public function showAll() {
-        return view('user/showUsers', ['users' => $this->uBusiness->getAll()]);
+        $users = $this->userBusiness->getAll();
+        return view('user/showUsers', ['users' => $users]);
     }
 
     public function updateUserRole($id, $newRole) {
-        $this->uBusiness->changeRole($id, $newRole);
+        $this->userBusiness->changeRole($id, $newRole);
         return redirect()->route('users');
+    }
+
+    public function search(Request $request) {
+        $users = $this->userBusiness->search($request->name);
+
+        return view('user/showUsers', ['users' => $users]);
     }
 }

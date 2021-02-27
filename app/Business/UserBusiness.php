@@ -18,7 +18,8 @@ class UserBusiness
     }
 
     public function getRole($id) {
-        $userId = User::select('role')
+        $userId = DB::table('users')
+            ->select('role')
             ->where('id', $id)
             ->get();
 
@@ -42,5 +43,13 @@ class UserBusiness
             ->first();
 
         return $name;
+    }
+
+    public function search($name) {
+        $users = DB::table('users')
+            ->where('name', 'like', '%'.$name.'%')
+            ->get();
+
+        return $users;
     }
 }

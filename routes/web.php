@@ -20,13 +20,16 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/users/search', 'UserController@search')->name('search_user');
 Route::get('/users', 'UserController@showAll')->name('users');
 Route::put('/users/update/{id}/newRole={newRole}', 'UserController@updateUserRole')->name('update_role');
 Route::get('/exam/prepare', 'ExamController@prepare')->name('prepare_exam');
 Route::post('/exam/correct', 'ExamController@correctPartial')->name('correct_partial');
 Route::post('/exam/schedule', 'ExamController@scheduleExam')->name('schedule_exam');
-Route::get('/exam/{examId}/steal_the_start/{userId}', 'ExamController@stealStart')->name('steal_start_exam');
+Route::get('/exam/fraud/{examId}/steal_the_start/{userId}', 'ExamController@stealStart')->name('steal_start_exam');
 Route::get('/exam/{examId}/result/{userId}', 'ExamController@showResult')->name('show_partial_result');
+Route::get('/exam/{examId}/modify', 'ExamController@modifyExam')->name('modify_exam');
+Route::put('/exam/update', 'ExamController@updateExam')->name('update_exam');
 Route::get('/exam/{id}', 'ExamController@generate')->name('generate_exam');
 Route::get('/program', 'ExamController@showExams')->name('show_exams');
 

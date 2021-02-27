@@ -237,28 +237,85 @@ class ExamBusiness
                 ->join('courses', 'courses.id', '=', 'didactics.course_id')
                 ->join('exams', 'courses.id', '=', 'exams.course_id')
                 ->select('exams.id as exam_id', 'users.name as teacher_name', 'courses.name as course_name',
-                    'exams.type', 'exams.date', 'exams.hours', 'exams.minutes', 'exams.number_of_exercises', 'exams.total_points', 'exams.minimum_points')
+                    'exams.type', 'exams.date', 'exams.hours', 'exams.minutes', 'exams.number_of_exercises',
+                    'exams.total_points', 'exams.minimum_points')
                 ->where('users.id', $userId)
                 ->orderBy('exams.date')
                 ->get();
-            return $exams;
+
+            $examsInformation = array(2, $exams);
+            return $examsInformation;
         }
         elseif ($userRole[0]->role == 3) {
             $yearAndSemester = $this->userBusiness->getYearAndSemester($userId);
 
-            $exams = DB::table('users')
-                ->join('didactics', 'users.id', '=', 'didactics.teacher_id')
-                ->join('courses', 'courses.id', '=', 'didactics.course_id')
-                ->join('exams', 'courses.id', '=', 'exams.course_id')
-                ->select('exams.id as exam_id', 'users.name as teacher_name', 'courses.name as course_name',
-                    'exams.type', 'exams.date', 'exams.hours', 'exams.minutes', 'exams.number_of_exercises', 'exams.total_points', 'exams.minimum_points')
+            $exams = DB::table('exams')
+                ->join('courses', 'courses.id', '=', 'exams.course_id')
+                ->select('exams.id as exam_id', 'courses.name as course_name', 'exams.type', 'exams.date',
+                    'exams.hours', 'exams.minutes', 'exams.number_of_exercises', 'exams.total_points', 'exams.minimum_points')
                 ->where('courses.year', $yearAndSemester[0]->year)
                 ->where('courses.semester', $yearAndSemester[0]->semester)
                 ->orderBy('exams.date')
                 ->get();
 
-            return $exams;
+            $teachers = $this->getExamTeachers($exams);
+
+            $examsInformation = array(3, $exams, $teachers);
+            return $examsInformation;
         }
         return null;
+    }
+
+    public function getExamTeachers($exams) {
+        $teachers = array();
+        foreach ($exams as $exam) {
+            $teachers[$exam->exam_id] = DB::table('users')
+                ->join('didactics', 'users.id', '=', 'didactics.teacher_id')
+                ->join('courses', 'courses.id', '=', 'didactics.course_id')
+                ->join('exams', 'courses.id', '=', 'exams.course_id')
+                ->select('users.name')
+                ->where('exams.id', $exam->exam_id)
+                ->orderBy('users.created_at')
+                ->get();
+        }
+
+        return $teachers;
+    }
+
+    public function getExamById($examId) {
+        $exam = DB::table('exams as e')
+            ->join('courses as c', 'c.id', '=', 'e.course_id')
+            ->select('c.name as course_name', 'e.*')
+            ->where('e.id', $examId)
+            ->get();
+
+        return $exam;
+    }
+
+    public function getCourseIdByName($name) {
+        $course = DB::table('courses')
+            ->select('id')
+            ->where('name', $name)
+            ->get();
+
+        return $course;
+    }
+
+    public function update($info, $exercises, $id) {
+        $course = $this->getCourseIdByName($info[0]);
+
+        DB::table('exams')
+            ->where('id', $id)
+            ->update([
+                'course_id' => $course[0]->id,
+                'type' => $info[1],
+                'date' => $info[2],
+                'hours' => $info[3],
+                'minutes' => $info[4],
+                'number_of_exercises' => $exercises[0],
+                'exercises_type' => json_encode($exercises[1]),
+                'total_points' => $exercises[2],
+                'minimum_points' => $info[5]
+            ]);
     }
 }

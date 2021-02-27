@@ -1,5 +1,9 @@
 @extends('layouts.app')
 
+@section('title')
+    <title>Pregatire examen</title>
+@endsection
+
 @section('content')
     <div class="container my-4">
         <h1 id="partial-title"><b>Pregătiți examenul</b></h1>
@@ -47,10 +51,10 @@
             <div class="dependencies-options">
                 <b>Exerciții:</b>
                 <br>
-                Exercițiul 0.
+                Exercițiul 1.
                 <br>
                 <label for="exam-exercise-0" class="dependencies-options">Tipul exercițiului:
-                    <select id="exam-exercise-0" class="form-control" style="text-overflow: ellipsis; overflow: hidden">
+                    <select id="exam-exercise-0" class="form-control">
                         <option value="no-exercise">--</option>
                         <option value="type-1">
                             Determinarea dependețelor în funcție de o relație "r" dată tabelar
@@ -74,7 +78,7 @@
                 <div class="extra-exercises">
                     @for($ex = 1; $ex < 100; $ex++)
                         <div hidden id="exercise-{{$ex}}">
-                            Exercițiul {{ $ex }}.
+                            Exercițiul {{ $ex + 1 }}.
                             <br>
                             <label for="exam-exercise-{{$ex}}" class="dependencies-options">Tipul exercitiului:
                                 <select id="exam-exercise-{{$ex}}" class="form-control">
