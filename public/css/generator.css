@@ -14,7 +14,7 @@ input[type="checkbox"] {
     transform: scale(1.5)
 }
 
-#partial-title {
+#exam-title {
     text-align: center;
 }
 
@@ -70,4 +70,18 @@ input[type="checkbox"] {
 .search-user {
     margin-left: 12px;
 }
+
+.list-group-item {
+    padding: 4px 8px;
+    padding-right: 30px;
+}
+
+.close {
+    cursor: pointer;
+    position: absolute;
+    top: 50%;
+    right: 8px;
+    transform: translate(0%, -50%);
+}
+
 

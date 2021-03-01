@@ -6,9 +6,9 @@ namespace App\Business;
 
 class Business
 {
-    public ExamBusiness $exam;
-    public UserBusiness $user;
-    public CourseBusiness $course;
+    public $exam;
+    public $user;
+    public $course;
 
     public function __construct() {
         $this->exam = new ExamBusiness();

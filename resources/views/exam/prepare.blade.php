@@ -6,7 +6,7 @@
 
 @section('content')
     <div class="container my-4">
-        <h1 id="partial-title"><b>Pregătiți examenul</b></h1>
+        <h1 class="text-center"><b>Pregătiți examenul</b></h1>
         <br>
         <form class="form-group">
             <label for="exam-subject" class="dependencies-options">Materia:

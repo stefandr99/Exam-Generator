@@ -55,4 +55,13 @@ class UserBusiness
 
         return $users;
     }
+
+    public function getAllTeachers(): \Illuminate\Support\Collection
+    {
+        $teachers = DB::table('users')
+            ->where('role', '=', '2')
+            ->get();
+
+        return $teachers;
+    }
 }

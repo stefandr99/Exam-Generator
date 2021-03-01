@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -20,9 +21,11 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+
 Route::get('/users/search', 'UserController@search')->name('search_user');
 Route::get('/users', 'UserController@showAll')->name('users');
 Route::put('/users/update/{id}/newRole={newRole}', 'UserController@updateUserRole')->name('update_role');
+
 Route::get('/exam/prepare', 'ExamController@prepare')->name('prepare_exam');
 Route::post('/exam/correct', 'ExamController@correctPartial')->name('correct_partial');
 Route::post('/exam/schedule', 'ExamController@scheduleExam')->name('schedule_exam');
@@ -32,5 +35,6 @@ Route::get('/exam/{examId}/modify', 'ExamController@modifyExam')->name('modify_e
 Route::put('/exam/update', 'ExamController@updateExam')->name('update_exam');
 Route::get('/exam/{id}', 'ExamController@generate')->name('generate_exam');
 Route::get('/program', 'ExamController@showExams')->name('show_exams');
-Route::get('/add_course', 'ExamController@prepare')->name('add_course');
+
+Route::get('/add_course', 'CourseController@addCourse')->name('add_course');
 

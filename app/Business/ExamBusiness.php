@@ -218,7 +218,7 @@ class ExamBusiness
         $userId = Auth::id();
         $userRole = $this->userBusiness->getRole($userId);
 
-        return ($userRole == 2) ?
+        return ($userRole[0]->role == 2) ?
             $this->getExamsForTeacher($userId) :
             $this->getExamsForStudents($userId);
     }
