@@ -77,6 +77,12 @@
                                         </a>
                                     @endif
 
+                                    @if (Auth::user()->role == 1)
+                                        <a class="dropdown-item" href="{{ route('add_course') }}">
+                                            {{ __('Adauga curs') }}
+                                        </a>
+                                    @endif
+
                                     @if (Auth::user()->role != 3)
                                         <a class="dropdown-item" href="{{ route('users') }}">
                                             {{ __('Utilizatori') }}

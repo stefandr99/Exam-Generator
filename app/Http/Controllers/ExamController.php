@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Business\Business;
 use App\Business\ExamBusiness;
 use App\Business\UserBusiness;
 use DateInterval;
@@ -14,18 +15,16 @@ use Illuminate\Support\Facades\Session;
 
 class ExamController extends Controller
 {
-    private $examBusiness;
-    private $userBusiness;
+    private $business;
 
     public function __construct()
     {
         $this->middleware('auth');
-        $this->examBusiness = new ExamBusiness();
-        $this->userBusiness = new UserBusiness();
+        $this->business = new Business();
     }
 
     public function generate($id) {
-        $examInfo = $this->examBusiness->getExamInfo($id);
+        $examInfo = $this->business->exam->getExamInfo($id);
         $userId = Auth::id();
 
         $examDate = new DateTime($examInfo[0]->date);
@@ -34,7 +33,7 @@ class ExamController extends Controller
         if($presentDate < $examDate)
             return redirect()->route('steal_start_exam', array('examId' => $id, 'userId' => $userId));
 
-        $exercises = $this->examBusiness->generate($id, $examInfo);
+        $exercises = $this->business->exam->generate($id, $examInfo);
         $optionsNumber = array();
         for($index = 0; $index < count($exercises[0]); $index++) {
             $optionsNumber[$index] = $exercises[0][$index]['exercise']['options']['counter'];
@@ -52,7 +51,7 @@ class ExamController extends Controller
             $optionsNumber = $request->input('optionsNr');
             $examId = $request->input('examId');
             $studentAnswers = json_decode($studentAnswers);
-            $subjectInfo = $this->examBusiness->correct($studentAnswers, $exercisesNumber, $optionsNumber, $examId);
+            $subjectInfo = $this->business->exam->correct($studentAnswers, $exercisesNumber, $optionsNumber, $examId);
             $subjectInfo = json_encode($subjectInfo);
             return $subjectInfo;
         }
@@ -61,23 +60,13 @@ class ExamController extends Controller
     }
 
     public function showResult($examId, $userId) {
-        $subjectInfo = $this->examBusiness->getExamResult($examId, $userId);
+        $subjectInfo = $this->business->exam->getExamResult($examId, $userId);
 
         $subjectInfo->exercises = json_decode($subjectInfo->exercises, true);
         $subjectInfo->student_answers = json_decode($subjectInfo->student_answers, true);
         $subjectInfo->results = json_decode($subjectInfo->results, true);
 
         return view('exam/result', [
-            /*'courseName' => $subjectInfo->name,
-            'exercises' => json_decode($subjectInfo->exercises, true),
-            'examType' => $subjectInfo->type,
-            'examDate' => $subjectInfo->date,
-            'NumberOfExercises' => $subjectInfo->number_of_exercises,
-            'totalPoints' => $subjectInfo->total_points,
-            'minimumPoints' => $subjectInfo->minimum_points,
-            'obtainedPoints' => $subjectInfo->obtained_points,
-            'studentAnswers' => json_decode($subjectInfo->student_answers, true),
-            'results' => json_decode($subjectInfo->results, true)*/
             'info' => $subjectInfo
         ]);
     }
@@ -93,12 +82,12 @@ class ExamController extends Controller
             $examExercises = $request->input('exercises');
             $examInfo = json_decode($examInfo, true);
             $examExercises = json_decode($examExercises, true);
-            $this->examBusiness->schedule($examInfo, $examExercises);
+            $this->business->exam->schedule($examInfo, $examExercises);
         }
     }
 
     public function showExams() {
-        $examsInformation = $this->examBusiness->getExams();
+        $examsInformation = $this->business->exam->getExams();
         $presentDate = new DateTime("now");
         $presentDate->add(new DateInterval('PT2H'));
 
@@ -111,14 +100,14 @@ class ExamController extends Controller
 
     public function stealStart($examId, $userId) {
         // de salvat in viitor in baza de date a fraudelor :))
-        $userName = $this->userBusiness->getName($userId);
+        $userName = $this->business->user->getName($userId);
 
         return view('exam/stealTheStart', ['name' => $userName->name]);
     }
 
 
     public function modifyExam($examId) {
-        $exam = $this->examBusiness->getExamById($examId);
+        $exam = $this->business->exam->getExamById($examId);
         $exam[0]->exercises_type = json_decode($exam[0]->exercises_type, true);
         return view('exam/modify', ['exam' => $exam[0]]);
     }
@@ -130,7 +119,7 @@ class ExamController extends Controller
             $examId = $request->input('id');
             $examInfo = json_decode($examInfo, true);
             $examExercises = json_decode($examExercises, true);
-            $this->examBusiness->update($examInfo, $examExercises, $examId);
+            $this->business->exam->updateExam($examInfo, $examExercises, $examId);
         }
     }
 }

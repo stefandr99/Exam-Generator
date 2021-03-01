@@ -6,8 +6,18 @@
 
 @section('content')
     <div class="container my-4">
-        <div class="row">
-
+        @if(count($exams) == 0)
+            <br>
+            <br>
+            <div class="text-center">
+                <h1>Nu aveți programat niciun examen momentan.</h1>
+                <br>
+                <button type="button" class="btn btn-info btn-lg"  onclick="window.location='{{ route('prepare_exam') }}'">
+                    Pregatiți un examen
+                </button>
+            </div>
+        @else
+            <div class="row">
                 @foreach($exams as $exam)
                 <div class="col-sm-6">
                     <div class="card text-center">
@@ -43,8 +53,8 @@
                 </div>
                 @endforeach
 
-        </div>
-
+            </div>
+        @endif
     </div>
 
 @endsection

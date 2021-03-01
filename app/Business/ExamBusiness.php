@@ -14,9 +14,11 @@ use Illuminate\Support\Facades\DB;
 class ExamBusiness
 {
     private $userBusiness;
+    private $courseBusiness;
 
     public function __construct() {
         $this->userBusiness = new UserBusiness();
+        $this->courseBusiness = new CourseBusiness();
     }
 
     private function generateDBType1() {
@@ -69,9 +71,9 @@ class ExamBusiness
         return $response;
     }
 
-    public function generate($examId, $examInfo) {
+    public function generate($examId, $examInfo): array
+    {
         $examInfo[0]->exercises_type = json_decode($examInfo[0]->exercises_type);
-        $this->examId = $examId;
 
         switch ($examInfo[0]->course_name) {
             case 'Baze de date':
@@ -94,7 +96,8 @@ class ExamBusiness
         return array($exercises, $examInfo[0]);
     }
 
-    private function generateDBSubject($examInfo) {
+    private function generateDBSubject($examInfo): array
+    {
         $exercises = array();
 
         for($ex = 0; $ex < $examInfo->number_of_exercises; $ex++) {
@@ -126,7 +129,8 @@ class ExamBusiness
         return $exercises;
     }
 
-    public function getExamInfo($examId) {
+    public function getExamInfo($examId): \Illuminate\Support\Collection
+    {
         $result = DB::table('exams')
             ->join('courses', 'courses.id', '=', 'exams.course_id')
             ->select('courses.name as course_name', 'type', 'date', 'hours', 'minutes',
@@ -134,15 +138,6 @@ class ExamBusiness
             ->where('exams.id', $examId)
             ->get();
 
-        return $result;
-    }
-
-    private function getCourseName($examId) {
-        $result = DB::table('exams')
-            ->join('courses', 'courses.id', '=', 'exams.course_id')
-            ->select('courses.name')
-            ->where('exams.id', $examId)
-            ->get();
         return $result;
     }
 
@@ -203,7 +198,7 @@ class ExamBusiness
     }
 
     public function schedule($info, $exercises) {
-        $courseId = $this->getCourseId($info[0]);
+        $courseId = $this->courseBusiness->getCourseId($info[0]);
 
         $exam = new Exam;
         $exam->course_id = $courseId->first()->id;
@@ -218,55 +213,57 @@ class ExamBusiness
         $exam->save();
     }
 
-    private function getCourseId($courseName) {
-        $result = DB::table('courses')
-            ->select('id')
-            ->where('name', $courseName)
-            ->get();
-
-        return $result;
-    }
-
-    public function getExams() {
+    public function getExams(): array
+    {
         $userId = Auth::id();
         $userRole = $this->userBusiness->getRole($userId);
 
-        if($userRole[0]->role == 2) {
-            $exams = DB::table('users')
-                ->join('didactics', 'users.id', '=', 'didactics.teacher_id')
-                ->join('courses', 'courses.id', '=', 'didactics.course_id')
-                ->join('exams', 'courses.id', '=', 'exams.course_id')
-                ->select('exams.id as exam_id', 'users.name as teacher_name', 'courses.name as course_name',
-                    'exams.type', 'exams.date', 'exams.hours', 'exams.minutes', 'exams.number_of_exercises',
-                    'exams.total_points', 'exams.minimum_points')
-                ->where('users.id', $userId)
-                ->orderBy('exams.date')
-                ->get();
-
-            $examsInformation = array(2, $exams);
-            return $examsInformation;
-        }
-        elseif ($userRole[0]->role == 3) {
-            $yearAndSemester = $this->userBusiness->getYearAndSemester($userId);
-
-            $exams = DB::table('exams')
-                ->join('courses', 'courses.id', '=', 'exams.course_id')
-                ->select('exams.id as exam_id', 'courses.name as course_name', 'exams.type', 'exams.date',
-                    'exams.hours', 'exams.minutes', 'exams.number_of_exercises', 'exams.total_points', 'exams.minimum_points')
-                ->where('courses.year', $yearAndSemester[0]->year)
-                ->where('courses.semester', $yearAndSemester[0]->semester)
-                ->orderBy('exams.date')
-                ->get();
-
-            $teachers = $this->getExamTeachers($exams);
-
-            $examsInformation = array(3, $exams, $teachers);
-            return $examsInformation;
-        }
-        return null;
+        return ($userRole == 2) ?
+            $this->getExamsForTeacher($userId) :
+            $this->getExamsForStudents($userId);
     }
 
-    public function getExamTeachers($exams) {
+    private function getExamsForTeacher($userId): array
+    {
+
+        $exams = DB::table('users')
+            ->join('didactics', 'users.id', '=', 'didactics.teacher_id')
+            ->join('courses', 'courses.id', '=', 'didactics.course_id')
+            ->join('exams', 'courses.id', '=', 'exams.course_id')
+            ->select('exams.id as exam_id', 'users.name as teacher_name', 'courses.name as course_name',
+                'exams.type', 'exams.date', 'exams.hours', 'exams.minutes', 'exams.number_of_exercises',
+                'exams.total_points', 'exams.minimum_points')
+            ->where('users.id', $userId)
+            ->where('exams.date', '>', now())
+            ->orderBy('exams.date')
+            ->get();
+
+        $examsInformation = array(2, $exams);
+        return $examsInformation;
+    }
+
+    private function getExamsForStudents($userId): array
+    {
+        $yearAndSemester = $this->userBusiness->getYearAndSemester($userId);
+
+        $exams = DB::table('exams')
+            ->join('courses', 'courses.id', '=', 'exams.course_id')
+            ->select('exams.id as exam_id', 'courses.name as course_name', 'exams.type', 'exams.date',
+                'exams.hours', 'exams.minutes', 'exams.number_of_exercises', 'exams.total_points', 'exams.minimum_points')
+            ->where('courses.year', $yearAndSemester[0]->year)
+            ->where('courses.semester', $yearAndSemester[0]->semester)
+            ->where('exams.date', '>', now())
+            ->orderBy('exams.date')
+            ->get();
+
+        $teachers = $this->getExamTeachers($exams);
+
+        $examsInformation = array(3, $exams, $teachers);
+        return $examsInformation;
+    }
+
+    public function getExamTeachers($exams): array
+    {
         $teachers = array();
         foreach ($exams as $exam) {
             $teachers[$exam->exam_id] = DB::table('users')
@@ -282,7 +279,8 @@ class ExamBusiness
         return $teachers;
     }
 
-    public function getExamById($examId) {
+    public function getExamById($examId): \Illuminate\Support\Collection
+    {
         $exam = DB::table('exams as e')
             ->join('courses as c', 'c.id', '=', 'e.course_id')
             ->select('c.name as course_name', 'e.*')
@@ -292,17 +290,8 @@ class ExamBusiness
         return $exam;
     }
 
-    public function getCourseIdByName($name) {
-        $course = DB::table('courses')
-            ->select('id')
-            ->where('name', $name)
-            ->get();
-
-        return $course;
-    }
-
-    public function update($info, $exercises, $id) {
-        $course = $this->getCourseIdByName($info[0]);
+    public function updateExam($info, $exercises, $id) {
+        $course = $this->courseBusiness->getCourseIdByName($info[0]);
 
         DB::table('exams')
             ->where('id', $id)

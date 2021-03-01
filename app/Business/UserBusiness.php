@@ -17,7 +17,8 @@ class UserBusiness
             ->update(['role' => $newRole]);
     }
 
-    public function getRole($id) {
+    public function getRole($id): \Illuminate\Support\Collection
+    {
         $userId = DB::table('users')
             ->select('role')
             ->where('id', $id)
@@ -26,7 +27,8 @@ class UserBusiness
         return $userId;
     }
 
-    public function getYearAndSemester($userId) {
+    public function getYearAndSemester($userId): \Illuminate\Support\Collection
+    {
         $yearAndSem = DB::table('users')
             ->select('year', 'semester')
             ->where('id', $userId)
@@ -45,7 +47,8 @@ class UserBusiness
         return $name;
     }
 
-    public function search($name) {
+    public function search($name): \Illuminate\Support\Collection
+    {
         $users = DB::table('users')
             ->where('name', 'like', '%'.$name.'%')
             ->get();
