@@ -36,5 +36,5 @@ Route::put('/exam/update', 'ExamController@updateExam')->name('update_exam');
 Route::get('/exam/{id}', 'ExamController@generate')->name('generate_exam');
 Route::get('/program', 'ExamController@showExams')->name('show_exams');
 
-Route::get('/add_course', 'CourseController@addCourse')->name('add_course');
-
+Route::get('/course/prepare', 'CourseController@prepareNewCourse')->name('prepare_new_course');
+Route::post('/course/add', 'CourseController@addNewCourse')->name('add_new_course');

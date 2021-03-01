@@ -197,3 +197,75 @@ function startTimer(duration, display) {
         }
     }, 1000);
 }
+
+function addToList() {
+    selectedTeacher = document.getElementById("course-teachers").value;
+    teachersDropDown = document.getElementById("course-teachers");
+    list = document.getElementById("selected-teachers");
+
+    var spann = document.createElement("span");
+    spann.classList.add("close");
+    spann.innerHTML = "&times;";
+    spann.id = "span-" + selectedTeacher;
+
+    spann.onclick = function() {
+        teacherName = spann.id.split("-")[1]
+        var item = document.getElementById(teacherName);
+        item.remove();
+
+        var option = document.createElement("option");
+        option.text = teacherName;
+        option.value = teacherName;
+        teachersDropDown.add(option);
+    }
+    var li = document.createElement("li");
+    li.classList.add("list-group-item");
+    li.classList.add("list-group-item-success");
+    li.id = selectedTeacher;
+    li.appendChild(document.createTextNode(selectedTeacher));
+
+
+    li.appendChild(spann);
+
+    list.appendChild(li);
+    teachersDropDown.remove(teachersDropDown.selectedIndex);
+
+}
+
+function addCourse() {
+    var courseName = document.getElementById("course-name").value;
+
+    var lis = document.getElementById("selected-teachers").getElementsByTagName("li");
+    teachers = [];
+    for(let i = 0; i < lis.length; i++) {
+        teachers.push(lis[i].id);
+    }
+
+    var year = document.getElementById("course-year").value;
+    var semester = document.getElementById("course-semester").value;
+    var credits = document.getElementById("course-credits").value
+
+
+    result = {
+        name: courseName,
+        teachers: JSON.stringify(teachers),
+        year: year,
+        semester: semester,
+        credits: credits
+    };
+
+    jQuery.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    })
+
+    $.ajax({
+        type: 'POST',
+        url: '/examgenerator/course/add',
+        contentType: 'application/json',
+        data: JSON.stringify(result),
+    }).done(function () {
+        window.location.href = "/examgenerator/home";
+    })
+}

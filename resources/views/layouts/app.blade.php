@@ -80,7 +80,7 @@
                                     @endif
 
                                     @if (Auth::user()->role == 1)
-                                        <a class="dropdown-item" href="{{ route('add_course') }}">
+                                        <a class="dropdown-item" href="{{ route('prepare_new_course') }}">
                                             {{ __('Adauga curs') }}
                                         </a>
                                     @endif

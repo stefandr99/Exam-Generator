@@ -201,7 +201,7 @@ class ExamBusiness
         $courseId = $this->courseBusiness->getCourseId($info[0]);
 
         $exam = new Exam;
-        $exam->course_id = $courseId->first()->id;
+        $exam->course_id = $courseId->id;
         $exam->type = $info[1];
         $exam->date = $info[2];
         $exam->hours = $info[3];

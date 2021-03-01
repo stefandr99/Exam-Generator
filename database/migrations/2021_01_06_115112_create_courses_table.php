@@ -19,6 +19,7 @@ class CreateCoursesTable extends Migration
             $table->string('name', 50)->unique();
             $table->integer('year')->default(1);
             $table->integer('semester')->default(1);
+            $table->integer('credits')->default(5);
             $table->timestamps();
         });
 

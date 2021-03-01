@@ -64,4 +64,14 @@ class UserBusiness
 
         return $teachers;
     }
+
+    public function getIdByName($name) {
+        $id = DB::table('users')
+            ->select('id')
+            ->where('name', $name)
+            ->get()
+            ->first();
+
+        return $id;
+    }
 }

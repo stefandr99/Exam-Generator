@@ -31,17 +31,17 @@
                 <label for="course-year" class="col-1 dependencies-options">Anul:
                         <select id="course-year" class="form-control">
                             <option value="no-type">--</option>
-                            <option value="year-1">1</option>
-                            <option value="year-2">2</option>
-                            <option value="year-3">3</option>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
                         </select>
                 </label>
                 <br>
                 <label for="course-semester" class="col-1 dependencies-options">Semestrul:
                     <select id="course-semester" class="form-control">
                         <option value="no-type">--</option>
-                        <option value="year-1">I</option>
-                        <option value="year-2">II</option>
+                        <option value="1">I</option>
+                        <option value="2">II</option>
                     </select>
                 </label>
                 <br>
@@ -58,46 +58,10 @@
 
             <br>
             <br>
-                <button type="button" class="btn btn-success btn-lg btn-lg" onclick="">Adaugati cursul</button>
+                <button type="button" class="btn btn-success btn-lg btn-lg" onclick="addCourse()">Adaugati cursul</button>
 
         </form>
     </div>
 
 @endsection
-
-<script>
-    function addToList() {
-        selectedTeacher = document.getElementById("course-teachers").value;
-        teachersDropDown = document.getElementById("course-teachers");
-        list = document.getElementById("selected-teachers");
-
-        var spann = document.createElement("span");
-        spann.classList.add("close");
-        spann.innerHTML = "&times;";
-        spann.id = "span-" + selectedTeacher;
-
-        spann.onclick = function() {
-            teacherName = spann.id.split("-")[1]
-            var item = document.getElementById(teacherName);
-            item.remove();
-
-            var option = document.createElement("option");
-            option.text = teacherName;
-            option.value = teacherName;
-            teachersDropDown.add(option);
-        }
-        var li = document.createElement("li");
-        li.classList.add("list-group-item");
-        li.classList.add("list-group-item-success");
-        li.id = selectedTeacher;
-        li.appendChild(document.createTextNode(selectedTeacher));
-
-
-        li.appendChild(spann);
-
-        list.appendChild(li);
-        teachersDropDown.remove(teachersDropDown.selectedIndex);
-
-    }
-</script>
 
