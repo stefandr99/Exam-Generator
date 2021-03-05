@@ -6,7 +6,7 @@
 
 @section('content')
     <div class="container my-4">
-        <h1 class="text-center"><b>Adaugati un nou curs</b></h1>
+        <h1 class="text-center"><b>Adaugați un nou curs</b></h1>
         <br>
         <form class="form-group">
             <label for="course-name" class="dependencies-options">Numele cursului:
@@ -47,7 +47,7 @@
                 <br>
             </div>
 
-            <label for="course-credits" class="dependencies-options">Numarul de credite:
+            <label for="course-credits" class="dependencies-options">Numărul de credite:
                 <select id="course-credits" class="form-control">
                     <option value="no-type">--</option>
                     @for($i = 1; $i < 9; $i++)
@@ -58,7 +58,7 @@
 
             <br>
             <br>
-                <button type="button" class="btn btn-success btn-lg btn-lg" onclick="addCourse()">Adaugati cursul</button>
+                <button type="button" class="btn btn-success btn-lg btn-lg" onclick="addCourse()">Adaugați cursul</button>
 
         </form>
     </div>

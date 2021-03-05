@@ -74,4 +74,33 @@ class UserBusiness
 
         return $id;
     }
+
+    public function getTeachersFromCourseId($courseId) {
+        $teachers = DB::table('users as u')
+            ->join('didactics as d', 'u.id', '=', 'd.teacher_id')
+            ->where('d.course_id', $courseId)
+            ->select('u.id', 'name')
+            ->get();
+
+        return $teachers;
+    }
+
+    public function getNoTeachersFromCourseId($courseId) {
+        /*$teachers = DB::table('users as u')
+            ->where('u.role', '=', 2)
+            ->whereNotIn('u.id', function($query) use ($courseId) {
+                $query->select('d.teacher_id')
+                    ->distinct()
+                    ->from('didactics as d')
+                    ->where('d.course_id', $courseId);
+            })
+            ->select('u.id', 'name')
+            ->get();*/
+
+        $teachers = DB::select(DB::raw('select users.id, name from users
+                                    where users.role = 2 and users.id not in
+                                     (select DISTINCT d.teacher_id from didactics as d where d.course_id = ' . $courseId. ')'));
+
+        return $teachers;
+    }
 }

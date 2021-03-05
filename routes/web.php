@@ -22,9 +22,9 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 
-Route::get('/users/search', 'UserController@search')->name('search_user');
-Route::get('/users', 'UserController@showAll')->name('users');
-Route::put('/users/update/{id}/newRole={newRole}', 'UserController@updateUserRole')->name('update_role');
+Route::get('/user/search', 'UserController@search')->name('search_user');
+Route::get('/user/all', 'UserController@showAll')->name('users');
+Route::put('/user/update/{id}/newRole={newRole}', 'UserController@updateUserRole')->name('update_role');
 
 Route::get('/exam/prepare', 'ExamController@prepare')->name('prepare_exam');
 Route::post('/exam/correct', 'ExamController@correctPartial')->name('correct_partial');
@@ -38,3 +38,7 @@ Route::get('/program', 'ExamController@showExams')->name('show_exams');
 
 Route::get('/course/prepare', 'CourseController@prepareNewCourse')->name('prepare_new_course');
 Route::post('/course/add', 'CourseController@addNewCourse')->name('add_new_course');
+Route::get('/course/all', 'CourseController@showCourses')->name('show_courses');
+Route::get('/course/search', 'CourseController@search')->name('search_course');
+Route::post('/course/addTeacher', 'CourseController@addTeacherToCourse')->name('add_teacher_to_course');
+Route::delete('/course/deleteTeacher', 'CourseController@deleteTeacherFromCourse')->name('delete_teacher_from_course');

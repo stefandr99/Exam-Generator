@@ -19,6 +19,9 @@ class CreateDidacticsTable extends Migration
             $table->foreignId('course_id')->constrained('courses');
             $table->timestamps();
         });
+
+
+
     }
 
     /**
@@ -29,5 +32,8 @@ class CreateDidacticsTable extends Migration
     public function down()
     {
         Schema::dropIfExists('didactics');
+        Schema::table('didactics', function (Blueprint $table) {
+            $table->dropSoftDeletes();
+        });
     }
 }

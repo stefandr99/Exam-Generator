@@ -83,6 +83,10 @@
                                         <a class="dropdown-item" href="{{ route('prepare_new_course') }}">
                                             {{ __('Adauga curs') }}
                                         </a>
+
+                                        <a class="dropdown-item" href="{{ route('show_courses') }}">
+                                            {{ __('Cursuri') }}
+                                        </a>
                                     @endif
 
                                     @if (Auth::user()->role != 3)

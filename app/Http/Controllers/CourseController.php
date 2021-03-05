@@ -38,4 +38,46 @@ class CourseController extends Controller
             $this->business->course->addCourse($info);
         }
     }
+
+    public function showCourses() {
+        $coursesAndTeachers = $this->business->course->getAll();
+
+        $courses = $coursesAndTeachers['courses'];
+        $teachers = $coursesAndTeachers['teachers'];
+        $noTeachers = $coursesAndTeachers['noTeachers'];
+
+        return view('course/showAll', [
+            'courses' => $courses,
+            'teachers' => $teachers,
+            'noTeachers' => $noTeachers
+        ]);
+    }
+
+    public function search(Request $request) {
+        $coursesAndTeachers = $this->business->course->search($request->name);
+
+        $courses = $coursesAndTeachers['courses'];
+        $teachers = $coursesAndTeachers['teachers'];
+        $noTeachers = $coursesAndTeachers['noTeachers'];
+
+        return view('course/showAll', [
+            'courses' => $courses,
+            'teachers' => $teachers,
+            'noTeachers' => $noTeachers
+        ]);
+    }
+
+    public function addTeacherToCourse(Request $request) {
+        if($request->teacherToAdd != 0)
+            $this->business->course->addTeacherToCourse($request->teacherToAdd, $request->courseId);
+
+        return redirect()->route('show_courses');
+    }
+
+    public function deleteTeacherFromCourse(Request $request) {
+        if($request->teacherToDelete != 0)
+            $this->business->course->deleteTeacherFromCourse($request->teacherToDelete, $request->courseId);
+
+        return redirect()->route('show_courses');
+    }
 }

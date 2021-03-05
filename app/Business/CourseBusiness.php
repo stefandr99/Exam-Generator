@@ -68,4 +68,67 @@ class CourseBusiness
             $didactic->save();
         }
     }
+
+    public function getAll() {
+        $courses = DB::table('courses')
+            ->orderBy('year')
+            ->orderBy('semester')
+            ->orderBy('credits')
+            ->get();
+
+        $teachers = $this->getTeachersArray($courses);
+
+        $result = array(
+            'courses' => $courses,
+            'teachers' => $teachers['teachers'],
+            'noTeachers' => $teachers['noTeachers']
+        );
+        return $result;
+    }
+
+    private function getTeachersArray($courses) {
+        $teachersArr = array();
+        $noTeachersArr = array();
+
+        foreach ($courses as $c) {
+            $courseId = $c->id;
+            $courseTeachers = $this->userBusiness->getTeachersFromCourseId($courseId);
+            $teachersArr[$courseId] = $courseTeachers;
+
+            $courseNoTeachers = $this->userBusiness->getNoTeachersFromCourseId($courseId);
+            $noTeachersArr[$courseId] = $courseNoTeachers;
+        }
+
+        $result = array('teachers' => $teachersArr, 'noTeachers' => $noTeachersArr);
+        return $result;
+    }
+
+    public function search($name) {
+        $courses = DB::table('courses')
+            ->where('name', 'like', '%'.$name.'%')
+            ->get();
+
+        $teachers = $this->getTeachersArray($courses);
+
+        $result = array(
+            'courses' => $courses,
+            'teachers' => $teachers['teachers'],
+            'noTeachers' => $teachers['noTeachers']
+        );
+        return $result;
+    }
+
+    public function addTeacherToCourse($teacherId, $courseId) {
+        $didactic = new Didactic;
+        $didactic->course_id = $courseId;
+        $didactic->teacher_id = $teacherId;
+        $didactic->save();
+    }
+
+    public function deleteTeacherFromCourse($teacherId, $courseId) {
+        DB::table('didactics')
+            ->where('teacher_id', $teacherId)
+            ->where('course_id', $courseId)
+            ->delete();
+    }
 }
