@@ -24,6 +24,8 @@ Route::get('/home', 'HomeController@index')->name('home');
 
 Route::get('/user/search', 'UserController@search')->name('search_user');
 Route::get('/user/all', 'UserController@showAll')->name('users');
+Route::post('/user/add', 'UserController@registerByAdmin')->name('register_by_admin');
+Route::post('/user/uploadBulkUsers', 'UserController@registerBulk')->name('register_bulk_users');
 Route::put('/user/update/{id}/newRole={newRole}', 'UserController@updateUserRole')->name('update_role');
 
 Route::get('/exam/prepare', 'ExamController@prepare')->name('prepare_exam');

@@ -6,14 +6,16 @@
 
 @section('content')
     <div class="container my-4">
-
-        <form class="form-inline" action="{{route('search_course')}}">
-            <div class="form-group search-user">
-                <label for="search-course"><b>Curs:</b></label>
-                <input type="text" name="name" id="search-course" class="form-control mx-sm-4" placeholder="Curs">
-                <button type="submit" class="btn btn-primary">Caută</button>
-            </div>
-        </form>
+        <div class="row">
+            <form class="form-inline col" action="{{route('search_course')}}">
+                <div class="form-group search-user">
+                    <label for="search-course"><b>Curs:</b></label>
+                    <input type="text" name="name" id="search-course" class="form-control mx-sm-4" placeholder="Nume">
+                    <button type="submit" class="btn btn-primary">Caută</button>
+                </div>
+            </form>
+            <button type="button" class="btn btn-primary add-course-button" onclick="window.location='{{route('prepare_new_course')}}'">Adauga curs</button>
+        </div>
         <br>
 
 
@@ -57,7 +59,9 @@
                                     <div class="modal-content">
                                         <div class="modal-header">
                                             <h5 class="modal-title" id="addTeacherToCourse{{$course->id}}ModalLabel">Adauga profesor</h5>
-
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
                                         </div>
                                         <form action="{{ route('add_teacher_to_course') }}" method="POST" >
                                         @csrf
@@ -93,7 +97,9 @@
                                     <div class="modal-content">
                                         <div class="modal-header">
                                             <h5 class="modal-title" id="deleteTeacherFromCourse{{$course->id}}ModalLabel">Adauga profesor</h5>
-
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
                                         </div>
                                         <form action="{{ route('delete_teacher_from_course') }}" method="POST" >
                                             @csrf

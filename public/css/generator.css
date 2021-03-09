@@ -71,17 +71,41 @@ input[type="checkbox"] {
     margin-left: 12px;
 }
 
+.search-course {
+    margin-left: 12px;
+}
+
 .list-group-item {
     padding: 4px 8px;
     padding-right: 30px;
 }
 
-.close {
-    cursor: pointer;
-    position: absolute;
-    top: 50%;
-    right: 8px;
-    transform: translate(0%, -50%);
+.add-course-button {
+    margin-right: 16px;
+}
+
+.add-user-button {
+    margin-right: 16px;
+}
+
+.input-users {
+    line-height: 17px;
+}
+
+.btn-primary.input-users {
+    background-color: #f0ecec;
+    border-color:#f0ecec;
+    color: black;
+}
+
+.btn-primary.input-users:hover {
+    background-color: #c8e4f4;
+    border-color: #c8e4f4;
+    color: black;
+}
+
+.upload-users-div {
+    margin-left: 12px;
 }
 
 
