@@ -40,7 +40,7 @@ class CourseController extends Controller
     }
 
     public function showCourses() {
-        $coursesAndTeachers = $this->business->course->getAll();
+        $coursesAndTeachers = $this->business->course->getAllWithTeachers();
 
         $courses = $coursesAndTeachers['courses'];
         $teachers = $coursesAndTeachers['teachers'];
@@ -75,8 +75,14 @@ class CourseController extends Controller
     }
 
     public function deleteTeacherFromCourse(Request $request) {
-        if($request->teacherToDelete != 0)
-            $this->business->course->deleteTeacherFromCourse($request->teacherToDelete, $request->courseId);
+        $teacherId = $request->teacherToDelete;
+        $courseId = $request->courseId;
+        if($request->teacherToDelete != 0) {
+            $this->business->course->deleteTeacherFromCourse($teacherId, $courseId);
+            if(!$this->business->course->verifyTeacherDidacticsExistence($teacherId)) {
+                $this->business->user->changeRole($teacherId, 3);
+            }
+        }
 
         return redirect()->route('show_courses');
     }

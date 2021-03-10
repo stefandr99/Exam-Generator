@@ -14,7 +14,7 @@
                     <button type="submit" class="btn btn-primary">Caută</button>
                 </div>
             </form>
-            <button type="button" class="btn btn-primary add-course-button" onclick="window.location='{{route('prepare_new_course')}}'">Adauga curs</button>
+            <button type="button" class="btn btn-primary add-course-button" onclick="window.location='{{route('prepare_new_course')}}'">Adaugă curs</button>
         </div>
         <br>
 
@@ -25,7 +25,7 @@
                 <th scope="col">Nume</th>
                 <th scope="col">An</th>
                 <th scope="col">Semestru</th>
-                <th scope="col">Numarul de credite</th>
+                <th scope="col">Numărul de credite</th>
                 <th scope="col">Catedra</th>
                 <th scope="col"></th>
             </tr>
@@ -51,14 +51,14 @@
                             @endforeach
                         </td>
                         <td>
-                            <button type="button" class="btn btn-warning btn-sm" data-toggle="modal" data-target="#addTeacherToCourse{{$course->id}}Modal">Adauga profesor</button>
-                            <button type="button" class="btn btn-danger btn-sm"  data-toggle="modal" data-target="#deleteTeacherFromCourse{{$course->id}}Modal">Sterge profesor</button>
+                            <button type="button" class="btn btn-warning btn-sm" data-toggle="modal" data-target="#addTeacherToCourse{{$course->id}}Modal">Adaugă profesor</button>
+                            <button type="button" class="btn btn-danger btn-sm"  data-toggle="modal" data-target="#deleteTeacherFromCourse{{$course->id}}Modal">Șterge profesor</button>
 
                             <div class="modal fade" id="addTeacherToCourse{{$course->id}}Modal" tabindex="-1" role="dialog" aria-labelledby="addTeacherToCourse{{$course->id}}ModalLabel" aria-hidden="true">
                                 <div class="modal-dialog" role="document">
                                     <div class="modal-content">
                                         <div class="modal-header">
-                                            <h5 class="modal-title" id="addTeacherToCourse{{$course->id}}ModalLabel">Adauga profesor</h5>
+                                            <h5 class="modal-title" id="addTeacherToCourse{{$course->id}}ModalLabel">Adaugă profesor</h5>
                                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                                 <span aria-hidden="true">&times;</span>
                                             </button>
@@ -66,9 +66,9 @@
                                         <form action="{{ route('add_teacher_to_course') }}" method="POST" >
                                         @csrf
                                             <div class="modal-body">
-                                                Adaugati un profesor la cursul {{ $course->name }}
+                                                Adăugați un profesor la cursul <b>{{ $course->name }}</b>
                                                 <br>
-                                                <label for="teacher-to-add" class="col-sm-6">Profesor:
+                                                <label for="teacher-to-add">Profesor:
                                                     <select id="teacher-to-add" class="form-control" name="teacherToAdd">
                                                         <option value="0">--</option>
                                                         @if(count($noTeachers[$course->id]) > 0)
@@ -81,9 +81,9 @@
                                                 <input hidden name="courseId" value="{{$course->id}}">
                                             </div>
                                             <div class="modal-footer">
-                                                <button class="btn btn-success" type="submit">Adauga</button>
+                                                <button class="btn btn-success" type="submit">Adaugă</button>
 
-                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Anuleaza</button>
+                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Anulează</button>
                                             </div>
                                         </form>
                                     </div>
@@ -96,7 +96,7 @@
                                 <div class="modal-dialog" role="document">
                                     <div class="modal-content">
                                         <div class="modal-header">
-                                            <h5 class="modal-title" id="deleteTeacherFromCourse{{$course->id}}ModalLabel">Adauga profesor</h5>
+                                            <h5 class="modal-title" id="deleteTeacherFromCourse{{$course->id}}ModalLabel">Șterge profesor</h5>
                                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                                 <span aria-hidden="true">&times;</span>
                                             </button>
@@ -105,22 +105,23 @@
                                             @csrf
                                             @method('DELETE')
                                             <div class="modal-body">
-                                                Stergeti un profesor de la cursul {{ $course->name }}
+                                                Ștergeți un profesor de la cursul <b>{{ $course->name }}</b>
                                                 <br>
-                                                <label for="teacher-to-delete" class="col-sm-6">Profesor:
+                                                <label for="teacher-to-delete">Profesor:
                                                     <select id="teacher-to-delete" class="form-control" name="teacherToDelete">
                                                         <option value="0">--</option>
                                                         @foreach($teachers[$course->id] as $teacher)
                                                             <option value="{{ $teacher->id }}">{{ $teacher->name }}</option>
                                                         @endforeach
                                                     </select>
+
                                                 </label>
                                                 <input hidden name="courseId" value="{{$course->id}}">
                                             </div>
                                             <div class="modal-footer">
-                                                <button class="btn btn-danger" type="submit">Sterge</button>
+                                                <button class="btn btn-danger" type="submit">Șterge</button>
 
-                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Anuleaza</button>
+                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Anulează</button>
                                             </div>
                                         </form>
                                     </div>

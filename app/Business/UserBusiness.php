@@ -8,7 +8,9 @@ use Illuminate\Support\Facades\DB;
 class UserBusiness
 {
     public function getAll() {
-        return User::all()->sortBy("role");
+        return User::all()
+            ->where('year', '<', 4)
+            ->sortBy("role");
     }
 
     public function changeRole($id, $newRole) {
@@ -47,11 +49,43 @@ class UserBusiness
         return $name;
     }
 
-    public function search($name): \Illuminate\Support\Collection
+    public function search($search, $criteria): \Illuminate\Support\Collection
     {
-        $users = DB::table('users')
-            ->where('name', 'like', '%'.$name.'%')
-            ->get();
+        switch ($criteria) {
+            case 'name':
+                $users = DB::table('users')
+                    ->where('name', 'like', '%'.$search.'%')
+                    ->orderBy("role")
+                    ->get();
+                break;
+            case 'registration_number':
+                $users = DB::table('users')
+                    ->where('registration_number', '=', $search)
+                    ->orderBy("role")
+                    ->get();
+                break;
+            case 'year&group':
+                $info = explode(" ", $search);
+                $users = DB::table('users')
+                    ->where('year', '=', $info[0])
+                    ->where('group', '=', $info[1])
+                    ->orderBy("role")
+                    ->get();
+                break;
+            case 'year':
+                $users = DB::table('users')
+                    ->where('year', '=', $search)
+                    ->orderBy("role")
+                    ->get();
+                break;
+            case 'group':
+                $users = DB::table('users')
+                    ->where('group', '=', $search)
+                    ->orderBy("role")
+                    ->get();
+                break;
+        }
+
 
         return $users;
     }
@@ -86,21 +120,33 @@ class UserBusiness
     }
 
     public function getNoTeachersFromCourseId($courseId) {
-        /*$teachers = DB::table('users as u')
-            ->where('u.role', '=', 2)
-            ->whereNotIn('u.id', function($query) use ($courseId) {
-                $query->select('d.teacher_id')
-                    ->distinct()
-                    ->from('didactics as d')
-                    ->where('d.course_id', $courseId);
-            })
-            ->select('u.id', 'name')
-            ->get();*/
-
         $teachers = DB::select(DB::raw('select users.id, name from users
                                     where users.role = 2 and users.id not in
                                      (select DISTINCT d.teacher_id from didactics as d where d.course_id = ' . $courseId. ')'));
 
         return $teachers;
+    }
+
+    public function passToNextSemester() {
+        DB::table('users')
+            ->where('semester', '=', 1)
+            ->update([
+                'semester' => 2
+            ]);
+    }
+
+    public function passToNextYear() {
+        DB::table('users')
+            ->where('semester', '=', 2)
+            ->update([
+                'year' => DB::raw('year + 1'),
+                'semester' => 1
+            ]);
+    }
+
+    public function deleteUserById($userId) {
+        DB::table('users')
+            ->where('id', $userId)
+            ->delete();
     }
 }

@@ -24,18 +24,25 @@ class UserController extends Controller
 
     public function showAll() {
         $users = $this->business->user->getAll();
+        $courses = $this->business->course->getAll();
 
-        return view('user/showUsers', ['users' => $users]);
+        return view('user/showUsers', ['users' => $users, 'courses' => $courses]);
     }
 
-    public function updateUserRole($id, $newRole) {
+    public function updateUserRole(Request $request, $id, $newRole) {
         $this->business->user->changeRole($id, $newRole);
+        if($newRole == 2) {
+            $courseId = $request->courseId;
+            $this->business->course->addTeacherToDidactics($id, $courseId);
+        }
 
         return redirect()->route('users');
     }
 
     public function search(Request $request) {
-        $users = $this->business->user->search($request->name);
+        $search = $request->search;
+        $criteria = $request->criteria;
+        $users = $this->business->user->search($search, $criteria);
 
         return view('user/showUsers', ['users' => $users]);
     }
@@ -87,6 +94,21 @@ class UserController extends Controller
         } else {
             echo SimpleXLSX::parseError();
         }
+        return redirect()->route('users');
+    }
+
+    public function passToNextSemester($semester) {
+        if($semester == 1)
+            $this->business->user->passToNextSemester();
+        else
+            $this->business->user->passToNextYear();
+
+        return redirect()->route('users');
+    }
+
+    public function deleteUser($id) {
+        $this->business->user->deleteUserById($id);
+
         return redirect()->route('users');
     }
 }

@@ -22,11 +22,13 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 
-Route::get('/user/search', 'UserController@search')->name('search_user');
-Route::get('/user/all', 'UserController@showAll')->name('users');
-Route::post('/user/add', 'UserController@registerByAdmin')->name('register_by_admin');
-Route::post('/user/uploadBulkUsers', 'UserController@registerBulk')->name('register_bulk_users');
-Route::put('/user/update/{id}/newRole={newRole}', 'UserController@updateUserRole')->name('update_role');
+Route::get('/users/search', 'UserController@search')->name('search_user');
+Route::post('/users/add', 'UserController@registerByAdmin')->name('register_by_admin');
+Route::delete('/users/delete/{id}', 'UserController@deleteUser')->name('delete_user');
+Route::put('/users/next_semester/{semester}', 'UserController@passToNextSemester')->name('next_semester');
+Route::post('/users/uploadBulkUsers', 'UserController@registerBulk')->name('register_bulk_users');
+Route::put('/users/update/{id}/newRole={newRole}', 'UserController@updateUserRole')->name('update_role');
+Route::get('/users', 'UserController@showAll')->name('users');
 
 Route::get('/exam/prepare', 'ExamController@prepare')->name('prepare_exam');
 Route::post('/exam/correct', 'ExamController@correctPartial')->name('correct_partial');

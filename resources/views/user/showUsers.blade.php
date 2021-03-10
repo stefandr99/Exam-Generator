@@ -10,13 +10,20 @@
             <form class="form-inline col" action="{{route('search_user')}}">
                 <div class="form-group search-user">
                     <label for="search-user"><b>Utilizator:</b></label>
-                    <input type="text" name="name" id="search-user" class="form-control mx-sm-4" placeholder="Nume">
+                    <input type="text" name="search" id="search-user" class="form-control mx-sm-4" placeholder="Informație">
+
+                    <label for="search-user-by"><b>După:</b></label>
+                    <select id="search-user-by" name="criteria" class="form-control mx-sm-4">
+                        <option value="name">Nume</option>
+                        <option value="registration_number">Număr matricol</option>
+                        <option value="year&group">An de studiu & grupă</option>
+                        <option value="year">An de studiu</option>
+                        <option value="group">Grupă</option>
+                    </select>
+
                     <button type="submit" class="btn btn-primary">Caută</button>
                 </div>
             </form>
-            @if (Auth::user()->role == 1)
-
-            @endif
         </div>
         <br>
         @if (Auth::user()->role == 1)
@@ -31,6 +38,14 @@
                     </div>
                 </form>
                 <button type="button" class="btn btn-primary add-user-button"  data-toggle="modal" data-target="#addUserModal">Adaugă un utilizator</button>
+                <button type="button" class="btn btn-primary next-semester"  data-toggle="modal" data-target="#nextSemesterModal">
+                    @if($users[1]->semester == 1)
+                        Treceti in semestrul urmator
+                    @else
+                        Treceti in anul urmator
+                    @endif
+                </button>
+
             </div>
         @endif
         <br>
@@ -41,6 +56,7 @@
                 <th scope="col">Nume</th>
                 <th scope="col">Număr matricol</th>
                 <th scope="col">An</th>
+                <th scope="col">Semestru</th>
                 <th scope="col">Grupă</th>
                 <th scope="col">Email</th>
                 <th scope="col">Rol</th>
@@ -57,6 +73,7 @@
                         <td>{{ $user->name }}</td>
                         <td>{{ $user->registration_number }}</td>
                         <td>{{ $user->year }}</td>
+                        <td>{{ $user->semester }}</td>
                         <td>{{ $user->group }}</td>
                         <td>{{ $user->email }}</td>
                         <td>
@@ -70,8 +87,13 @@
                                     </button>
                                     <div class="dropdown-menu dropdown-role">
                                         <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#mkStudent{{$user->id}}Modal">
-                                            Student
+                                            Faceti student
                                         </button>
+                                        @if(\Illuminate\Support\Facades\Auth::user()->role == 1)
+                                            <button type="button" class="btn btn-danger delete-user" data-toggle="modal" data-target="#deleteUser{{$user->id}}Modal">
+                                                Stergeti
+                                            </button>
+                                        @endif
                                     </div>
                                 </div>
 
@@ -84,17 +106,18 @@
                                                     <span aria-hidden="true">&times;</span>
                                                 </button>
                                             </div>
-                                            <div class="modal-body">
-                                                Sunteți sigur că doriți să îl faceți STUDENT pe {{ $user->name }}?
-                                            </div>
-                                            <div class="modal-footer">
-                                                <a class="btn btn-primary" href="{{ route('update_role', ['id' => $user->id, 'newRole' => 3]) }}" onclick="event.preventDefault(); document.getElementById('mkStudent{{$user->id}}').submit();">Da</a>
-                                                <form id="mkStudent{{$user->id}}" action="{{ route('update_role', ['id' => $user->id, 'newRole' => 3]) }}" method="POST" class="hidden">
-                                                    @csrf
-                                                    @method('PUT')
-                                                </form>
-                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Nu</button>
-                                            </div>
+
+                                            <form action="{{route('update_role', ['id' => $user->id, 'newRole' => 3])}}" method="POST">
+                                                @csrf
+                                                @method('PUT')
+                                                <div class="modal-body">
+                                                    Sunteți sigur că doriți să îl/o faceți STUDENT pe {{ $user->name }}?
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="submit" class="btn btn-primary">Da</button>
+                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Nu</button>
+                                                </div>
+                                            </form>
                                         </div>
                                     </div>
                                 </div>
@@ -108,6 +131,11 @@
                                         <button type="button" class="btn btn-success" data-toggle="modal" data-target="#mkTeacher{{$user->id}}Modal">
                                             Profesor
                                         </button>
+                                        @if(\Illuminate\Support\Facades\Auth::user()->role == 1)
+                                            <button type="button" class="btn btn-danger delete-user" data-toggle="modal" data-target="#deleteUser{{$user->id}}Modal">
+                                                Stergeti
+                                            </button>
+                                        @endif
                                     </div>
                                 </div>
 
@@ -120,23 +148,57 @@
                                                         <span aria-hidden="true">&times;</span>
                                                     </button>
                                                 </div>
-                                                <div class="modal-body">
-                                                    Sunteți sigur că doriți să îl faceți PROFESOR pe {{ $user->name }}?
-                                                </div>
-                                                <div class="modal-footer">
-                                                    <a class="btn btn-primary" href="{{ route('update_role', ['id' => $user->id, 'newRole' => 2]) }}" onclick="event.preventDefault(); document.getElementById('mkTeacher{{$user->id}}').submit();">Da</a>
-                                                    <form id="mkTeacher{{$user->id}}" action="{{ route('update_role', ['id' => $user->id, 'newRole' => 2]) }}" method="POST" class="hidden">
-                                                        @csrf
-                                                        @method('PUT')
-                                                    </form>
-                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Nu</button>
-                                                </div>
+                                                <form action="{{route('update_role', ['id' => $user->id, 'newRole' => 2])}}" method="POST">
+                                                    @csrf
+                                                    @method('PUT')
+                                                    <div class="modal-body">
+                                                        Sunteți sigur că doriți să îl/o faceți PROFESOR pe {{ $user->name }}?
+                                                        <label for="mkTeacherCourse">Curs:
+                                                            <select id="course-id-{{$user->id}}" name="courseId" class="form-control">
+                                                                <option value="no-type">--</option>
+                                                                @foreach($courses as $course)
+                                                                    <option value="{{$course->id}}">{{ $course->name }}</option>
+                                                                @endforeach
+                                                            </select>
+                                                        </label>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="submit" class="btn btn-primary">Da</button>
+                                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Nu</button>
+                                                    </div>
+                                                </form>
                                             </div>
                                         </div>
                                     </div>
                             @endif
                         </td>
                     </tr>
+
+
+                    <div class="modal fade" id="deleteUser{{$user->id}}Modal" tabindex="-1" role="dialog" aria-labelledby="deleteUser{{$user->id}}ModalLabel" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="deleteUser{{$user->id}}ModalLabel">Confirmare stergere utilizator</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+
+                                <form action="{{route('delete_user', ['id' => $user->id])}}" method="POST">
+                                    @csrf
+                                    @method('DELETE')
+                                    <div class="modal-body">
+                                        Sunteți sigur că doriți să îl/o stergeti pe {{ $user->name }}?
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="submit" class="btn btn-danger">Da</button>
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Nu</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
                 @endforeach
             @endif
             </tbody>
@@ -257,6 +319,41 @@
                 </div>
             </div>
         </div>
+
+
+        <div class="modal fade" id="nextSemesterModal" tabindex="-1" role="dialog" aria-labelledby="nextSemesterModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        @if($users[1]->semester == 1)
+                            <h5 class="modal-title" id="nextSemesterModalLabel">Confirmare trecere in semestrul urmator</h5>
+                        @else
+                            <h5 class="modal-title" id="nextSemesterModalLabel">Confirmare trecere in anul urmator</h5>
+                        @endif
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+
+                    <form action="{{route('next_semester', ['semester' => $users[1]->semester])}}" method="POST">
+                        @csrf
+                        @method('PUT')
+                        <div class="modal-body">
+                            @if($users[1]->semester == 1)
+                                Sunteți sigur că doriți să treceti in semestrul urmator?
+                            @else
+                                Sunteți sigur că doriți să treceti in anul urmator?
+                            @endif
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-primary">Da</button>
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Nu</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
 
         @if(count($errors) > 0)
             <script>

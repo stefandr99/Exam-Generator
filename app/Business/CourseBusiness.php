@@ -17,6 +17,15 @@ class CourseBusiness
         $this->userBusiness = new UserBusiness();
     }
 
+    public function getAll() {
+        $courses = DB::table('courses')
+            ->orderBy('year')
+            ->orderBy('semester')
+            ->orderBy('credits')
+            ->get();
+        return $courses;
+    }
+
     public function getCourseIdByName($name) {
         $course = DB::table('courses')
             ->select('id')
@@ -55,10 +64,10 @@ class CourseBusiness
 
         $courseId = $this->getCourseId($course['name']);
 
-        $this->addToDidactics($course['teachers'], $courseId);
+        $this->addTeachersArrayToDidactics($course['teachers'], $courseId);
     }
 
-    private function addToDidactics($teachers, $courseId) {
+    public function addTeachersArrayToDidactics($teachers, $courseId) {
         foreach ($teachers as $teacher) {
             $teacherId = $this->userBusiness->getIdByName($teacher);
 
@@ -69,7 +78,14 @@ class CourseBusiness
         }
     }
 
-    public function getAll() {
+    public function addTeacherToDidactics($teacherId, $courseId) {
+        $didactic = new Didactic;
+        $didactic->teacher_id = intval($teacherId);
+        $didactic->course_id = intval($courseId);
+        $didactic->save();
+    }
+
+    public function getAllWithTeachers() {
         $courses = DB::table('courses')
             ->orderBy('year')
             ->orderBy('semester')
@@ -130,5 +146,13 @@ class CourseBusiness
             ->where('teacher_id', $teacherId)
             ->where('course_id', $courseId)
             ->delete();
+    }
+
+    public function verifyTeacherDidacticsExistence($teacherId) {
+        $courses = DB::table('didactics')
+            ->where('teacher_id', $teacherId)
+            ->get();
+
+        return count($courses) > 0;
     }
 }
