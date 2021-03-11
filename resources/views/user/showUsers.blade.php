@@ -21,7 +21,7 @@
                         <option value="group">Grupă</option>
                     </select>
 
-                    <button type="submit" class="btn btn-primary">Caută</button>
+                    <button type="submit" class="btn btn-primary"><i class="fas fa-search"></i> Caută</button>
                 </div>
             </form>
         </div>
@@ -40,9 +40,9 @@
                 <button type="button" class="btn btn-primary add-user-button"  data-toggle="modal" data-target="#addUserModal">Adaugă un utilizator</button>
                 <button type="button" class="btn btn-primary next-semester"  data-toggle="modal" data-target="#nextSemesterModal">
                     @if($users[1]->semester == 1)
-                        Treceti in semestrul urmator
+                        Treceti in semestrul urmator <i class="fas fa-angle-double-right"></i>
                     @else
-                        Treceti in anul urmator
+                        Treceti in anul urmator <i class="fas fa-angle-double-right"></i>
                     @endif
                 </button>
 
@@ -85,15 +85,13 @@
                                     <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                         Profesor
                                     </button>
+                                    <button type="button" class="btn btn-danger float-right" data-toggle="modal" data-target="#deleteUser{{$user->id}}Modal">
+                                        <i class="fas fa-trash-alt"></i>
+                                    </button>
                                     <div class="dropdown-menu dropdown-role">
                                         <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#mkStudent{{$user->id}}Modal">
-                                            Faceti student
+                                            Student
                                         </button>
-                                        @if(\Illuminate\Support\Facades\Auth::user()->role == 1)
-                                            <button type="button" class="btn btn-danger delete-user" data-toggle="modal" data-target="#deleteUser{{$user->id}}Modal">
-                                                Stergeti
-                                            </button>
-                                        @endif
                                     </div>
                                 </div>
 
@@ -127,78 +125,80 @@
                                     <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                         Student
                                     </button>
+                                    <button type="button" class="btn btn-danger float-right" data-toggle="modal" data-target="#deleteUser{{$user->id}}Modal">
+                                        <i class="fas fa-trash-alt"></i>
+                                    </button>
                                     <div class="dropdown-menu  dropdown-role" style="min-width: 80px; border: none">
                                         <button type="button" class="btn btn-success" data-toggle="modal" data-target="#mkTeacher{{$user->id}}Modal">
                                             Profesor
                                         </button>
-                                        @if(\Illuminate\Support\Facades\Auth::user()->role == 1)
-                                            <button type="button" class="btn btn-danger delete-user" data-toggle="modal" data-target="#deleteUser{{$user->id}}Modal">
-                                                Stergeti
-                                            </button>
-                                        @endif
                                     </div>
                                 </div>
 
-                                    <div class="modal fade" id="mkTeacher{{$user->id}}Modal" tabindex="-1" role="dialog" aria-labelledby="mkTeacher{{$user->id}}eModalLabel" aria-hidden="true">
-                                        <div class="modal-dialog" role="document">
-                                            <div class="modal-content">
-                                                <div class="modal-header">
-                                                    <h5 class="modal-title" id="mkTeacher{{$user->id}}ModalLabel">Confirmare schimbare de rol</h5>
-                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                        <span aria-hidden="true">&times;</span>
-                                                    </button>
-                                                </div>
-                                                <form action="{{route('update_role', ['id' => $user->id, 'newRole' => 2])}}" method="POST">
-                                                    @csrf
-                                                    @method('PUT')
-                                                    <div class="modal-body">
-                                                        Sunteți sigur că doriți să îl/o faceți PROFESOR pe {{ $user->name }}?
-                                                        <label for="mkTeacherCourse">Curs:
-                                                            <select id="course-id-{{$user->id}}" name="courseId" class="form-control">
-                                                                <option value="no-type">--</option>
-                                                                @foreach($courses as $course)
-                                                                    <option value="{{$course->id}}">{{ $course->name }}</option>
-                                                                @endforeach
-                                                            </select>
-                                                        </label>
-                                                    </div>
-                                                    <div class="modal-footer">
-                                                        <button type="submit" class="btn btn-primary">Da</button>
-                                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Nu</button>
-                                                    </div>
-                                                </form>
+                                <div class="modal fade" id="mkTeacher{{$user->id}}Modal" tabindex="-1" role="dialog" aria-labelledby="mkTeacher{{$user->id}}eModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="mkTeacher{{$user->id}}ModalLabel">Confirmare schimbare de rol</h5>
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
                                             </div>
+                                            <form action="{{route('update_role', ['id' => $user->id, 'newRole' => 2])}}" method="POST">
+                                                @csrf
+                                                @method('PUT')
+                                                <div class="modal-body">
+                                                    Sunteți sigur că doriți să îl/o faceți PROFESOR pe {{ $user->name }}?
+                                                    <label for="mkTeacherCourse">Curs:
+                                                        <select id="course-id-{{$user->id}}" name="courseId" class="form-control">
+                                                            <option value="no-type">--</option>
+                                                            @foreach($courses as $course)
+                                                                <option value="{{$course->id}}">{{ $course->name }}</option>
+                                                            @endforeach
+                                                        </select>
+                                                    </label>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="submit" class="btn btn-primary">Da</button>
+                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Nu</button>
+                                                </div>
+                                            </form>
                                         </div>
                                     </div>
+                                </div>
+
                             @endif
+
+                            <div class="modal fade" id="deleteUser{{$user->id}}Modal" tabindex="-1" role="dialog" aria-labelledby="deleteUser{{$user->id}}ModalLabel" aria-hidden="true">
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="deleteUser{{$user->id}}ModalLabel">Confirmare stergere utilizator</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+
+                                        <form action="{{ route('delete_user') }}" method="POST">
+                                            @csrf
+                                            @method('DELETE')
+                                            <div class="modal-body">
+                                                Sunteți sigur că doriți să îl/o stergeti pe {{ $user->name }}?
+                                                <label>
+                                                    <input hidden name="userId" value="{{$user->id}}">
+                                                </label>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button class="btn btn-danger" type="submit">Da</button>
+                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Nu</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
                         </td>
                     </tr>
 
-
-                    <div class="modal fade" id="deleteUser{{$user->id}}Modal" tabindex="-1" role="dialog" aria-labelledby="deleteUser{{$user->id}}ModalLabel" aria-hidden="true">
-                        <div class="modal-dialog" role="document">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title" id="deleteUser{{$user->id}}ModalLabel">Confirmare stergere utilizator</h5>
-                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </div>
-
-                                <form action="{{route('delete_user', ['id' => $user->id])}}" method="POST">
-                                    @csrf
-                                    @method('DELETE')
-                                    <div class="modal-body">
-                                        Sunteți sigur că doriți să îl/o stergeti pe {{ $user->name }}?
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="submit" class="btn btn-danger">Da</button>
-                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Nu</button>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
                 @endforeach
             @endif
             </tbody>

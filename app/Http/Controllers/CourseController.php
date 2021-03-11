@@ -79,9 +79,6 @@ class CourseController extends Controller
         $courseId = $request->courseId;
         if($request->teacherToDelete != 0) {
             $this->business->course->deleteTeacherFromCourse($teacherId, $courseId);
-            if(!$this->business->course->verifyTeacherDidacticsExistence($teacherId)) {
-                $this->business->user->changeRole($teacherId, 3);
-            }
         }
 
         return redirect()->route('show_courses');

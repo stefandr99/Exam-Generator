@@ -22,12 +22,16 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 
+Route::get('/pass', 'NameController@executePass')->name('pass');
+
+
 Route::get('/users/search', 'UserController@search')->name('search_user');
 Route::post('/users/add', 'UserController@registerByAdmin')->name('register_by_admin');
-Route::delete('/users/delete/{id}', 'UserController@deleteUser')->name('delete_user');
+
 Route::put('/users/next_semester/{semester}', 'UserController@passToNextSemester')->name('next_semester');
 Route::post('/users/uploadBulkUsers', 'UserController@registerBulk')->name('register_bulk_users');
 Route::put('/users/update/{id}/newRole={newRole}', 'UserController@updateUserRole')->name('update_role');
+Route::delete('/users/deleteUser', 'UserController@deleteUser')->name('delete_user');
 Route::get('/users', 'UserController@showAll')->name('users');
 
 Route::get('/exam/prepare', 'ExamController@prepare')->name('prepare_exam');

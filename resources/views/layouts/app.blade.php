@@ -15,6 +15,7 @@
     <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+    <script src="https://kit.fontawesome.com/2c4278887e.js" crossorigin="anonymous"></script>
 
 
 

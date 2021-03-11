@@ -10,7 +10,8 @@ class UserBusiness
     public function getAll() {
         return User::all()
             ->where('year', '<', 4)
-            ->sortBy("role");
+            ->sortBy("role")
+            ->sortBy("year");
     }
 
     public function changeRole($id, $newRole) {
@@ -148,5 +149,6 @@ class UserBusiness
         DB::table('users')
             ->where('id', $userId)
             ->delete();
+
     }
 }

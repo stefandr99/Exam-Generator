@@ -106,7 +106,9 @@ class UserController extends Controller
         return redirect()->route('users');
     }
 
-    public function deleteUser($id) {
+    public function deleteUser(Request $request) {
+        echo '<script>console.log(22)</script>';
+        $id = $request->userId;
         $this->business->user->deleteUserById($id);
 
         return redirect()->route('users');

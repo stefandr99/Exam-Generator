@@ -51,7 +51,7 @@
                             @endforeach
                         </td>
                         <td>
-                            <button type="button" class="btn btn-warning btn-sm" data-toggle="modal" data-target="#addTeacherToCourse{{$course->id}}Modal">Adaugă profesor</button>
+                            <button type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#addTeacherToCourse{{$course->id}}Modal">Adaugă profesor</button>
                             <button type="button" class="btn btn-danger btn-sm"  data-toggle="modal" data-target="#deleteTeacherFromCourse{{$course->id}}Modal">Șterge profesor</button>
 
                             <div class="modal fade" id="addTeacherToCourse{{$course->id}}Modal" tabindex="-1" role="dialog" aria-labelledby="addTeacherToCourse{{$course->id}}ModalLabel" aria-hidden="true">
