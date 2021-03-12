@@ -72,6 +72,7 @@ class ExamController extends Controller
 
     public function prepare() {
         return view('exam/prepare');
+        //return view('exam/timer');
     }
 
     public function scheduleExam(Request $request)

@@ -116,6 +116,82 @@
             </label>
             <br>
             <br>
+            <p class="dependencies-options">Penalizare:
+                <br>
+                <small>
+                    <b>INFO: </b>Aplicați penalizarea <b>"focus on exam"</b> pentru studenți. În timpul examenului dacă un student nu mai are în
+                    prim plan subiectul examenului (pagina web a aplicației), acestuia i se va aplica una din urmatoarele sancțiuni
+                    (<b>Important:</b> fiecare penalizare se va executa per greșeala):
+                </small>
+            </p>
+
+            <label>
+                <input id="examPenalty1" name="examPenalty" type="radio" data-toggle="collapse" data-target="#collapsePenalty1" aria-expanded="false" aria-controls="collapsePenalty1" onclick="onRadioCollapse();">
+            </label>
+            Depunctare
+            <div class="collapse" id="collapsePenalty1">
+                <div class="card card-body" style="width: 8rem; height: 4.4rem">
+                    <div class="row">
+                    Puncte: &nbsp;
+                    <label for="pointsPenalty" class="dependencies-options">
+                        <input type="text" class="form-control exam-penalty-input" value="0" id="exam-minimum">
+                    </label>
+                    </div>
+                </div>
+            </div>
+            <br>
+            <label>
+                <input id="examPenalty2" name="examPenalty" type="radio" data-toggle="collapse" data-target="#collapsePenalty2" aria-expanded="false" aria-controls="collapsePenalty2" onclick="onRadioCollapse();">
+            </label>
+            Scăderea din timpul rămas
+            <div class="collapse" id="collapsePenalty2">
+                <div class="card card-body" style="width: 9rem;">
+                    <div class="row">
+                        <label for="pointsPenalty">
+                            Minute: &nbsp;<input type="text" class="form-control exam-penalty-input col" value="0" id="exam-minimum">
+                        </label>
+                        <div style="width: 10px"></div>
+                        <label for="pointsPenalty">
+                            Secunde: &nbsp; <input type="text" class="form-control exam-penalty-input col" value="0" id="exam-minimum">
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <br>
+            <label>
+                <input id="examPenalty3" name="examPenalty" type="radio" data-toggle="collapse" data-target="#collapsePenalty3" aria-expanded="false" aria-controls="collapsePenalty3" onclick="onRadioCollapse();">
+            </label>
+            Permite încalcarea regulii cu limită
+            <div class="collapse" id="collapsePenalty3">
+                <div class="card card-body" style="width: 14rem;">
+                    <div class="row">
+                        De maxim: &nbsp;
+                        <label for="pointsPenalty" class="dependencies-options">
+                            <input type="text" class="form-control exam-penalty-input" value="0" id="exam-minimum">
+                        </label>
+                        &nbsp;ori
+                    </div>
+                    <label for="enableRule" class="check-rule">
+                        <input id="enableRule" class="form-check-input warn-penalty-checkbox" type="checkbox">
+                        &nbsp;<small>avertizează la fiecare abatere</small>
+                    </label>
+                    Sancțiune la depașirea limitei:
+                </div>
+            </div>
+            <br>
+
+            <label>
+                <input id="examPenalty4" name="examPenalty" type="radio" onclick="onRadioCollapse();">
+            </label>
+            Sfarșește examenul studentului în cauză
+            <br>
+
+            <label>
+                <input id="examPenalty5" name="examPenalty" type="radio" onclick="onRadioCollapse();">
+            </label>
+            Fără penalizare
+            <br>
+
             <div class="r_relationship">
                 <button type="button" class="btn btn-success btn-lg btn-block" onclick="scheduleExam()">Programați examenul</button>
             </div>

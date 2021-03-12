@@ -179,7 +179,7 @@ function searchUser() {
 }
 
 
-function startTimer(duration, display) {
+function startTimer(duration) {
     var timer = duration, hours, minutes, seconds;
     setInterval(function () {
         hours = parseInt(timer / 3600, 10);
@@ -190,7 +190,9 @@ function startTimer(duration, display) {
         minutes = minutes < 10 ? "0" + minutes : minutes;
         seconds = seconds < 10 ? "0" + seconds : seconds;
 
-        display.textContent = hours + ":" + minutes + ":" + seconds;
+        document.getElementById("hourss").innerHTML = hours;
+        document.getElementById("mins").innerHTML = minutes;
+        document.getElementById("secs").innerHTML = seconds;
 
         if (--timer < 0) {
             document.getElementById("submitExam").click();
@@ -268,4 +270,15 @@ function addCourse() {
     }).done(function () {
         window.location.href = "/examgenerator/home";
     })
+}
+
+
+function onRadioCollapse() {
+    for (var i = 1; i < 4; i++) {
+        var id = "examPenalty" + i.toString();
+        var radio = document.getElementById(id);
+        if(!radio.checked) {
+            $('#collapsePenalty' + i.toString()).collapse('hide');
+        }
+    }
 }

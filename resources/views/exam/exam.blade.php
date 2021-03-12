@@ -13,7 +13,9 @@
                 <br>
                 {{ date_format(date_create($info->starts_at), 'l, d-m-Y, H:i') }}
                 <br>
-                Timp rămas: <span id="time">{{ $info->hours }}:{{ $info->minutes }}</span>
+                <div class="remaining-exam-time">
+                    Timp rămas: <p id="hourss"></p>:<p id="mins"></p>:<p id="secs"></p>
+                </div>
             </b>
         </h1>
         <br>
@@ -55,15 +57,15 @@
 
 <script>
     window.onload = function () {
-        var examTime = '{{$examTime}}',
-            display = document.querySelector('#time');
-        startTimer(examTime, display);
+        var examTime = '{{$examTime}}';
+        startTimer(examTime);
     };
 
 
+    /*
     window.addEventListener('blur', sendAnswers);
     function sendAnswers() {
         document.getElementById("submitExam").click();
-    }
+    }*/
 
 </script>

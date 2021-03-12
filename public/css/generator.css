@@ -112,5 +112,25 @@ input[type="checkbox"] {
     margin-right: 16px;
 }
 
+.remaining-exam-time p {
+    display: inline;
+}
 
+.exam-penalty-options {
+    height: 28px;
+    width: 60px;
+}
 
+.exam-penalty-input {
+    height: 28px;
+    width: 55px;
+}
+
+.check-rule {
+    margin-left: 25px;
+}
+
+.warn-penalty-checkbox {
+    height: 10px;
+    width: 10px;
+}
