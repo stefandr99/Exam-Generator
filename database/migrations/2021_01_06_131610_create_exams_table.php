@@ -18,7 +18,8 @@ class CreateExamsTable extends Migration
             $table->id();
             $table->foreignId('course_id')->constrained('courses')->onDelete('cascade')->onUpdate('cascade');
             $table->text('type')->default('examen');
-            $table->dateTime('date')->useCurrent();
+            $table->dateTime('starts_at')->useCurrent();
+            $table->dateTime('ends_at')->useCurrent();
             $table->integer('hours')->default(0);
             $table->integer('minutes')->default(0);
             $table->integer('number_of_exercises')->default(0);

@@ -85,9 +85,11 @@
                                     <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                         Profesor
                                     </button>
-                                    <button type="button" class="btn btn-danger float-right" data-toggle="modal" data-target="#deleteUser{{$user->id}}Modal">
-                                        <i class="fas fa-trash-alt"></i>
-                                    </button>
+                                    @if ($user->role == 1)
+                                        <button type="button" class="btn btn-danger float-right" data-toggle="modal" data-target="#deleteUser{{$user->id}}Modal">
+                                            <i class="fas fa-trash-alt"></i>
+                                        </button>
+                                    @endif
                                     <div class="dropdown-menu dropdown-role">
                                         <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#mkStudent{{$user->id}}Modal">
                                             Student
@@ -125,9 +127,11 @@
                                     <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                         Student
                                     </button>
-                                    <button type="button" class="btn btn-danger float-right" data-toggle="modal" data-target="#deleteUser{{$user->id}}Modal">
-                                        <i class="fas fa-trash-alt"></i>
-                                    </button>
+                                    @if ($user->role == 1)
+                                        <button type="button" class="btn btn-danger float-right" data-toggle="modal" data-target="#deleteUser{{$user->id}}Modal">
+                                            <i class="fas fa-trash-alt"></i>
+                                        </button>
+                                    @endif
                                     <div class="dropdown-menu  dropdown-role" style="min-width: 80px; border: none">
                                         <button type="button" class="btn btn-success" data-toggle="modal" data-target="#mkTeacher{{$user->id}}Modal">
                                             Profesor

@@ -38,14 +38,14 @@
                                 <b>Punctaj</b>: {{$exam->total_points}},
                                 <b>Punctaj minim necesar</b>: {{$exam->minimum_points}}
                             </h5>
-                            @if(new DateTime($exam->date) > $presentDate)
+                            @if(new DateTime($exam->starts_at) > $presentDate)
                                 <button type="button" class="btn btn-primary" onclick="window.location='{{ route('modify_exam', $exam->exam_id) }}'">
                                     Modifică
                                 </button>
                             @endif
                         </div>
                         <div class="card-footer text-muted">
-                            <h4><b>Data:</b> {{ date_format(date_create($exam->date), 'd-m-Y') }} <b>Ora:</b> {{ date_format(date_create($exam->date), 'H:i') }}</h4>
+                            <h4><b>Data:</b> {{ date_format(date_create($exam->starts_at), 'd-m-Y') }} <b>Ora:</b> {{ date_format(date_create($exam->starts_at), 'H:i') }}</h4>
                         </div>
                     </div>
 

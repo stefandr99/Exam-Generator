@@ -37,7 +37,7 @@
 
             <label for="exam-date" class="dependencies-options">
                 Data și ora examenului:
-                <input class="form-control" type="datetime-local" value="{{explode(" ", $exam->date)[0] . "T" . explode(" ", $exam->date)[1]}}" id="exam-date">
+                <input class="form-control" type="datetime-local" value="{{explode(" ", $exam->starts_at)[0] . "T" . explode(" ", $exam->starts_at)[1]}}" id="exam-date">
             </label>
             <br>
 

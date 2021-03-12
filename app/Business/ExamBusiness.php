@@ -7,6 +7,9 @@ namespace App\Business;
 use App\Courses;
 use App\Exam;
 use App\Subject;
+use DateInterval;
+use DateTime;
+use DateTimeZone;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\DB;
@@ -79,7 +82,8 @@ class ExamBusiness
             case 'Baze de date':
                 $exercises = $this->generateDBSubject($examInfo[0]);
                 break;
-            case 'Proiectarea Algoritmilor':
+            default:
+                $exercises = $this->generateDBSubject($examInfo[0]);
                 break;
         }
 
@@ -133,12 +137,31 @@ class ExamBusiness
     {
         $result = DB::table('exams')
             ->join('courses', 'courses.id', '=', 'exams.course_id')
-            ->select('courses.name as course_name', 'type', 'date', 'hours', 'minutes',
+            ->select('courses.name as course_name', 'type', 'starts_at', 'hours', 'minutes',
                 'number_of_exercises', 'exercises_type', 'total_points')
             ->where('exams.id', $examId)
             ->get();
 
         return $result;
+    }
+
+    public function checkStealExamStart($examInfo) {
+        $examDate = new DateTime($examInfo->starts_at);
+        $presentDate = new DateTime("now", new DateTimeZone('UTC'));
+        $presentDate->add(new DateInterval('PT2H'));
+        return $presentDate < $examDate;
+    }
+
+    public function getExamTime($examInfo) {
+        $examDate = new DateTime($examInfo->starts_at);
+        $presentDate = new DateTime("now", new DateTimeZone('UTC'));
+        $presentDate->add(new DateInterval('PT2H'));
+
+        $examHours = intval($examDate->format('H')) + $examInfo->hours - intval($presentDate->format('H'));
+        $examMinutes = intval($examDate->format('i')) + $examInfo->minutes - intval($presentDate->format('i'));
+        $examSeconds = intval($examDate->format('s')) - intval($presentDate->format('s'));
+
+        return (3600 * $examHours + 60 * $examMinutes + $examSeconds);
     }
 
     public function correct($studentAnswers, $exercisesNumber, $optionsNumber, $examId): array
@@ -187,7 +210,7 @@ class ExamBusiness
         $result = DB::table('subjects as s')
             ->join('exams as e', 'e.id', '=', 's.exam_id')
             ->join('courses as c', 'c.id', '=', 'e.course_id')
-            ->select('c.name as course_name', 'e.type', 'e.date', 'e.number_of_exercises', 'e.total_points', 'e.minimum_points',
+            ->select('c.name as course_name', 'e.type', 'e.starts_at', 'e.number_of_exercises', 'e.total_points', 'e.minimum_points',
                         's.exercises', 's.obtained_points', 's.student_answers', 's.results')
             ->where('s.exam_id', $examId)
             ->where('s.user_id', $userId)
@@ -199,11 +222,13 @@ class ExamBusiness
 
     public function schedule($info, $exercises) {
         $courseId = $this->courseBusiness->getCourseId($info[0]);
+        $endTime = $this->getExamEndTime($info[2], $info[3], $info[4]);
 
         $exam = new Exam;
         $exam->course_id = $courseId->id;
         $exam->type = $info[1];
-        $exam->date = $info[2];
+        $exam->starts_at = $info[2];
+        $exam->ends_at = $endTime;
         $exam->hours = $info[3];
         $exam->minutes = $info[4];
         $exam->number_of_exercises = $exercises[0];
@@ -211,6 +236,14 @@ class ExamBusiness
         $exam->total_points = $exercises[2];
         $exam->minimum_points = $info[5];
         $exam->save();
+    }
+
+    public function getExamEndTime($start, $hours, $minutes) {
+        $endTime = new DateTime($start);
+        $duration = 'PT' . strval($hours) . 'H' . strval($minutes) . 'M';
+        $endTime->add(new DateInterval($duration));
+
+        return $endTime;
     }
 
     public function getExams(): array
@@ -231,11 +264,11 @@ class ExamBusiness
             ->join('courses', 'courses.id', '=', 'didactics.course_id')
             ->join('exams', 'courses.id', '=', 'exams.course_id')
             ->select('exams.id as exam_id', 'users.name as teacher_name', 'courses.name as course_name',
-                'exams.type', 'exams.date', 'exams.hours', 'exams.minutes', 'exams.number_of_exercises',
+                'exams.type', 'exams.starts_at', 'exams.hours', 'exams.minutes', 'exams.number_of_exercises',
                 'exams.total_points', 'exams.minimum_points')
             ->where('users.id', $userId)
-            ->where('exams.date', '>', now())
-            ->orderBy('exams.date')
+            ->where('exams.ends_at', '>', now())
+            ->orderBy('exams.starts_at')
             ->get();
 
         $examsInformation = array(2, $exams);
@@ -248,12 +281,12 @@ class ExamBusiness
 
         $exams = DB::table('exams')
             ->join('courses', 'courses.id', '=', 'exams.course_id')
-            ->select('exams.id as exam_id', 'courses.name as course_name', 'exams.type', 'exams.date',
+            ->select('exams.id as exam_id', 'courses.name as course_name', 'exams.type', 'exams.starts_at',
                 'exams.hours', 'exams.minutes', 'exams.number_of_exercises', 'exams.total_points', 'exams.minimum_points')
             ->where('courses.year', $yearAndSemester[0]->year)
             ->where('courses.semester', $yearAndSemester[0]->semester)
-            ->where('exams.date', '>', now())
-            ->orderBy('exams.date')
+            ->where('exams.ends_at', '>', DB::raw("now()"))
+            ->orderBy('exams.starts_at')
             ->get();
 
         $teachers = $this->getExamTeachers($exams);
@@ -292,13 +325,15 @@ class ExamBusiness
 
     public function updateExam($info, $exercises, $id) {
         $course = $this->courseBusiness->getCourseIdByName($info[0]);
+        $endTime = $this->getExamEndTime($info[2], $info[3], $info[4]);
 
         DB::table('exams')
             ->where('id', $id)
             ->update([
                 'course_id' => $course[0]->id,
                 'type' => $info[1],
-                'date' => $info[2],
+                'starts_at' => $info[2],
+                'ends_at' => $endTime,
                 'hours' => $info[3],
                 'minutes' => $info[4],
                 'number_of_exercises' => $exercises[0],

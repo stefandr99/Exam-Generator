@@ -27,10 +27,7 @@ class ExamController extends Controller
         $examInfo = $this->business->exam->getExamInfo($id);
         $userId = Auth::id();
 
-        $examDate = new DateTime($examInfo[0]->date);
-        $presentDate = new DateTime("now", new DateTimeZone('UTC'));
-        $presentDate->add(new DateInterval('PT2H'));
-        if($presentDate < $examDate)
+        if($this->business->exam->checkStealExamStart($examInfo[0]))
             return redirect()->route('steal_start_exam', array('examId' => $id, 'userId' => $userId));
 
         $exercises = $this->business->exam->generate($id, $examInfo);
@@ -39,8 +36,10 @@ class ExamController extends Controller
             $optionsNumber[$index] = $exercises[0][$index]['exercise']['options']['counter'];
         }
 
+        $examTime = $this->business->exam->getExamTime($examInfo[0]);
         return view('exam/exam', ['exercises' => $exercises[0], 'info' => $examInfo[0],
-            'optionsNumber' => $optionsNumber, 'examId' => $id]);
+            'optionsNumber' => $optionsNumber, 'examId' => $id,
+            'examTime' => $examTime]);
     }
 
     public function correctPartial(Request $request) {
@@ -79,6 +78,7 @@ class ExamController extends Controller
     {
         if ($request->ajax()) {
             $examInfo = $request->input('info');
+
             $examExercises = $request->input('exercises');
             $examInfo = json_decode($examInfo, true);
             $examExercises = json_decode($examExercises, true);

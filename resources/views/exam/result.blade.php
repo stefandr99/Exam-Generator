@@ -7,11 +7,11 @@
 @section('content')
     <form>
         <div class="container my-4">
-            <h1 id="partial-title">
+            <h1 class="text-center">
                 <b>
                     {{ $info->type }} {{ $info->course_name }}
                     <br>
-                    {{ date_format(date_create($info->date), 'l, d-m-Y, H:i') }}
+                    {{ date_format(date_create($info->starts_at), 'l, d-m-Y, H:i') }}
                 </b>
             </h1>
             <h1 id="min-points">Puncte necesare pentru a promova: {{ $info->minimum_points }} puncte</h1>
