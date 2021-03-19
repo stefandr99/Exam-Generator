@@ -75,9 +75,13 @@ input[type="checkbox"] {
     margin-left: 12px;
 }
 
-.list-group-item {
+.add-course-teachers-list{
     padding: 4px 8px;
-    padding-right: 30px;
+    padding-right: 10px;
+}
+
+.remove-teacher-course-list {
+    : pointer
 }
 
 .add-course-button {

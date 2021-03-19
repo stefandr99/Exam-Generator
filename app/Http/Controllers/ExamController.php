@@ -25,6 +25,8 @@ class ExamController extends Controller
 
     public function generate($id) {
         $examInfo = $this->business->exam->getExamInfo($id);
+        $penalization = json_decode($examInfo[0]->penalization, true);
+        //print_r($penalization);
         $userId = Auth::id();
 
         if($this->business->exam->checkStealExamStart($examInfo[0]))
@@ -39,7 +41,7 @@ class ExamController extends Controller
         $examTime = $this->business->exam->getExamTime($examInfo[0]);
         return view('exam/exam', ['exercises' => $exercises[0], 'info' => $examInfo[0],
             'optionsNumber' => $optionsNumber, 'examId' => $id,
-            'examTime' => $examTime]);
+            'examTime' => $examTime, 'penalization' => $penalization]);
     }
 
     public function correctPartial(Request $request) {
@@ -72,18 +74,20 @@ class ExamController extends Controller
 
     public function prepare() {
         return view('exam/prepare');
-        //return view('exam/timer');
     }
 
     public function scheduleExam(Request $request)
     {
         if ($request->ajax()) {
             $examInfo = $request->input('info');
-
             $examExercises = $request->input('exercises');
+            $examPenalization = $request->input('penalization');
+
             $examInfo = json_decode($examInfo, true);
             $examExercises = json_decode($examExercises, true);
-            $this->business->exam->schedule($examInfo, $examExercises);
+            $examPenalization = json_decode($examPenalization, true);
+
+            $this->business->exam->schedule($examInfo, $examExercises, $examPenalization);
         }
     }
 

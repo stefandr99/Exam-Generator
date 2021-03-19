@@ -16,7 +16,7 @@
 
 
             <label for="course-teachers" class="dependencies-options">Profesorii cursului:
-                <select id="course-teachers" class="form-control" onchange="addToList();">
+                <select id="course-teachers" class="form-control" onchange="addTeacherToUList();">
                     <option value="no-teacher">--</option>
                     @foreach($teachers as $teacher)
                         <option value="{{ $teacher->name }}">{{ $teacher->name }}</option>

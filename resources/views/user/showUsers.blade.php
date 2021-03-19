@@ -5,7 +5,7 @@
 @endsection
 
 @section('content')
-    <div class="container my-4">
+    <center class="container my-4">
         <div class="row">
             <form class="form-inline col" action="{{route('search_user')}}">
                 <div class="form-group search-user">
@@ -50,6 +50,8 @@
         @endif
         <br>
 
+
+
         <table class="table table-striped">
             <thead class="table-primary">
             <tr>
@@ -65,7 +67,7 @@
             <tbody>
             @if(count($users) == 0)
                 <tr>
-                    <td colspan="6"><p><b>Niciun utilizator nu se potrivește căutării.</b></p></td>
+                    <td colspan="7"><p><b>Niciun utilizator nu se potrivește căutării.</b></p></td>
                 </tr>
             @else
                 @foreach ($users as $user)
@@ -208,6 +210,10 @@
             </tbody>
         </table>
 
+        <div style="text-align: center;">
+            {{ $users->onEachSide(1)->links() }}
+        </div>
+
         <!-- MODALS -->
         <div class="modal fade" id="addUserModal" tabindex="-1" role="dialog" aria-labelledby="addUserModalLabel" aria-hidden="true">
             <div class="modal-dialog" role="document">
@@ -329,25 +335,34 @@
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        @if($users[1]->semester == 1)
-                            <h5 class="modal-title" id="nextSemesterModalLabel">Confirmare trecere in semestrul urmator</h5>
-                        @else
-                            <h5 class="modal-title" id="nextSemesterModalLabel">Confirmare trecere in anul urmator</h5>
-                        @endif
+                        @foreach($users as $user)
+                            @if($user->semester == 1)
+                                <h5 class="modal-title" id="nextSemesterModalLabel">Confirmare trecere in semestrul urmator</h5>
+                            @else
+                                <h5 class="modal-title" id="nextSemesterModalLabel">Confirmare trecere in anul urmator</h5>
+                            @endif
+                            @break
+                        @endforeach
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
 
-                    <form action="{{route('next_semester', ['semester' => $users[1]->semester])}}" method="POST">
+                    @foreach($users as $user)
+                    <form action="{{route('next_semester', ['semester' => $user->semester])}}" method="POST">
+                        @break
+                    @endforeach
                         @csrf
                         @method('PUT')
                         <div class="modal-body">
-                            @if($users[1]->semester == 1)
-                                Sunteți sigur că doriți să treceti in semestrul urmator?
-                            @else
-                                Sunteți sigur că doriți să treceti in anul urmator?
-                            @endif
+                            @foreach($users as $user)
+                                @if($user->semester == 1)
+                                    Sunteți sigur că doriți să treceti in semestrul urmator?
+                                @else
+                                    Sunteți sigur că doriți să treceti in anul urmator?
+                                @endif
+                                @break
+                            @endforeach
                         </div>
                         <div class="modal-footer">
                             <button type="submit" class="btn btn-primary">Da</button>

@@ -9,7 +9,7 @@
         <h1 class="text-center"><b>Pregătiți examenul</b></h1>
         <br>
         <form class="form-group">
-            <label for="exam-subject" class="dependencies-options">Materia:
+            <label for="exam-subject" class="dependencies-options"><b>Materia:</b>
                 <select id="exam-subject" class="form-control">
                     <option value="no-subject">--</option>
                     <option value="Baze de date">Baze de date</option>
@@ -20,7 +20,7 @@
             </label>
             <br>
 
-            <label for="exam-type" class="dependencies-options">Tipul examenului:
+            <label for="exam-type" class="dependencies-options"><b>Tipul examenului:</b>
                 <select id="exam-type" class="form-control">
                     <option value="no-type">--</option>
                     <option value="Parțial">Parțial</option>
@@ -31,18 +31,18 @@
             <br>
 
             <label for="exam-date" class="dependencies-options">
-                Data și ora examenului:
-                <input class="form-control" type="datetime-local" value="2021-02-18T08:00:00" id="exam-date">
+                <b>Data și ora examenului:</b>
+                <input id="exam-date" class="form-control" type="datetime-local" value="2021-03-15T08:00:00">
             </label>
             <br>
 
-            <label for="exam-duration" class="dependencies-options">Durata examenului:
+            <label for="exam-duration" class="dependencies-options"><b>Durata examenului:</b>
                 <div class="row">
                     <div class="col-3">
-                        <input type="text" class="form-control" placeholder="Ore" id="exam-duration-hours">
+                        <input id="exam-duration-hours" type="text" class="form-control" placeholder="Ore">
                     </div>
                     <div class="col-3">
-                        <input type="text" class="form-control" placeholder="Minute" id="exam-duration-minutes">
+                        <input id="exam-duration-minutes" type="text" class="form-control" placeholder="Minute">
                     </div>
                 </div>
             </label>
@@ -72,7 +72,7 @@
                 </label>
                 <br>
                 <label for="exercise-0-points" class="dependencies-options">Puncte:
-                    <input type="text" class="form-control" id="exercise-0-points" placeholder="Puncte">
+                    <input id="exercise-0-points" type="text" class="form-control" placeholder="Puncte">
                 </label>
 
                 <div class="extra-exercises">
@@ -99,7 +99,7 @@
                             </label>
                             <br>
                             <label for="exercise-{{$ex}}-points" class="dependencies-options">Puncte:
-                                <input type="text" class="form-control" id="exercise-{{$ex}}-points" placeholder="Puncte">
+                                <input id="exercise-{{$ex}}-points" type="text" class="form-control" placeholder="Puncte">
                             </label>
                         </div>
                     @endfor
@@ -111,12 +111,12 @@
             <button type="button" class="btn btn-danger" onclick="removeExercise()">Stergeți ultimul exercițiu</button>
             <br>
             <br>
-            <label for="exam-minimum" class="dependencies-options">Punctajul minim:
-                <input type="text" class="form-control" placeholder="Punctaj minim" id="exam-minimum">
+            <label for="exam-minimum" class="dependencies-options"><b>Punctajul minim:</b>
+                <input id="exam-minimum" type="text" class="form-control" placeholder="Punctaj minim">
             </label>
             <br>
             <br>
-            <p class="dependencies-options">Penalizare:
+            <p class="dependencies-options"><b>Penalizare:</b>
                 <br>
                 <small>
                     <b>INFO: </b>Aplicați penalizarea <b>"focus on exam"</b> pentru studenți. În timpul examenului dacă un student nu mai are în
@@ -126,68 +126,111 @@
             </p>
 
             <label>
-                <input id="examPenalty1" name="examPenalty" type="radio" data-toggle="collapse" data-target="#collapsePenalty1" aria-expanded="false" aria-controls="collapsePenalty1" onclick="onRadioCollapse();">
+                <input id="examPenalty1" value="points" name="examPenalty" type="radio" data-toggle="collapse" data-target="#collapsePenalty1" aria-expanded="false" aria-controls="collapsePenalty1" onclick="onRadioPenaltyCollapse();">
             </label>
             Depunctare
             <div class="collapse" id="collapsePenalty1">
                 <div class="card card-body" style="width: 8rem; height: 4.4rem">
                     <div class="row">
                     Puncte: &nbsp;
-                    <label for="pointsPenalty" class="dependencies-options">
-                        <input type="text" class="form-control exam-penalty-input" value="0" id="exam-minimum">
+                    <label for="points-penalization" class="dependencies-options">
+                        <input id="points-penalization" type="text" class="form-control exam-penalty-input" value="0">
                     </label>
                     </div>
                 </div>
             </div>
             <br>
             <label>
-                <input id="examPenalty2" name="examPenalty" type="radio" data-toggle="collapse" data-target="#collapsePenalty2" aria-expanded="false" aria-controls="collapsePenalty2" onclick="onRadioCollapse();">
+                <input id="examPenalty2" value="time" name="examPenalty" type="radio" data-toggle="collapse" data-target="#collapsePenalty2" aria-expanded="false" aria-controls="collapsePenalty2" onclick="onRadioPenaltyCollapse();">
             </label>
             Scăderea din timpul rămas
             <div class="collapse" id="collapsePenalty2">
                 <div class="card card-body" style="width: 9rem;">
                     <div class="row">
-                        <label for="pointsPenalty">
-                            Minute: &nbsp;<input type="text" class="form-control exam-penalty-input col" value="0" id="exam-minimum">
+                        <label for="minutes-penalization">
+                            Minute: &nbsp;<input id="minutes-penalization" type="text" class="form-control exam-penalty-input col" value="0">
                         </label>
                         <div style="width: 10px"></div>
-                        <label for="pointsPenalty">
-                            Secunde: &nbsp; <input type="text" class="form-control exam-penalty-input col" value="0" id="exam-minimum">
+                        <label for="seconds-penalization">
+                            Secunde: &nbsp;<input id="seconds-penalization" type="text" class="form-control exam-penalty-input col" value="0">
                         </label>
                     </div>
                 </div>
             </div>
             <br>
+
             <label>
-                <input id="examPenalty3" name="examPenalty" type="radio" data-toggle="collapse" data-target="#collapsePenalty3" aria-expanded="false" aria-controls="collapsePenalty3" onclick="onRadioCollapse();">
+                <input id="examPenalty3" value="limitations" name="examPenalty" type="radio" data-toggle="collapse" data-target="#collapsePenalty3" aria-expanded="false" aria-controls="collapsePenalty3" onclick="onRadioPenaltyCollapse();">
             </label>
             Permite încalcarea regulii cu limită
             <div class="collapse" id="collapsePenalty3">
-                <div class="card card-body" style="width: 14rem;">
+                <div class="card card-body" style="width: 16rem;">
                     <div class="row">
                         De maxim: &nbsp;
-                        <label for="pointsPenalty" class="dependencies-options">
-                            <input type="text" class="form-control exam-penalty-input" value="0" id="exam-minimum">
+                        <label for="rule-limit" class="dependencies-options">
+                            <input id="rule-limit" type="text" class="form-control exam-penalty-input" value="0">
                         </label>
                         &nbsp;ori
                     </div>
-                    <label for="enableRule" class="check-rule">
-                        <input id="enableRule" class="form-check-input warn-penalty-checkbox" type="checkbox">
+                    <label for="rule-warnings" class="check-rule">
+                        <input id="rule-warnings" class="form-check-input warn-penalty-checkbox" type="checkbox">
                         &nbsp;<small>avertizează la fiecare abatere</small>
                     </label>
-                    Sancțiune la depașirea limitei:
+                    <div class="row">
+                        Sancțiune la depașirea limitei:
+                    </div>
+
+                    <label>
+                        <input id="examPenaltyLimit1" value="points" name="examPenaltyLimit" type="radio" data-toggle="collapse" data-target="#collapsePenaltyLimit1" aria-expanded="false" aria-controls="collapsePenaltyLimit1" onclick="onRadioPenaltyLimitCollapse();">
+                        Depunctare
+                    </label>
+                    <div class="collapse" id="collapsePenaltyLimit1">
+                        <div class="card card-body" style="width: 8rem; height: 4.4rem">
+                            <div class="row">
+                                Puncte: &nbsp;
+                                <label for="limit-points-penalization" class="dependencies-options">
+                                    <input id="limit-points-penalization" type="text" class="form-control exam-penalty-input" value="0">
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <label>
+                        <input id="examPenaltyLimit2" value="time" name="examPenaltyLimit" type="radio" data-toggle="collapse" data-target="#collapsePenaltyLimit2" aria-expanded="false" aria-controls="collapsePenaltyLimit1" onclick="onRadioPenaltyLimitCollapse();">
+                        Scăderea din timpul rămas
+                    </label>
+                    <div class="collapse" id="collapsePenaltyLimit2">
+                        <div class="card card-body" style="width: 9rem;">
+                            <div class="row">
+                                <label for="limit-minutes-penalization">
+                                    Minute: &nbsp;<input id="limit-minutes-penalization" type="text" class="form-control exam-penalty-input col" value="0">
+                                </label>
+                                <div style="width: 10px"></div>
+                                <label for="limit-seconds-penalization">
+                                    Secunde: &nbsp; <input id="limit-seconds-penalization" type="text" class="form-control exam-penalty-input col" value="0">
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <label>
+                        <input id="examPenaltyLimit3" value="end" name="examPenaltyLimit" type="radio" onclick="onRadioPenaltyLimitCollapse();">
+                        Incheierea examenului pentru studentul în cauză
+                    </label>
+
+
                 </div>
             </div>
             <br>
 
             <label>
-                <input id="examPenalty4" name="examPenalty" type="radio" onclick="onRadioCollapse();">
+                <input id="examPenalty4" value="end" name="examPenalty" type="radio" onclick="onRadioPenaltyCollapse();">
             </label>
-            Sfarșește examenul studentului în cauză
+            Incheierea examenului pentru studentul în cauză
             <br>
 
             <label>
-                <input id="examPenalty5" name="examPenalty" type="radio" onclick="onRadioCollapse();">
+                <input id="examPenalty5" value="without" name="examPenalty" type="radio" onclick="onRadioPenaltyCollapse();">
             </label>
             Fără penalizare
             <br>

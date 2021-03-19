@@ -52,6 +52,27 @@
         </div>
     </div>
 
+        <div class="modal fade" id="fraudTheExam" tabindex="-1" role="dialog" aria-labelledby="fraudTheExamCenterTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="fraudTheExamLongTitle">Tentativa de frauda</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        Nu incerca sa copiezi, concentreaza-te pe subiectul tau.
+                        <br>
+                        Acesta este un avertisment, daca se repeta vom fi nevoiti sa te sanctionam
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" data-dismiss="modal">Am inteles</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
     </form>
 @endsection
 
@@ -62,10 +83,7 @@
     };
 
 
-    /*
-    window.addEventListener('blur', sendAnswers);
-    function sendAnswers() {
-        document.getElementById("submitExam").click();
-    }*/
-
+    window.addEventListener('blur', function () {
+        penalization('{{json_encode($penalization)}}');
+    });
 </script>

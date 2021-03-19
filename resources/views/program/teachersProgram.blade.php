@@ -22,10 +22,19 @@
                 <div class="col-sm-6">
                     <div class="card text-center">
                         <div class="card-header">
-                            <h4>{{$exam->type}}</h4>
+                            <h4>
+                                {{$exam->type}}
+                                <br>
+                                @if(new DateTime($exam->ends_at) > $presentDate && new DateTime($exam->starts_at) < $presentDate)
+                                    <span class="badge rounded-pill bg-info text-dark">
+                                        In desfasurare...
+                                    </span>
+                                @endif
+                            </h4>
                         </div>
                         <div class="card-body">
                             <h2 class="card-title">{{$exam->course_name}}</h2>
+
                             <h5 class="card-text"><b>Durata</b>:
                                 @if($exam->hours == 1)
                                     {{ $exam->hours }} oră și
@@ -42,6 +51,11 @@
                                 <button type="button" class="btn btn-primary" onclick="window.location='{{ route('modify_exam', $exam->exam_id) }}'">
                                     Modifică
                                 </button>
+                            @endif
+                            @if(new DateTime($exam->ends_at) > $presentDate && new DateTime($exam->starts_at) < $presentDate)
+                                <span class="btn btn-success">
+                                    Detalii
+                                </span>
                             @endif
                         </div>
                         <div class="card-footer text-muted">

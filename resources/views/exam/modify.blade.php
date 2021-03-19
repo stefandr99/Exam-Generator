@@ -136,8 +136,8 @@
             </div>
 
             <br>
-            <button type="button" class="btn btn-primary" onclick="addModifyExercise({{$exam->number_of_exercises}})">Adăugați încă un exercițiu</button>
-            <button type="button" class="btn btn-danger" onclick="removeModifyExercise({{$exam->number_of_exercises}})">Stergeți ultimul exercițiu</button>
+            <button type="button" class="btn btn-primary" onclick="addOnModifyExercise({{$exam->number_of_exercises}})">Adăugați încă un exercițiu</button>
+            <button type="button" class="btn btn-danger" onclick="removeOnModifyExercise({{$exam->number_of_exercises}})">Stergeți ultimul exercițiu</button>
             <br>
             <br>
             <label for="exam-minimum" class="dependencies-options">Punctajul minim:

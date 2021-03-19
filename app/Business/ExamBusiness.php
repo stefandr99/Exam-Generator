@@ -138,7 +138,7 @@ class ExamBusiness
         $result = DB::table('exams')
             ->join('courses', 'courses.id', '=', 'exams.course_id')
             ->select('courses.name as course_name', 'type', 'starts_at', 'hours', 'minutes',
-                'number_of_exercises', 'exercises_type', 'total_points')
+                'number_of_exercises', 'exercises_type', 'total_points', 'penalization')
             ->where('exams.id', $examId)
             ->get();
 
@@ -220,7 +220,7 @@ class ExamBusiness
         return $result;
     }
 
-    public function schedule($info, $exercises) {
+    public function schedule($info, $exercises, $penalization) {
         $courseId = $this->courseBusiness->getCourseId($info[0]);
         $endTime = $this->getExamEndTime($info[2], $info[3], $info[4]);
 
@@ -235,6 +235,7 @@ class ExamBusiness
         $exam->exercises_type = json_encode($exercises[1]);
         $exam->total_points = $exercises[2];
         $exam->minimum_points = $info[5];
+        $exam->penalization = json_encode($penalization);
         $exam->save();
     }
 
@@ -264,7 +265,7 @@ class ExamBusiness
             ->join('courses', 'courses.id', '=', 'didactics.course_id')
             ->join('exams', 'courses.id', '=', 'exams.course_id')
             ->select('exams.id as exam_id', 'users.name as teacher_name', 'courses.name as course_name',
-                'exams.type', 'exams.starts_at', 'exams.hours', 'exams.minutes', 'exams.number_of_exercises',
+                'exams.type', 'exams.starts_at', 'exams.ends_at', 'exams.hours', 'exams.minutes', 'exams.number_of_exercises',
                 'exams.total_points', 'exams.minimum_points')
             ->where('users.id', $userId)
             ->where('exams.ends_at', '>', now())
@@ -281,7 +282,7 @@ class ExamBusiness
 
         $exams = DB::table('exams')
             ->join('courses', 'courses.id', '=', 'exams.course_id')
-            ->select('exams.id as exam_id', 'courses.name as course_name', 'exams.type', 'exams.starts_at',
+            ->select('exams.id as exam_id', 'courses.name as course_name', 'exams.type', 'exams.starts_at', 'exams.ends_at',
                 'exams.hours', 'exams.minutes', 'exams.number_of_exercises', 'exams.total_points', 'exams.minimum_points')
             ->where('courses.year', $yearAndSemester[0]->year)
             ->where('courses.semester', $yearAndSemester[0]->semester)

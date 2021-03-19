@@ -8,10 +8,12 @@ use Illuminate\Support\Facades\DB;
 class UserBusiness
 {
     public function getAll() {
-        return User::all()
+        return DB::table('users')
             ->where('year', '<', 4)
-            ->sortBy("role")
-            ->sortBy("year");
+            ->orWhereNull('year')
+            ->orderBy("role")
+            ->orderBy("year")
+            ->paginate(50);
     }
 
     public function changeRole($id, $newRole) {
