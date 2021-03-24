@@ -22,7 +22,7 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 
-Route::get('/pass', 'NameController@executePass')->name('pass');
+Route::get('/pass', 'ChangePassController@executePass')->name('pass');
 
 
 Route::get('/users/search', 'UserController@search')->name('search_user');
@@ -41,6 +41,7 @@ Route::get('/exam/fraud/{examId}/steal_the_start/{userId}', 'ExamController@stea
 Route::get('/exam/{examId}/result/{userId}', 'ExamController@showResult')->name('show_partial_result');
 Route::get('/exam/{examId}/modify', 'ExamController@modifyExam')->name('modify_exam');
 Route::put('/exam/update', 'ExamController@updateExam')->name('update_exam');
+Route::post('/exam/increase_penalty', 'ExamController@increasePenalty')->name('increase_penalty');
 Route::get('/exam/{id}', 'ExamController@generate')->name('generate_exam');
 Route::get('/program', 'ExamController@showExams')->name('show_exams');
 
@@ -48,5 +49,5 @@ Route::get('/course/prepare', 'CourseController@prepareNewCourse')->name('prepar
 Route::post('/course/add', 'CourseController@addNewCourse')->name('add_new_course');
 Route::get('/course/all', 'CourseController@showCourses')->name('show_courses');
 Route::get('/course/search', 'CourseController@search')->name('search_course');
-Route::post('/course/addTeacher', 'CourseController@addTeacherToCourse')->name('add_teacher_to_course');
-Route::delete('/course/deleteTeacher', 'CourseController@deleteTeacherFromCourse')->name('delete_teacher_from_course');
+Route::post('/course/addTeacher', 'DidacticController@addTeacherToCourse')->name('add_teacher_to_course');
+Route::delete('/course/deleteTeacher', 'DidacticController@deleteTeacherFromCourse')->name('delete_teacher_from_course');

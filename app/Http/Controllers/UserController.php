@@ -2,7 +2,11 @@
 
 namespace App\Http\Controllers;
 use App\Business\Business;
+use App\Business\CourseBusiness;
 use App\Business\UserBusiness;
+use App\Repository\Interfaces\ICourseRepository;
+use App\Repository\Interfaces\IDidacticRepository;
+use App\Repository\Interfaces\IUserRepository;
 use App\User;
 use Illuminate\Http\Request;
 
@@ -15,25 +19,31 @@ use SimpleXLSX;
 
 class UserController extends Controller
 {
-    public $business;
-    public function __construct()
+    private CourseBusiness $courseBusiness;
+    private UserBusiness $userBusiness;
+    private DidacticBusiness $didacticBusiness;
+
+    public function __construct(IUserRepository $userRepository, ICourseRepository $courseRepository,
+                                IDidacticRepository $didacticRepository)
     {
         $this->middleware('auth');
-        $this->business = new Business();
+        $this->userBusiness = new UserBusiness($userRepository);
+        $this->courseBusiness = new CourseBusiness($courseRepository);
+        $this->didacticBusiness = new DidacticBusiness($didacticRepository);
     }
 
     public function showAll() {
-        $users = $this->business->user->getAll();
-        $courses = $this->business->course->getAll();
+        $users = $this->userBusiness->getAll();
+        $courses = $this->courseBusiness->all();
 
         return view('user/showUsers', ['users' => $users, 'courses' => $courses]);
     }
 
     public function updateUserRole(Request $request, $id, $newRole) {
-        $this->business->user->changeRole($id, $newRole);
+        $this->userBusiness->changeRole($id, $newRole);
         if($newRole == 2) {
             $courseId = $request->courseId;
-            $this->business->course->addTeacherToDidactics($id, $courseId);
+            $this->didacticBusiness->addTeacherToDidactics($id, $courseId);
         }
 
         return redirect()->route('users');
@@ -42,7 +52,7 @@ class UserController extends Controller
     public function search(Request $request) {
         $search = $request->search;
         $criteria = $request->criteria;
-        $users = $this->business->user->search($search, $criteria);
+        $users = $this->userBusiness->search($search, $criteria);
 
         return view('user/showUsers', ['users' => $users]);
     }
@@ -99,9 +109,9 @@ class UserController extends Controller
 
     public function passToNextSemester($semester) {
         if($semester == 1)
-            $this->business->user->passToNextSemester();
+            $this->userBusiness->passToNextSemester();
         else
-            $this->business->user->passToNextYear();
+            $this->userBusiness->passToNextYear();
 
         return redirect()->route('users');
     }
@@ -109,7 +119,7 @@ class UserController extends Controller
     public function deleteUser(Request $request) {
         echo '<script>console.log(22)</script>';
         $id = $request->userId;
-        $this->business->user->deleteUserById($id);
+        $this->userBusiness->delete($id);
 
         return redirect()->route('users');
     }

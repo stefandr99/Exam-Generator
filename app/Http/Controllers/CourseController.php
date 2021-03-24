@@ -2,21 +2,31 @@
 
 namespace App\Http\Controllers;
 
-use App\Business\Business;
+use App\Business\CourseBusiness;
+use App\Business\DidacticBusiness;
+use App\Business\UserBusiness;
+use App\Repository\Interfaces\ICourseRepository;
+use App\Repository\Interfaces\IDidacticRepository;
+use App\Repository\Interfaces\IUserRepository;
 use Illuminate\Http\Request;
 
 class CourseController extends Controller
 {
-    private $business;
+    private UserBusiness $userBusiness;
+    private CourseBusiness $courseBusiness;
+    private DidacticBusiness $didacticBusiness;
 
-    public function __construct()
+    public function __construct(IUserRepository $userRepository, ICourseRepository $courseRepository,
+                                IDidacticRepository $didacticRepository)
     {
         $this->middleware('auth');
-        $this->business = new Business();
+        $this->userBusiness = new UserBusiness($userRepository);
+        $this->courseBusiness = new CourseBusiness($courseRepository);
+        $this->didacticBusiness = new DidacticBusiness($didacticRepository);
     }
 
     public function prepareNewCourse() {
-        $teachers = $this->business->user->getAllTeachers();
+        $teachers = $this->userBusiness->getTeachers();
 
         return view('course/prepare', ['teachers' => $teachers]);
     }
@@ -28,23 +38,25 @@ class CourseController extends Controller
             $year = $request->input('year');
             $semester = $request->input('semester');
             $credits = $request->input('credits');
-            $info = array(
+            $course = array(
                 'name' => $name,
-                'teachers' => $teachers,
                 'year' => $year,
                 'semester' => $semester,
                 'credits' => $credits
             );
-            $this->business->course->addCourse($info);
+            $this->courseBusiness->addCourse($course);
+
+            $courseId = $this->courseBusiness->getIdByName($name);
+            $this->didacticBusiness->addTeachersToCourse($teachers, $courseId);
         }
     }
 
     public function showCourses() {
-        $coursesAndTeachers = $this->business->course->getAllWithTeachers();
+        $courses = $this->courseBusiness->all();
+        $teachersAndNoTeachers = $this->courseBusiness->getTeachersAndNoTeachersByCourses($courses);
 
-        $courses = $coursesAndTeachers['courses'];
-        $teachers = $coursesAndTeachers['teachers'];
-        $noTeachers = $coursesAndTeachers['noTeachers'];
+        $teachers = $teachersAndNoTeachers['teachers'];
+        $noTeachers = $teachersAndNoTeachers['noTeachers'];
 
         return view('course/showAll', [
             'courses' => $courses,
@@ -54,7 +66,7 @@ class CourseController extends Controller
     }
 
     public function search(Request $request) {
-        $coursesAndTeachers = $this->business->course->search($request->name);
+        $coursesAndTeachers = $this->courseBusiness->search($request->name);
 
         $courses = $coursesAndTeachers['courses'];
         $teachers = $coursesAndTeachers['teachers'];
@@ -67,20 +79,4 @@ class CourseController extends Controller
         ]);
     }
 
-    public function addTeacherToCourse(Request $request) {
-        if($request->teacherToAdd != 0)
-            $this->business->course->addTeacherToCourse($request->teacherToAdd, $request->courseId);
-
-        return redirect()->route('show_courses');
-    }
-
-    public function deleteTeacherFromCourse(Request $request) {
-        $teacherId = $request->teacherToDelete;
-        $courseId = $request->courseId;
-        if($request->teacherToDelete != 0) {
-            $this->business->course->deleteTeacherFromCourse($teacherId, $courseId);
-        }
-
-        return redirect()->route('show_courses');
-    }
 }

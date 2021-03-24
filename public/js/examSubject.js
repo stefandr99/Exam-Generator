@@ -18,7 +18,7 @@ function checkTest(numberOfExercises, optionsNumber, examId) {
         headers: {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         }
-    })
+    });
 
     $.post("/examgenerator/exam/correct", result, function (info) {
         info = JSON.parse(info);
@@ -58,6 +58,13 @@ var decodeHTML = function (html) {
 
 let limit = -1;
 function penalization(data) {
+    jQuery.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
+    $.post("/examgenerator/exam/increase_penalty");
+
     data = decodeHTML(data);
     let penalty = JSON.parse(data);
 

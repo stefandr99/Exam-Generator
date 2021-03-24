@@ -6,6 +6,7 @@ namespace App\Business;
 
 use App\Courses;
 use App\Exam;
+use App\Repository\Interfaces\IExamRepository;
 use App\Subject;
 use DateInterval;
 use DateTime;
@@ -16,12 +17,10 @@ use Illuminate\Support\Facades\DB;
 
 class ExamBusiness
 {
-    private $userBusiness;
-    private $courseBusiness;
+    private IExamRepository $examRepository;
 
-    public function __construct() {
-        $this->userBusiness = new UserBusiness();
-        $this->courseBusiness = new CourseBusiness();
+    public function __construct(IExamRepository $examRepository) {
+        $this->examRepository = $examRepository;
     }
 
     private function generateDBType1() {
@@ -90,12 +89,13 @@ class ExamBusiness
         $exercisesJson = json_encode($exercises);
         $userId = Auth::id();
 
-        $subject = new Subject;
-        $subject->user_id = $userId;
-        $subject->exam_id = $examId;
-        $subject->exercises = $exercisesJson;
-        $subject->total_points = $examInfo[0]->total_points;
-        $subject->save();
+        $subject = array(
+            'user_id' => $userId,
+            'exam_id' => $examId,
+            'exercises' => $exercisesJson,
+            'total_points' => $examInfo[0]->total_points
+        );
+        $this->examRepository->createSubject($subject);
 
         return array($exercises, $examInfo[0]);
     }
@@ -135,14 +135,7 @@ class ExamBusiness
 
     public function getExamInfo($examId): \Illuminate\Support\Collection
     {
-        $result = DB::table('exams')
-            ->join('courses', 'courses.id', '=', 'exams.course_id')
-            ->select('courses.name as course_name', 'type', 'starts_at', 'hours', 'minutes',
-                'number_of_exercises', 'exercises_type', 'total_points', 'penalization')
-            ->where('exams.id', $examId)
-            ->get();
-
-        return $result;
+        return $this->examRepository->getInfoById($examId);
     }
 
     public function checkStealExamStart($examInfo) {
@@ -167,13 +160,13 @@ class ExamBusiness
     public function correct($studentAnswers, $exercisesNumber, $optionsNumber, $examId): array
     {
         $userId = Auth::id();
-        $results = DB::table('subjects')
-            ->select('exercises', 'total_points')
-            ->where('user_id', $userId)
-            ->where('exam_id', $examId)
-            ->get();
+        $subjectExercises = $this->examRepository->getSubjectExercises($examId, $userId);
 
-        $exercises = json_decode($results[0]->exercises, true);
+        $examInformation = $this->examRepository->getPenalizationInfoById($examId);
+
+        $examInformation->penalization = json_decode($examInformation->penalization, true);
+
+        $exercises = json_decode($subjectExercises[0]->exercises, true);
 
         $correctedExam = [];
         for ($currentExercise = 0; $currentExercise < $exercisesNumber; $currentExercise++) {
@@ -183,60 +176,82 @@ class ExamBusiness
                     === $exercises[$currentExercise]['exercise']['options']['solution'][$i + 1]['answer']);
             }
         }
-        $points = $this->getPoints($correctedExam);
+
+        $points = $this->getPoints($correctedExam, $exercises, $examInformation->penalization);
+
         $correctedExam = json_encode($correctedExam);
         $studentAnswers = json_encode($studentAnswers);
 
-        DB::table('subjects')
-            ->where('user_id', $userId)
-            ->where('exam_id', $examId)
-            ->update(['obtained_points' => $points, 'student_answers' => $studentAnswers, 'results' => $correctedExam]);
+        $subjectToUpdate = array(
+            'obtained_points' => $points,
+            'student_answers' => $studentAnswers,
+            'results' => $correctedExam
+        );
+        $this->examRepository->updateSubject($examId, $userId, $subjectToUpdate);
 
         return array(0 => $examId, 1 => $userId);
     }
 
-    private function getPoints($exam): int
+    private function getPoints($exercisesResult,$subjectExercises, $penalization): int
     {
         $points = 0;
-        foreach ($exam as $exercise) {
+        if($penalization['type'] == 'points') {
+            $counter = session('userPenalty');
+            $points -= $this->calculatePointsPenalization($penalization, $counter);
+        }
+        $currExercise = 0;
+        foreach ($exercisesResult as $exercise) {
             $trues = count(array_filter($exercise));
             $falses = count($exercise) - $trues;
-            $points += (3 - $falses > 0) ? (3 - $falses) : 0;
+            $currExercisePoints = $subjectExercises[$currExercise]['points'];
+            $points += ($currExercisePoints - $falses > 0) ? ($currExercisePoints - $falses) : 0;
         }
         return $points;
     }
 
-    public function getExamResult($examId, $userId) {
-        $result = DB::table('subjects as s')
-            ->join('exams as e', 'e.id', '=', 's.exam_id')
-            ->join('courses as c', 'c.id', '=', 'e.course_id')
-            ->select('c.name as course_name', 'e.type', 'e.starts_at', 'e.number_of_exercises', 'e.total_points', 'e.minimum_points',
-                        's.exercises', 's.obtained_points', 's.student_answers', 's.results')
-            ->where('s.exam_id', $examId)
-            ->where('s.user_id', $userId)
-            ->get()
-            ->first();
+    private function calculatePenalization($examInformation) {
+        $counter = session('userPenalty');
+        switch ($examInformation['type']) {
+            case 'points':
+                return $this->calculatePointsPenalization($examInformation, $counter);
+                break;
+            case 'time':
+                //return $this->calculateTimePenalization($examInformation, $counter);
+                break;
+            case 'limitations':
+                //return $this->calculateLimitPenalization($examInformation, $counter);
+                break;
+            default:
+                return 0;
+        }
+    }
 
-        return $result;
+    private function calculatePointsPenalization($examPenalizationInfo, $counter) {
+        return $counter * $examPenalizationInfo['body']['points'];
+    }
+
+    public function getExamResult($examId, $userId) {
+        return $this->examRepository->getResult($examId, $userId);
     }
 
     public function schedule($info, $exercises, $penalization) {
-        $courseId = $this->courseBusiness->getCourseId($info[0]);
+        $courseId = $this->courseBusiness->getIdByName($info[0]);
         $endTime = $this->getExamEndTime($info[2], $info[3], $info[4]);
 
-        $exam = new Exam;
-        $exam->course_id = $courseId->id;
-        $exam->type = $info[1];
-        $exam->starts_at = $info[2];
-        $exam->ends_at = $endTime;
-        $exam->hours = $info[3];
-        $exam->minutes = $info[4];
-        $exam->number_of_exercises = $exercises[0];
-        $exam->exercises_type = json_encode($exercises[1]);
-        $exam->total_points = $exercises[2];
-        $exam->minimum_points = $info[5];
-        $exam->penalization = json_encode($penalization);
-        $exam->save();
+        $exam = array(
+            'id' => $courseId->id,
+            'type' => $info[1],
+            'starts_at' => $info[2],
+            'ends_at' => $endTime,
+            'hours' => $info[3],
+            'minutes' => $info[4],
+            'number_of_exercises' => $exercises[0],
+            'exercises_type' => json_encode($exercises[1]),
+            'total_points' => $exercises[2],
+            'minimum_points' => $info[5],
+            'penalization' => json_encode($penalization)
+        );
+        $this->examRepository->create($exam);
     }
 
     public function getExamEndTime($start, $hours, $minutes) {
@@ -247,48 +262,26 @@ class ExamBusiness
         return $endTime;
     }
 
-    public function getExams(): array
+    public function getExams($userId, $userRole, $yearAndSem): array
     {
-        $userId = Auth::id();
-        $userRole = $this->userBusiness->getRole($userId);
-
-        return ($userRole[0]->role == 2) ?
-            $this->getExamsForTeacher($userId) :
-            $this->getExamsForStudents($userId);
+        if ($userRole->role == 2)
+            return $this->getExamsForTeacher($userId);
+        else {
+            return $this->getExamsForStudents($userId, $yearAndSem);
+        }
     }
 
     private function getExamsForTeacher($userId): array
     {
-
-        $exams = DB::table('users')
-            ->join('didactics', 'users.id', '=', 'didactics.teacher_id')
-            ->join('courses', 'courses.id', '=', 'didactics.course_id')
-            ->join('exams', 'courses.id', '=', 'exams.course_id')
-            ->select('exams.id as exam_id', 'users.name as teacher_name', 'courses.name as course_name',
-                'exams.type', 'exams.starts_at', 'exams.ends_at', 'exams.hours', 'exams.minutes', 'exams.number_of_exercises',
-                'exams.total_points', 'exams.minimum_points')
-            ->where('users.id', $userId)
-            ->where('exams.ends_at', '>', now())
-            ->orderBy('exams.starts_at')
-            ->get();
+        $exams = $this->examRepository->getAllForTeachers($userId);
 
         $examsInformation = array(2, $exams);
         return $examsInformation;
     }
 
-    private function getExamsForStudents($userId): array
+    private function getExamsForStudents($userId, $yearAndSemester): array
     {
-        $yearAndSemester = $this->userBusiness->getYearAndSemester($userId);
-
-        $exams = DB::table('exams')
-            ->join('courses', 'courses.id', '=', 'exams.course_id')
-            ->select('exams.id as exam_id', 'courses.name as course_name', 'exams.type', 'exams.starts_at', 'exams.ends_at',
-                'exams.hours', 'exams.minutes', 'exams.number_of_exercises', 'exams.total_points', 'exams.minimum_points')
-            ->where('courses.year', $yearAndSemester[0]->year)
-            ->where('courses.semester', $yearAndSemester[0]->semester)
-            ->where('exams.ends_at', '>', DB::raw("now()"))
-            ->orderBy('exams.starts_at')
-            ->get();
+        $exams = $this->examRepository->getAllForStudents($userId, $yearAndSemester->year, $yearAndSemester->semester);
 
         $teachers = $this->getExamTeachers($exams);
 
@@ -300,14 +293,7 @@ class ExamBusiness
     {
         $teachers = array();
         foreach ($exams as $exam) {
-            $teachers[$exam->exam_id] = DB::table('users')
-                ->join('didactics', 'users.id', '=', 'didactics.teacher_id')
-                ->join('courses', 'courses.id', '=', 'didactics.course_id')
-                ->join('exams', 'courses.id', '=', 'exams.course_id')
-                ->select('users.name')
-                ->where('exams.id', $exam->exam_id)
-                ->orderBy('users.created_at')
-                ->get();
+            $teachers[$exam->exam_id] = $this->examRepository->getTeachersByExam($exam->exam_id);
         }
 
         return $teachers;
@@ -315,32 +301,26 @@ class ExamBusiness
 
     public function getExamById($examId): \Illuminate\Support\Collection
     {
-        $exam = DB::table('exams as e')
-            ->join('courses as c', 'c.id', '=', 'e.course_id')
-            ->select('c.name as course_name', 'e.*')
-            ->where('e.id', $examId)
-            ->get();
-
-        return $exam;
+        return $this->examRepository->getExamById($examId);
     }
 
-    public function updateExam($info, $exercises, $id) {
-        $course = $this->courseBusiness->getCourseIdByName($info[0]);
+    public function updateExam($id, $info, $exercises, $course) {
         $endTime = $this->getExamEndTime($info[2], $info[3], $info[4]);
 
-        DB::table('exams')
-            ->where('id', $id)
-            ->update([
-                'course_id' => $course[0]->id,
-                'type' => $info[1],
-                'starts_at' => $info[2],
-                'ends_at' => $endTime,
-                'hours' => $info[3],
-                'minutes' => $info[4],
-                'number_of_exercises' => $exercises[0],
-                'exercises_type' => json_encode($exercises[1]),
-                'total_points' => $exercises[2],
-                'minimum_points' => $info[5]
-            ]);
+        $exam = array(
+            'id' => $id,
+            'course_id' => $course->id,
+            'type' => $info[1],
+            'starts_at' => $info[2],
+            'ends_at' => $endTime,
+            'hours' => $info[3],
+            'minutes' => $info[4],
+            'number_of_exercises' => $exercises[0],
+            'exercises_type' => json_encode($exercises[1]),
+            'total_points' => $exercises[2],
+            'minimum_points' => $info[5]
+        );
+
+        $this->examRepository->update($exam);
     }
 }
