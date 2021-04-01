@@ -12,9 +12,9 @@ use Illuminate\Http\Request;
 
 class CourseController extends Controller
 {
-    private UserBusiness $userBusiness;
-    private CourseBusiness $courseBusiness;
-    private DidacticBusiness $didacticBusiness;
+    private $userBusiness;
+    private $courseBusiness;
+    private $didacticBusiness;
 
     public function __construct(IUserRepository $userRepository, ICourseRepository $courseRepository,
                                 IDidacticRepository $didacticRepository)
@@ -52,7 +52,7 @@ class CourseController extends Controller
     }
 
     public function showCourses() {
-        $courses = $this->courseBusiness->all();
+        $courses = $this->courseBusiness->getAll();
         $teachersAndNoTeachers = $this->courseBusiness->getTeachersAndNoTeachersByCourses($courses);
 
         $teachers = $teachersAndNoTeachers['teachers'];

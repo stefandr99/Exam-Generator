@@ -6,7 +6,6 @@ namespace App\Repository\Eloquent;
 
 use App\Exam;
 use App\Repository\Interfaces\IExamRepository;
-use App\Subject;
 use Illuminate\Support\Facades\DB;
 
 class ExamRepository implements IExamRepository
@@ -21,7 +20,7 @@ class ExamRepository implements IExamRepository
         $newExam->ends_at = $exam['ends_at'];
         $newExam->hours = $exam['hours'];
         $newExam->minutes = $exam['minutes'];
-        $newExam->number_of_exercises = $exam['number_od_exercises'];
+        $newExam->number_of_exercises = $exam['number_of_exercises'];
         $newExam->exercises_type = $exam['exercises_type'];
         $newExam->total_points = $exam['total_points'];
         $newExam->minimum_points = $exam['minimum_points'];
@@ -37,15 +36,6 @@ class ExamRepository implements IExamRepository
                 'number_of_exercises', 'exercises_type', 'total_points', 'penalization')
             ->where('exams.id', $id)
             ->get();
-    }
-
-    public function getPenalizationInfoById($id)
-    {
-        return DB::table('exams')
-            ->select('penalization', 'starts_at', 'ends_at', 'hours', 'minutes')
-            ->where('id', $id)
-            ->get()
-            ->first();
     }
 
     public function getResult($examId, $userId)
@@ -125,37 +115,6 @@ class ExamRepository implements IExamRepository
                 'exercises_type' => $exam['exercises_type'],
                 'total_points' => $exam['total_points'],
                 'minimum_points' => $exam['minimum_points']
-            ]);
-    }
-
-    public function createSubject($subject)
-    {
-        $newSubject = new Subject;
-        $newSubject->user_id = $subject['user_id'];
-        $newSubject->exam_id = $subject['exam_id'];
-        $newSubject->exercises = $subject['exercises'];
-        $newSubject->total_points = $subject['total_points'];
-        $newSubject->save();
-    }
-
-    public function getSubjectExercises($examId, $userId)
-    {
-        return DB::table('subjects')
-            ->select('exercises', 'total_points')
-            ->where('user_id', $userId)
-            ->where('exam_id', $examId)
-            ->get();
-    }
-
-    public function updateSubject($examId, $userId, $subject)
-    {
-        DB::table('subjects')
-            ->where('user_id', $userId)
-            ->where('exam_id', $examId)
-            ->update([
-                'obtained_points' => $subject['points'],
-                'student_answers' => $subject['student_answers'],
-                'results' => $subject['results']
             ]);
     }
 }

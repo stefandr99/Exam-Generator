@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 
 class DidacticController extends Controller
 {
-    private DidacticBusiness $didacticBusiness;
+    private $didacticBusiness;
 
     public function __construct(IDidacticRepository $didacticRepository) {
         $this->didacticBusiness = new DidacticBusiness($didacticRepository);

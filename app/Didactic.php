@@ -8,4 +8,5 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Didactic extends Model
 {
     use SoftDeletes;
+
 }

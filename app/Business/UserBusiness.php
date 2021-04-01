@@ -3,22 +3,20 @@
 namespace App\Business;
 
 use App\Repository\Interfaces\IUserRepository;
-use App\User;
-use Illuminate\Support\Facades\DB;
 
 class UserBusiness
 {
-    private IUserRepository $userRepository;
+    private $userRepository;
 
     public function __construct(IUserRepository $userRepository) {
         $this->userRepository = $userRepository;
     }
 
     public function getAll() {
-        return $this->userRepository->all();
+        return $this->userRepository->getAll();
     }
 
-    public function getRoleById($id): \Illuminate\Support\Collection {
+    public function getRoleById($id) {
         return $this->userRepository->getRoleById($id);
     }
 
@@ -30,17 +28,17 @@ class UserBusiness
         return $this->userRepository->getIdByName($name);
     }
 
-    public function getYearAndSemesterById($userId): \Illuminate\Support\Collection
+    public function getYearAndSemesterById($userId)
     {
         return $this->userRepository->getYearAndSemesterById($userId);
     }
 
-    public function getTeachers(): \Illuminate\Support\Collection
+    public function getTeachers()
     {
         return $this->userRepository->getTeachers();
     }
 
-    public function search($toMatch, $criteria): \Illuminate\Support\Collection
+    public function search($toMatch, $criteria)
     {
         return $this->userRepository->search($toMatch, $criteria);
     }
@@ -55,6 +53,7 @@ class UserBusiness
 
     public function passToNextYear() {
         $this->userRepository->passToNextYear();
+        $this->userRepository->deleteGraduated();
     }
 
     public function delete($id) {

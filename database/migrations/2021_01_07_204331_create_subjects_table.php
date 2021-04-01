@@ -23,6 +23,7 @@ class CreateSubjectsTable extends Migration
             $table->float('obtained_points')->default(0);
             $table->text('student_answers')->default('');
             $table->text('results')->default('');
+            $table->softDeletes();
             $table->timestamp('created_at')->default(DB::raw('CURRENT_TIMESTAMP'));
             $table->timestamp('updated_at')->default(DB::raw('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'));
         });

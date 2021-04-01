@@ -35,14 +35,14 @@ Route::delete('/users/deleteUser', 'UserController@deleteUser')->name('delete_us
 Route::get('/users', 'UserController@showAll')->name('users');
 
 Route::get('/exam/prepare', 'ExamController@prepare')->name('prepare_exam');
-Route::post('/exam/correct', 'ExamController@correctPartial')->name('correct_partial');
+Route::post('/exam/correct', 'SubjectController@correctExam')->name('correct_exam');
 Route::post('/exam/schedule', 'ExamController@scheduleExam')->name('schedule_exam');
 Route::get('/exam/fraud/{examId}/steal_the_start/{userId}', 'ExamController@stealStart')->name('steal_start_exam');
 Route::get('/exam/{examId}/result/{userId}', 'ExamController@showResult')->name('show_partial_result');
 Route::get('/exam/{examId}/modify', 'ExamController@modifyExam')->name('modify_exam');
 Route::put('/exam/update', 'ExamController@updateExam')->name('update_exam');
-Route::post('/exam/increase_penalty', 'ExamController@increasePenalty')->name('increase_penalty');
-Route::get('/exam/{id}', 'ExamController@generate')->name('generate_exam');
+Route::post('/exam/increase_penalty', 'SubjectController@increasePenalty')->name('increase_penalty');
+Route::get('/exam/{id}', 'SubjectController@generate')->name('generate_exam');
 Route::get('/program', 'ExamController@showExams')->name('show_exams');
 
 Route::get('/course/prepare', 'CourseController@prepareNewCourse')->name('prepare_new_course');

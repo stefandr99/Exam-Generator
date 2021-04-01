@@ -9,7 +9,7 @@ interface IUserRepository
     /**
      * Getters
      */
-    public function all();
+    public function getAll();
     public function getRoleById($id);
     public function getNameById($id);
     public function getIdByName($name);
@@ -32,4 +32,5 @@ interface IUserRepository
      * Deletes
      */
     public function delete($id);
+    public function deleteGraduated();
 }

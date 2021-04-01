@@ -5,7 +5,7 @@ namespace App\Repository\Interfaces;
 
 interface ICourseRepository
 {
-    public function all();
+    public function getAll();
     public function getIdByName($name);
     public function getNameById($id);
     public function getCoursesTeachers($courses);

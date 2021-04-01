@@ -2,9 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Business\Business;
 use App\Business\CourseBusiness;
-use App\Business\DidacticBusiness;
 use App\Business\ExamBusiness;
 use App\Business\UserBusiness;
 use App\Repository\Interfaces\ICourseRepository;
@@ -12,17 +10,14 @@ use App\Repository\Interfaces\IExamRepository;
 use App\Repository\Interfaces\IUserRepository;
 use DateInterval;
 use DateTime;
-use DateTimeZone;
-use http\Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Session;
 
 class ExamController extends Controller
 {
-    private UserBusiness $userBusiness;
-    private CourseBusiness $courseBusiness;
-    private ExamBusiness $examBusiness;
+    private $userBusiness;
+    private $courseBusiness;
+    private $examBusiness;
 
     public function __construct(IUserRepository $userRepository, ICourseRepository $courseRepository,
                             IExamRepository $examRepository)
@@ -31,45 +26,6 @@ class ExamController extends Controller
         $this->userBusiness = new UserBusiness($userRepository);
         $this->courseBusiness = new CourseBusiness($courseRepository);
         $this->examBusiness = new ExamBusiness($examRepository);
-    }
-
-    public function generate($id) {
-        $examInfo = $this->examBusiness->getExamInfo($id);
-        $penalization = json_decode($examInfo[0]->penalization, true);
-        //print_r($penalization);
-        $userId = Auth::id();
-
-        if($this->examBusiness->checkStealExamStart($examInfo[0]))
-            return redirect()->route('steal_start_exam', array('examId' => $id, 'userId' => $userId));
-
-        $exercises = $this->examBusiness->generate($id, $examInfo);
-        $optionsNumber = array();
-        for($index = 0; $index < count($exercises[0]); $index++) {
-            $optionsNumber[$index] = $exercises[0][$index]['exercise']['options']['counter'];
-        }
-
-        $examTime = $this->examBusiness->getExamTime($examInfo[0]);
-        session(['userPenalty' => 0]);
-
-        return view('exam/exam', ['exercises' => $exercises[0], 'info' => $examInfo[0],
-            'optionsNumber' => $optionsNumber, 'examId' => $id,
-            'examTime' => $examTime, 'penalization' => $penalization]);
-    }
-
-    public function correctPartial(Request $request) {
-
-        if($request->ajax()) {
-            $studentAnswers = $request->input('answers');
-            $exercisesNumber = $request->input('exercisesNr');
-            $optionsNumber = $request->input('optionsNr');
-            $examId = $request->input('examId');
-            $studentAnswers = json_decode($studentAnswers);
-            $subjectInfo = $this->examBusiness->correct($studentAnswers, $exercisesNumber, $optionsNumber, $examId);
-            $subjectInfo = json_encode($subjectInfo);
-            return $subjectInfo;
-        }
-        else
-            return 0;
     }
 
     public function showResult($examId, $userId) {
@@ -85,7 +41,10 @@ class ExamController extends Controller
     }
 
     public function prepare() {
-        return view('exam/prepare');
+        $courses = $this->courseBusiness->getAll();
+        return view('exam/prepare', [
+            'courses' => $courses
+        ]);
     }
 
     public function scheduleExam(Request $request)
@@ -146,8 +105,5 @@ class ExamController extends Controller
         }
     }
 
-    public function increasePenalty() {
-        $currentPenalty = session('userPenalty');
-        session(['userPenalty' => $currentPenalty + 1]);
-    }
+
 }

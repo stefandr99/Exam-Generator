@@ -18,6 +18,7 @@ class CreateDidacticsTable extends Migration
             $table->id();
             $table->foreignId('teacher_id')->constrained('users')->onDelete('cascade')->onUpdate('cascade');
             $table->foreignId('course_id')->constrained('courses')->onDelete('cascade')->onUpdate('cascade');
+            $table->softDeletes();
             $table->timestamp('created_at')->default(DB::raw('CURRENT_TIMESTAMP'));
             $table->timestamp('updated_at')->default(DB::raw('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'));
         });

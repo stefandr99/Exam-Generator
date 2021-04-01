@@ -25,8 +25,6 @@ function scheduleExam() {
     exercises[2] = totalPoints;
 
     let penalization = getPenalization();
-    //console.log(JSON.stringify(penalization));
-    //alert(1);
 
     exercises = {info: JSON.stringify(examData), exercises: JSON.stringify(exercises),
                 penalization: JSON.stringify(penalization)};

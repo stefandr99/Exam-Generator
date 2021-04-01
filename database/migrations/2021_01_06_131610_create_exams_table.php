@@ -26,6 +26,8 @@ class CreateExamsTable extends Migration
             $table->text('exercises_type')->default('');
             $table->integer('total_points')->default(0);
             $table->integer('minimum_points')->default(0);
+            $table->text('penalization')->default('');
+            $table->softDeletes();
             $table->timestamp('created_at')->default(DB::raw('CURRENT_TIMESTAMP'));
             $table->timestamp('updated_at')->default(DB::raw('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'));
         });

@@ -8,7 +8,7 @@ use App\Repository\Interfaces\IDidacticRepository;
 
 class DidacticBusiness
 {
-    private IDidacticRepository $didacticRepository;
+    private $didacticRepository;
 
     public function __construct(IDidacticRepository $didacticRepository) {
         $this->didacticRepository = $didacticRepository;

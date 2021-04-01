@@ -69,6 +69,6 @@ function addCourse() {
         contentType: 'application/json',
         data: JSON.stringify(result),
     }).done(function () {
-        window.location.href = "/examgenerator/home";
+        window.location.href = "/examgenerator/course/all";
     })
 }

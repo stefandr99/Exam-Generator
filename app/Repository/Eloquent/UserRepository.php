@@ -10,11 +10,9 @@ use Illuminate\Support\Facades\DB;
 class UserRepository implements IUserRepository
 {
 
-    public function all(): \Illuminate\Contracts\Pagination\LengthAwarePaginator
+    public function getAll(): \Illuminate\Contracts\Pagination\LengthAwarePaginator
     {
         return DB::table('users')
-            ->where('year', '<', 4)
-            ->orWhereNull('year')
             ->orderBy("role")
             ->orderBy("year")
             ->paginate(50);
@@ -96,40 +94,61 @@ class UserRepository implements IUserRepository
             ->delete();
     }
 
-    public function search($toMatch, $criteria): \Illuminate\Support\Collection
+    public function deleteGraduated() {
+        DB::table('users')
+            ->where('year', "=", 4)
+            ->delete();
+    }
+
+    public function search($toMatch, $criteria)
     {
         switch ($criteria) {
             case 'name':
                 $users = DB::table('users')
+                    ->where('year', '<', 4)
+                    ->orWhereNull('year')
                     ->where('name', 'like', '%'.$toMatch.'%')
                     ->orderBy("role")
-                    ->get();
+                    ->orderBy("year")
+                    ->paginate(50);
                 break;
             case 'registration_number':
                 $users = DB::table('users')
                     ->where('registration_number', '=', $toMatch)
+                    ->where('year', '<', 4)
+                    ->orWhereNull('year')
                     ->orderBy("role")
-                    ->get();
+                    ->orderBy("year")
+                    ->paginate(50);
                 break;
             case 'year&group':
                 $info = explode(" ", $toMatch);
                 $users = DB::table('users')
                     ->where('year', '=', $info[0])
                     ->where('group', '=', $info[1])
+                    ->where('year', '<', 4)
+                    ->orWhereNull('year')
                     ->orderBy("role")
-                    ->get();
+                    ->orderBy("year")
+                    ->paginate(50);
                 break;
             case 'year':
                 $users = DB::table('users')
                     ->where('year', '=', $toMatch)
+                    ->where('year', '<', 4)
+                    ->orWhereNull('year')
                     ->orderBy("role")
-                    ->get();
+                    ->orderBy("year")
+                    ->paginate(50);
                 break;
             case 'group':
                 $users = DB::table('users')
                     ->where('group', '=', $toMatch)
+                    ->where('year', '<', 4)
+                    ->orWhereNull('year')
                     ->orderBy("role")
-                    ->get();
+                    ->orderBy("year")
+                    ->paginate(50);
                 break;
         }
 

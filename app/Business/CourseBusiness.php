@@ -3,20 +3,19 @@
 
 namespace App\Business;
 
-use App\Didactic;
 use App\Repository\Interfaces\ICourseRepository;
 
 class CourseBusiness
 {
-    private ICourseRepository $courseRepository;
+    private $courseRepository;
 
     public function __construct(ICourseRepository $courseRepository)
     {
         $this->courseRepository = $courseRepository;
     }
 
-    public function all() {
-        return $this->courseRepository->all();
+    public function getAll() {
+        return $this->courseRepository->getAll();
     }
 
     public function getIdByName($name) {

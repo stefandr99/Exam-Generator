@@ -12,10 +12,9 @@
             <label for="exam-subject" class="dependencies-options"><b>Materia:</b>
                 <select id="exam-subject" class="form-control">
                     <option value="no-subject">--</option>
-                    <option value="Baze de date">Baze de date</option>
-                    <option value="Proiectarea algoritmilor">Proiectarea algoritmilor</option>
-                    <option value="Rețele de calculatoare">Rețele de calculatoare</option>
-                    <option value="Programare avansată">Programare avansată</option>
+                    @foreach($courses as $course)
+                    <option value="{{ $course->id }}">{{ $course->name }}</option>
+                    @endforeach
                 </select>
             </label>
             <br>

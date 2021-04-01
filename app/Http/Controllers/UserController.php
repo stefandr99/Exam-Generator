@@ -1,8 +1,8 @@
 <?php
 
 namespace App\Http\Controllers;
-use App\Business\Business;
 use App\Business\CourseBusiness;
+use App\Business\DidacticBusiness;
 use App\Business\UserBusiness;
 use App\Repository\Interfaces\ICourseRepository;
 use App\Repository\Interfaces\IDidacticRepository;
@@ -10,18 +10,15 @@ use App\Repository\Interfaces\IUserRepository;
 use App\User;
 use Illuminate\Http\Request;
 
-use Illuminate\Auth\Events\Registered;
-use Illuminate\Http\JsonResponse;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use SimpleXLSX;
 
 class UserController extends Controller
 {
-    private CourseBusiness $courseBusiness;
-    private UserBusiness $userBusiness;
-    private DidacticBusiness $didacticBusiness;
+    private $courseBusiness;
+    private $userBusiness;
+    private $didacticBusiness;
 
     public function __construct(IUserRepository $userRepository, ICourseRepository $courseRepository,
                                 IDidacticRepository $didacticRepository)
@@ -34,7 +31,7 @@ class UserController extends Controller
 
     public function showAll() {
         $users = $this->userBusiness->getAll();
-        $courses = $this->courseBusiness->all();
+        $courses = $this->courseBusiness->getAll();
 
         return view('user/showUsers', ['users' => $users, 'courses' => $courses]);
     }
@@ -43,7 +40,7 @@ class UserController extends Controller
         $this->userBusiness->changeRole($id, $newRole);
         if($newRole == 2) {
             $courseId = $request->courseId;
-            $this->didacticBusiness->addTeacherToDidactics($id, $courseId);
+            $this->didacticBusiness->addTeacher($id, $courseId);
         }
 
         return redirect()->route('users');
@@ -53,8 +50,9 @@ class UserController extends Controller
         $search = $request->search;
         $criteria = $request->criteria;
         $users = $this->userBusiness->search($search, $criteria);
+        $courses = $this->courseBusiness->getAll();
 
-        return view('user/showUsers', ['users' => $users]);
+        return view('user/showUsers', ['users' => $users, 'courses' => $courses]);
     }
 
     protected function validator(array $data)

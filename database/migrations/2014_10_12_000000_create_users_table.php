@@ -26,10 +26,13 @@ class CreateUsersTable extends Migration
             $table->string('password');
             $table->integer('role')->default(3); // 1 - administrator, 2 - profesor, 3 - student
             $table->rememberToken();
+            $table->softDeletes();
             $table->timestamp('created_at')->default(DB::raw('CURRENT_TIMESTAMP'));
             $table->timestamp('updated_at')->default(DB::raw('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'));
         });
+
     }
+
 
     /**
      * Reverse the migrations.
@@ -38,6 +41,10 @@ class CreateUsersTable extends Migration
      */
     public function down()
     {
+        Schema::table('users', function (Blueprint $table) {
+            $table->dropSoftDeletes();
+        });
         Schema::dropIfExists('users');
+
     }
 }
