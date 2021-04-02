@@ -1,5 +1,5 @@
 let startPoints = 0;
-function checkTest(numberOfExercises, optionsNumber, examId) {
+function checkTest(numberOfExercises, optionsNumber, examId, forced) {
     let i;
     let answers = [];
     optionsNumber = JSON.parse(optionsNumber);
@@ -11,14 +11,23 @@ function checkTest(numberOfExercises, optionsNumber, examId) {
             answers[exercise][i] = document.getElementById(id).checked;
         }
     }
-    result = {answers: JSON.stringify(answers), exercisesNr: numberOfExercises,
-        optionsNr: optionsNumber, examId: examId};
+
+    timingInformation = {
+        examId: examId,
+        forced: forced
+    }
+
 
     jQuery.ajaxSetup({
         headers: {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         }
     });
+    $.post("/examgenerator/exam/timing", timingInformation, function (info) {})
+
+
+    result = {answers: JSON.stringify(answers), exercisesNr: numberOfExercises,
+        optionsNr: optionsNumber, examId: examId, isForced: forced};
 
     $.post("/examgenerator/exam/correct", result, function (info) {
         info = JSON.parse(info);
@@ -39,14 +48,15 @@ function startTimer(duration) {
         hours = hours < 10 ? "0" + hours : hours;
         minutes = minutes < 10 ? "0" + minutes : minutes;
         seconds = seconds < 10 ? "0" + seconds : seconds;
-
-        document.getElementById("hourss").innerHTML = hours;
-        document.getElementById("mins").innerHTML = minutes;
-        document.getElementById("secs").innerHTML = seconds;
-
         if (--timer < 0) {
             document.getElementById("submitExam").click();
         }
+        if(timer >= 0) {
+            document.getElementById("hourss").innerHTML = hours;
+            document.getElementById("mins").innerHTML = minutes;
+            document.getElementById("secs").innerHTML = seconds;
+        }
+
     }, 1000);
 }
 
@@ -71,6 +81,7 @@ function penalization(data) {
     switch (penalty.type) {
         case 'time':
             timer = timer - (parseInt(penalty.body.minutes) * 60 + parseInt(penalty.body.seconds));
+            checkTimeAfterPenalty();
             break;
         case 'points':
             startPoints -= parseFloat(penalty.body.points);
@@ -82,7 +93,7 @@ function penalization(data) {
             penalizationWithLimits(penalty);
             break;
         case 'end':
-            document.getElementById("submitExam").click();
+            document.getElementById("submitExamForced").click();
             break;
         default:
             break;
@@ -101,13 +112,20 @@ function penalizationWithLimits(penalty) {
         switch (penalty.body.exceeded.type) {
             case 'time':
                 timer = timer - (parseInt(penalty.body.exceeded.minutes) * 60 + parseInt(penalty.body.exceeded.seconds));
+                checkTimeAfterPenalty();
                 break;
             case 'points':
                 startPoints -= parseFloat(penalty.body.exceeded.points);
                 break;
             case 'end':
-                document.getElementById("submitExam").click();
+                document.getElementById("submitExamForced").click();
                 break;
         }
+    }
+}
+
+function checkTimeAfterPenalty() {
+    if(timer < 0) {
+        document.getElementById("submitExamForced").click();
     }
 }

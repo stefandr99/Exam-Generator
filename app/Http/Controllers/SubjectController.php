@@ -46,6 +46,18 @@ class SubjectController extends Controller
             'examTime' => $examTime, 'penalization' => $penalization]);
     }
 
+    public function increasePenalty() {
+        $currentPenalty = session('userPenalty');
+        session(['userPenalty' => $currentPenalty + 1]);
+    }
+
+    public function timing(Request $request) {
+        $examId = $request->input('examId');
+        $forcedSubmit = $request->input('forced');
+
+        $this->subjectBusiness->markExamTiming($examId, $forcedSubmit);
+    }
+
     public function correctExam(Request $request) {
 
         if($request->ajax()) {
@@ -53,6 +65,7 @@ class SubjectController extends Controller
             $exercisesNumber = $request->input('exercisesNr');
             $optionsNumber = $request->input('optionsNr');
             $examId = $request->input('examId');
+
             $studentAnswers = json_decode($studentAnswers);
             $subjectInfo = $this->subjectBusiness->correct($studentAnswers, $exercisesNumber, $optionsNumber, $examId);
             $subjectInfo = json_encode($subjectInfo);
@@ -60,10 +73,5 @@ class SubjectController extends Controller
         }
         else
             return 0;
-    }
-
-    public function increasePenalty() {
-        $currentPenalty = session('userPenalty');
-        session(['userPenalty' => $currentPenalty + 1]);
     }
 }

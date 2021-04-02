@@ -34,7 +34,6 @@
                         </div>
                         <div class="card-body">
                             <h2 class="card-title">{{$exam->course_name}}</h2>
-
                             <h5 class="card-text"><b>Durata</b>:
                                 @if($exam->hours == 1)
                                     {{ $exam->hours }} oră și

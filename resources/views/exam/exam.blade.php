@@ -46,8 +46,10 @@
             <br>
         @endfor
         <div class="r_relationship">
-            <button id="submitExam" type="button" class="btn btn-primary r_relationship" onclick="checkTest('{{ $info->number_of_exercises }}', '{{ json_encode($optionsNumber) }}', '{{ $examId }}')">
+            <button id="submitExam" type="button" class="btn btn-primary r_relationship" onclick="checkTest('{{ $info->number_of_exercises }}', '{{ json_encode($optionsNumber) }}', '{{ $examId }}', 0)">
                 Trimite răspunsurile
+            </button>
+            <button id="submitExamForced" type="button" onclick="checkTest('{{ $info->number_of_exercises }}', '{{ json_encode($optionsNumber) }}', '{{ $examId }}', 1)" hidden>
             </button>
         </div>
     </div>

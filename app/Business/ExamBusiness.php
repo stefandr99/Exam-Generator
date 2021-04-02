@@ -24,15 +24,15 @@ class ExamBusiness
 
     public function checkStealExamStart($examInfo) {
         $examDate = new DateTime($examInfo->starts_at);
-        $presentDate = new DateTime("now", new DateTimeZone('UTC'));
-        $presentDate->add(new DateInterval('PT2H'));
+        $presentDate = new DateTime("now");
+        $presentDate->add(new DateInterval('PT3H'));
         return $presentDate < $examDate;
     }
 
     public function getExamTime($examInfo) {
         $examDate = new DateTime($examInfo->starts_at);
-        $presentDate = new DateTime("now", new DateTimeZone('UTC'));
-        $presentDate->add(new DateInterval('PT2H'));
+        $presentDate = new DateTime("now");
+        $presentDate->add(new DateInterval('PT3H'));
 
         $examHours = intval($examDate->format('H')) + $examInfo->hours - intval($presentDate->format('H'));
         $examMinutes = intval($examDate->format('i')) + $examInfo->minutes - intval($presentDate->format('i'));
@@ -76,15 +76,19 @@ class ExamBusiness
     public function getExams($userId, $userRole, $yearAndSem): array
     {
         if ($userRole->role == 2)
-            return $this->getExamsForTeacher($userId);
+            return $this->getExamsForTeacher($userId, $yearAndSem);
         else {
             return $this->getExamsForStudents($userId, $yearAndSem);
         }
     }
 
-    private function getExamsForTeacher($userId): array
+    public function getLast30DaysExams($userId, $yearAndSem) {
+        return $this->examRepository->getlast30DaysExamsForTeacher($userId, $yearAndSem->semester);
+    }
+
+    private function getExamsForTeacher($userId, $yearAndSemester): array
     {
-        $exams = $this->examRepository->getAllForTeachers($userId);
+        $exams = $this->examRepository->getAllForTeachers($userId, $yearAndSemester->semester);
 
         $examsInformation = array(2, $exams);
         return $examsInformation;
@@ -133,5 +137,9 @@ class ExamBusiness
         );
 
         $this->examRepository->update($exam);
+    }
+
+    public function getTemporalStats($examId) {
+        $info = $this->examRepository->getTemporalStats($examId);
     }
 }

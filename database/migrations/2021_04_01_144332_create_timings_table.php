@@ -17,7 +17,8 @@ class CreateTimingsTable extends Migration
             $table->id();
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade')->onUpdate('cascade');
             $table->foreignId('exam_id')->constrained('exams')->onDelete('cascade')->onUpdate('cascade');
-
+            $table->dateTime('submitted_at')->useCurrent();
+            $table->boolean('forced_submit')->default(false);
             $table->timestamps();
         });
     }

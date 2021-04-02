@@ -13,4 +13,6 @@ interface ISubjectRepository
     public function updateSubject($examId, $userId, $subjectWithAnswers);
 
     public function getPenalizationInfoById($id);
+
+    public function markExamTiming($time);
 }

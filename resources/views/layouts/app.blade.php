@@ -38,7 +38,7 @@
 </head>
 <body>
     <div id="app">
-        <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
+        <nav class="navbar navbar-expand-md navbar-dark bg-dark shadow-sm">
             <div class="container">
                 <a class="navbar-brand" href="{{ url('/') }}">
                     {{ config('app.name', 'Examiner') }}
@@ -50,7 +50,27 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <!-- Left Side Of Navbar -->
                     <ul class="navbar-nav mr-auto">
+                        @if (Auth::user()->role == 2)
+                            <li class="nav-item dropdown dropdown-menu-dark">
+                                <a id="navbarDropdownTeacherExam" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                                    Examen
+                                </a>
 
+                                <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDropdownTeacherExam">
+                                    <a class="dropdown-item" href="{{ route('prepare_exam') }}">
+                                        {{ __('Pregatește examen') }}
+                                    </a>
+
+                                    <a class="dropdown-item" href="{{ route('show_exams') }}">
+                                        {{ __('Examenele mele') }}
+                                    </a>
+
+                                    <a class="dropdown-item" href="{{ route('show_last_30days_exams') }}">
+                                        {{ __('Examenele mele din ultimele 30 de zile') }}
+                                    </a>
+                                </ul>
+                            </li>
+                        @endif
                     </ul>
 
                     <!-- Right Side Of Navbar -->

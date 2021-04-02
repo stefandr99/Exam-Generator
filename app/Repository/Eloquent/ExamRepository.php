@@ -6,6 +6,8 @@ namespace App\Repository\Eloquent;
 
 use App\Exam;
 use App\Repository\Interfaces\IExamRepository;
+use DateInterval;
+use DateTime;
 use Illuminate\Support\Facades\DB;
 
 class ExamRepository implements IExamRepository
@@ -51,8 +53,11 @@ class ExamRepository implements IExamRepository
             ->first();
     }
 
-    public function getAllForTeachers($userId)
+    public function getAllForTeachers($userId, $semester)
     {
+        $presentDate = new DateTime("now");
+        $presentDate->add(new DateInterval('PT3H'));
+
         return DB::table('users')
             ->join('didactics', 'users.id', '=', 'didactics.teacher_id')
             ->join('courses', 'courses.id', '=', 'didactics.course_id')
@@ -61,7 +66,8 @@ class ExamRepository implements IExamRepository
                 'exams.type', 'exams.starts_at', 'exams.ends_at', 'exams.hours', 'exams.minutes', 'exams.number_of_exercises',
                 'exams.total_points', 'exams.minimum_points')
             ->where('users.id', $userId)
-            ->where('exams.ends_at', '>', now())
+            ->where('courses.semester', $semester)
+            ->where('exams.ends_at', '>', $presentDate)
             ->orderBy('exams.starts_at')
             ->get();
     }
@@ -75,6 +81,25 @@ class ExamRepository implements IExamRepository
             ->where('courses.year', $year)
             ->where('courses.semester', $semester)
             ->where('exams.ends_at', '>', DB::raw("now()"))
+            ->orderBy('exams.starts_at')
+            ->get();
+    }
+
+    public function getlast30DaysExamsForTeacher($userId, $semester) {
+        $presentDate = new DateTime("now");
+        $presentDate->add(new DateInterval('PT3H'));
+        $presentDate->sub(new DateInterval('P30D'));
+
+        return DB::table('users')
+            ->join('didactics', 'users.id', '=', 'didactics.teacher_id')
+            ->join('courses', 'courses.id', '=', 'didactics.course_id')
+            ->join('exams', 'courses.id', '=', 'exams.course_id')
+            ->select('exams.id as exam_id', 'users.name as teacher_name', 'courses.name as course_name',
+                'exams.type', 'exams.starts_at', 'exams.ends_at', 'exams.hours', 'exams.minutes', 'exams.number_of_exercises',
+                'exams.total_points', 'exams.minimum_points')
+            ->where('users.id', $userId)
+            ->where('courses.semester', $semester)
+            ->where('exams.ends_at', '>', $presentDate)
             ->orderBy('exams.starts_at')
             ->get();
     }
@@ -116,5 +141,15 @@ class ExamRepository implements IExamRepository
                 'total_points' => $exam['total_points'],
                 'minimum_points' => $exam['minimum_points']
             ]);
+    }
+
+    public function getTemporalStats($id) {
+        return DB::table('exams')
+            ->join('courses', 'courses.id', '=', 'exams.course_id')
+            ->select('exams.id as exam_id', 'courses.name as course_name', 'exams.type', 'exams.starts_at', 'exams.ends_at',
+                'exams.hours', 'exams.minutes', 'exams.number_of_exercises', 'exams.total_points', 'exams.minimum_points')
+            ->where('exams.id', $id)
+            ->orderBy('exams.starts_at')
+            ->get();
     }
 }

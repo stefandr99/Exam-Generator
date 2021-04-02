@@ -10,6 +10,7 @@ use App\Repository\Interfaces\IExamRepository;
 use App\Repository\Interfaces\IUserRepository;
 use DateInterval;
 use DateTime;
+use DateTimeZone;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -69,13 +70,21 @@ class ExamController extends Controller
 
         $examsInformation = $this->examBusiness->getExams($userId, $userRole, $yearAndSem);
         $presentDate = new DateTime("now");
-        $presentDate->add(new DateInterval('PT2H'));
+        $presentDate->add(new DateInterval('PT3H'));
 
         if($examsInformation[0] == 2)
             return view('program/TeachersProgram', ['exams' => $examsInformation[1], 'presentDate' => $presentDate]);
         else
             return view('program/studentsProgram', ['exams' => $examsInformation[1], 'teachers' => $examsInformation[2],
                 'presentDate' => $presentDate]);
+    }
+
+    public function showLast30DaysExams() {
+        $userId = Auth::id();
+        $yearAndSem = $this->userBusiness->getYearAndSemesterById($userId);
+
+        $examsInformation = $this->examBusiness->getLast30DaysExams($userId, $yearAndSem);
+        return view('program/teachersLast30DaysProgram', ['exams' => $examsInformation]);
     }
 
     public function stealStart($examId, $userId) {
@@ -105,5 +114,7 @@ class ExamController extends Controller
         }
     }
 
-
+    public function showTemporalStats($id) {
+        $temporalStatistics = $this->examBusiness->getTemporalStats($id);
+    }
 }

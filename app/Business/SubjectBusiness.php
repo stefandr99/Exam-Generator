@@ -5,6 +5,10 @@ namespace App\Business;
 
 
 use App\Repository\Interfaces\ISubjectRepository;
+use App\Timing;
+use DateInterval;
+use DateTime;
+use DateTimeZone;
 use Illuminate\Support\Facades\Auth;
 
 class SubjectBusiness
@@ -123,6 +127,20 @@ class SubjectBusiness
 
         }
         return $exercises;
+    }
+
+    public function markExamTiming($examId, $forced) {
+        $userId = Auth::id();
+
+        $submitDate = new DateTime("now", new DateTimeZone('Europe/Tiraspol'));
+        $timeInfo = array(
+            'userId' => $userId,
+            'examId' => $examId,
+            'submitDate' => $submitDate,
+            'forced' => $forced
+        );
+
+        $this->subjectRepository->markExamTiming($timeInfo);
     }
 
     public function correct($studentAnswers, $exercisesNumber, $optionsNumber, $examId)
