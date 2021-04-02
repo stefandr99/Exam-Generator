@@ -29,15 +29,15 @@ class SubjectRepository implements ISubjectRepository
             ->get();
     }
 
-    public function updateSubject($examId, $userId, $subject)
+    public function updateSubject($examId, $userId, $subjectWithAnswers)
     {
         DB::table('subjects')
             ->where('user_id', $userId)
             ->where('exam_id', $examId)
             ->update([
-                'obtained_points' => $subject['obtained_points'],
-                'student_answers' => $subject['student_answers'],
-                'results' => $subject['results']
+                'obtained_points' => $subjectWithAnswers['obtained_points'],
+                'student_answers' => $subjectWithAnswers['student_answers'],
+                'results' => $subjectWithAnswers['results']
             ]);
     }
 

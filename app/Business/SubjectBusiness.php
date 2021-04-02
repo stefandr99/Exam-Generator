@@ -128,12 +128,10 @@ class SubjectBusiness
     public function correct($studentAnswers, $exercisesNumber, $optionsNumber, $examId)
     {
         $userId = Auth::id();
+
         $subjectExercises = $this->subjectRepository->getSubjectExercises($examId, $userId);
-
         $examInformation = $this->subjectRepository->getPenalizationInfoById($examId);
-
         $examInformation->penalization = json_decode($examInformation->penalization, true);
-
         $exercises = json_decode($subjectExercises[0]->exercises, true);
 
         $correctedExam = [];
@@ -150,12 +148,12 @@ class SubjectBusiness
         $correctedExam = json_encode($correctedExam);
         $studentAnswers = json_encode($studentAnswers);
 
-        $subjectToUpdate = array(
+        $subjectWithAnswers = array(
             'obtained_points' => $points,
             'student_answers' => $studentAnswers,
             'results' => $correctedExam
         );
-        $this->subjectRepository->updateSubject($examId, $userId, $subjectToUpdate);
+        $this->subjectRepository->updateSubject($examId, $userId, $subjectWithAnswers);
 
         return array(0 => $examId, 1 => $userId);
     }
