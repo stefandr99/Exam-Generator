@@ -143,13 +143,26 @@ class ExamRepository implements IExamRepository
             ]);
     }
 
-    public function getTemporalStats($id) {
-        return DB::table('exams')
+    public function getExamStats($id) {
+        $examInformation = DB::table('exams')
             ->join('courses', 'courses.id', '=', 'exams.course_id')
-            ->select('exams.id as exam_id', 'courses.name as course_name', 'exams.type', 'exams.starts_at', 'exams.ends_at',
-                'exams.hours', 'exams.minutes', 'exams.number_of_exercises', 'exams.total_points', 'exams.minimum_points')
+            ->select('exams.id as exam_id', 'courses.name as course_name', 'exams.starts_at', 'exams.ends_at',
+                'exams.total_points', 'exams.minimum_points')
             ->where('exams.id', $id)
-            ->orderBy('exams.starts_at')
             ->get();
+
+        $subjectInfo = DB::table('users')
+            ->join('subject', 'users.id', '=', 'subjects.user_id')
+            ->join('timings', 'users.id', '=', 'timings.user_id')
+            ->select('users.name', 'users.group', 'subjects.obtained_points',
+                'timings.submitted_at', 'timings.forced_submit')
+            ->where('subjects.exam_id', $id)
+            ->orderBy('subjects.obtained_points', 'desc')
+            ->get();
+
+        return array(
+            'exam' => $examInformation,
+            'subject' => $subjectInfo
+        );
     }
 }

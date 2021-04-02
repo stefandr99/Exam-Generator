@@ -42,7 +42,7 @@ Route::get('/exam/{examId}/modify', 'ExamController@modifyExam')->name('modify_e
 Route::put('/exam/update', 'ExamController@updateExam')->name('update_exam');
 Route::get('/program/last30Days', 'ExamController@showLast30DaysExams')->name('show_last_30days_exams');
 Route::get('/program', 'ExamController@showExams')->name('show_exams');
-Route::get('/exam/{examId}/statistics/temporal', 'ExamController@showTemporalStats')->name('show_exam_temporal_stats');
+Route::get('/exam/{examId}/statistics', 'ExamController@showExamStats')->name('show_exam_stats');
 
 
 Route::get('/exam/{id}', 'SubjectController@generate')->name('generate_exam');

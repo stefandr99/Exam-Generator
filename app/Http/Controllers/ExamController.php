@@ -114,7 +114,13 @@ class ExamController extends Controller
         }
     }
 
-    public function showTemporalStats($id) {
-        $temporalStatistics = $this->examBusiness->getTemporalStats($id);
+    public function showExamStats($id) {
+        $examStatistics = $this->examBusiness->getExamStats($id);
+
+        return view('exam/showStatistics', [
+            'exam' => $examStatistics['exam'],
+            'subject' => $examStatistics['subject'],
+            'time' => $examStatistics['time']
+        ]);
     }
 }

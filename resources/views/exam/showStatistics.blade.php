@@ -17,14 +17,14 @@
         </div>
         <br>
 
+        <h2>Curs</h2>
+        <h2>Data</h2>
+        <h2>Totalul de puncte, numarul minim de puncte</h2>
         <table class="table table-striped">
             <thead class="table-primary">
             <tr>
                 <th scope="col">Nume</th>
                 <th scope="col">Grupa</th>
-                <th scope="col">Curs</th>
-                <th scope="col">Data</th>
-                <th scope="col">Ora inceperii examenului</th>
                 <th scope="col">Ora terminarii examenului (1)</th>
                 <th scope="col">Ora trimiterii raspunsurilor (2)</th>
                 <th scope="col">Diferenta de timp |(1) - (2)|</th>

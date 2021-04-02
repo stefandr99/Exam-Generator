@@ -139,7 +139,41 @@ class ExamBusiness
         $this->examRepository->update($exam);
     }
 
-    public function getTemporalStats($examId) {
-        $info = $this->examRepository->getTemporalStats($examId);
+    public function getExamStats($examId) {
+        $info = $this->examRepository->getExamStats($examId);
+
+        $startTime = $info['exam']->starts_at;
+        $endTime = $info['exam']->ends_at;
+        $submitTime = $info['subject']->submitted_at;
+        $timeInfo = $this->manageSubmitTime($startTime, $endTime, $submitTime);
+
+        $info['time'] = $timeInfo;
+
+        return $info;
+    }
+
+    private function manageSubmitTime($startTime, $endTime, $submitTime) {
+        $startTime = new DateTime($startTime);
+        $endTime = new DateTime($endTime);
+        $submitTime = new DateTime($submitTime);
+
+        $date = $startTime->format('d-m-Y H:i:s');
+        $endHour = $endTime->format('H:i:s');
+        $submitHour = $submitTime->format('H:i:s');
+        $difference = $submitTime->diff($endTime); // aici va fi invert = 1 daca submit > end
+        $difference = array(
+            'hours' => $difference->h,
+            'minutes' => $difference->i,
+            'seconds' => $difference->s,
+            'microseconds' => $difference->f,
+            'invert' => $difference->invert
+        );
+
+        return array(
+            'date' => $date,
+            'endHour' => $endHour,
+            'submitTime' => $submitHour,
+            'timeDifference' => $difference
+        );
     }
 }

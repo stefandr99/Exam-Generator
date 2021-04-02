@@ -14,7 +14,7 @@ interface IExamRepository
     public function getAllForStudents($userId, $year, $semester);
     public function getTeachersByExam($examId);
     public function getExamById($id);
-    public function getTemporalStats($id);
+    public function getExamStats($id);
 
     public function update($exam);
 
