@@ -1,3 +1,23 @@
 .ongoing-exam-info {
     top: -5px;
 }
+
+#green-submit-time {
+    background-color: #1aff1a;
+}
+
+#very-red-submit-time {
+    background-color: #ff0000;
+}
+
+#red-submit-time {
+    background-color: #ff6666;
+}
+
+#light-red-submit-time {
+    background-color: #ffb3b3;
+}
+
+#very-light-red-submit-time {
+    background-color: #ffe6e6;
+}

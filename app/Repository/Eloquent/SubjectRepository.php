@@ -5,7 +5,6 @@ namespace App\Repository\Eloquent;
 
 use App\Repository\Interfaces\ISubjectRepository;
 use App\Subject;
-use App\Timing;
 use Illuminate\Support\Facades\DB;
 
 class SubjectRepository implements ISubjectRepository
@@ -30,17 +29,7 @@ class SubjectRepository implements ISubjectRepository
             ->get();
     }
 
-    public function markExamTiming($time)
-    {
-        $timing = new Timing;
-        $timing->user_id = $time['userId'];
-        $timing->exam_id = $time['examId'];
-        $timing->submitted_at = $time['submitDate'];
-        $timing->forced_submit = $time['forced'];
-        $timing->save();
-    }
-
-    public function updateSubject($examId, $userId, $subjectWithAnswers)
+    public function updateSubject($examId, $userId, $subjectWithAnswers, $forcedSubmit, $submitDate)
     {
         DB::table('subjects')
             ->where('user_id', $userId)
@@ -48,7 +37,10 @@ class SubjectRepository implements ISubjectRepository
             ->update([
                 'obtained_points' => $subjectWithAnswers['obtained_points'],
                 'student_answers' => $subjectWithAnswers['student_answers'],
-                'results' => $subjectWithAnswers['results']
+                'results' => $subjectWithAnswers['results'],
+                'submitted_at' => $submitDate,
+                'forced_submit' => $forcedSubmit,
+                'penalizations' => session('userPenalty')
             ]);
     }
 

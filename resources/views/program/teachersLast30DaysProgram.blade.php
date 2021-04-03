@@ -41,8 +41,8 @@
                                     <b>Punctaj</b>: {{$exam->total_points}},
                                     <b>Punctaj minim necesar</b>: {{$exam->minimum_points}}
                                 </h5>
-                                <button type="button" class="btn btn-primary" onclick="window.location='{{ route('show_exam_temporal_stats') }}'">
-                                    Vizualizare statistici temporale
+                                <button type="button" class="btn btn-primary" onclick="window.location='{{ route('show_exam_stats', $exam->exam_id) }}'">
+                                    Vizualizare statistici
                                 </button>
                             </div>
                             <div class="card-footer text-muted">

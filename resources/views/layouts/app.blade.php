@@ -50,7 +50,9 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <!-- Left Side Of Navbar -->
                     <ul class="navbar-nav mr-auto">
-                        @if (Auth::user()->role == 2)
+                        @guest
+
+                        @elseif(Auth::user()->role == 2)
                             <li class="nav-item dropdown dropdown-menu-dark">
                                 <a id="navbarDropdownTeacherExam" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                                     Examen

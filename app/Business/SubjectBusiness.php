@@ -129,21 +129,7 @@ class SubjectBusiness
         return $exercises;
     }
 
-    public function markExamTiming($examId, $forced) {
-        $userId = Auth::id();
-
-        $submitDate = new DateTime("now", new DateTimeZone('Europe/Tiraspol'));
-        $timeInfo = array(
-            'userId' => $userId,
-            'examId' => $examId,
-            'submitDate' => $submitDate,
-            'forced' => $forced
-        );
-
-        $this->subjectRepository->markExamTiming($timeInfo);
-    }
-
-    public function correct($studentAnswers, $exercisesNumber, $optionsNumber, $examId)
+    public function correct($studentAnswers, $exercisesNumber, $optionsNumber, $examId, $forcedSubmit)
     {
         $userId = Auth::id();
 
@@ -171,7 +157,10 @@ class SubjectBusiness
             'student_answers' => $studentAnswers,
             'results' => $correctedExam
         );
-        $this->subjectRepository->updateSubject($examId, $userId, $subjectWithAnswers);
+
+        $submitDate = new DateTime("now", new DateTimeZone('Europe/Tiraspol'));
+        $this->subjectRepository->updateSubject($examId, $userId, $subjectWithAnswers, $forcedSubmit, $submitDate);
+        session()->forget('userPenalty');
 
         return array(0 => $examId, 1 => $userId);
     }

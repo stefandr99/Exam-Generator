@@ -12,19 +12,11 @@ function checkTest(numberOfExercises, optionsNumber, examId, forced) {
         }
     }
 
-    timingInformation = {
-        examId: examId,
-        forced: forced
-    }
-
-
     jQuery.ajaxSetup({
         headers: {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         }
     });
-    $.post("/examgenerator/exam/timing", timingInformation, function (info) {})
-
 
     result = {answers: JSON.stringify(answers), exercisesNr: numberOfExercises,
         optionsNr: optionsNumber, examId: examId, isForced: forced};

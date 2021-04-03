@@ -146,18 +146,18 @@ class ExamRepository implements IExamRepository
     public function getExamStats($id) {
         $examInformation = DB::table('exams')
             ->join('courses', 'courses.id', '=', 'exams.course_id')
-            ->select('exams.id as exam_id', 'courses.name as course_name', 'exams.starts_at', 'exams.ends_at',
+            ->select('exams.id as exam_id', 'exams.type', 'courses.name as course_name', 'exams.starts_at', 'exams.ends_at',
                 'exams.total_points', 'exams.minimum_points')
             ->where('exams.id', $id)
-            ->get();
+            ->get()
+            ->first();
 
         $subjectInfo = DB::table('users')
-            ->join('subject', 'users.id', '=', 'subjects.user_id')
-            ->join('timings', 'users.id', '=', 'timings.user_id')
-            ->select('users.name', 'users.group', 'subjects.obtained_points',
-                'timings.submitted_at', 'timings.forced_submit')
+            ->join('subjects', 'users.id', '=', 'subjects.user_id')
+            ->select('users.id', 'users.name', 'users.group as student_group', 'subjects.obtained_points',
+                'subjects.submitted_at', 'subjects.forced_submit', 'subjects.penalizations')
             ->where('subjects.exam_id', $id)
-            ->orderBy('subjects.obtained_points', 'desc')
+            ->orderBy('subjects.submitted_at', 'desc')
             ->get();
 
         return array(

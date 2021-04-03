@@ -52,7 +52,7 @@
                                 </button>
                             @endif
                             @if(new DateTime($exam->ends_at) > $presentDate && new DateTime($exam->starts_at) < $presentDate)
-                                <span class="btn btn-success">
+                                <span class="btn btn-success" onclick="window.location='{{ route('show_exam_stats', $exam->exam_id) }}'">
                                     Detalii
                                 </span>
                             @endif

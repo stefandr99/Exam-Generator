@@ -10,9 +10,8 @@ interface ISubjectRepository
 
     public function getSubjectExercises($examId, $userId);
 
-    public function updateSubject($examId, $userId, $subjectWithAnswers);
+    public function updateSubject($examId, $userId, $subjectWithAnswers, $forcedSubmit, $submitDate);
 
     public function getPenalizationInfoById($id);
 
-    public function markExamTiming($time);
 }

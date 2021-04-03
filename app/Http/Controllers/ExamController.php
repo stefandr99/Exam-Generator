@@ -119,7 +119,7 @@ class ExamController extends Controller
 
         return view('exam/showStatistics', [
             'exam' => $examStatistics['exam'],
-            'subject' => $examStatistics['subject'],
+            'subjects' => $examStatistics['subject'],
             'time' => $examStatistics['time']
         ]);
     }

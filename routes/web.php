@@ -47,7 +47,6 @@ Route::get('/exam/{examId}/statistics', 'ExamController@showExamStats')->name('s
 
 Route::get('/exam/{id}', 'SubjectController@generate')->name('generate_exam');
 Route::post('/exam/increase_penalty', 'SubjectController@increasePenalty')->name('increase_penalty');
-Route::post('/exam/timing', 'SubjectController@timing')->name('time_exam');
 Route::post('/exam/correct', 'SubjectController@correctExam')->name('correct_exam');
 
 Route::get('/course/prepare', 'CourseController@prepareNewCourse')->name('prepare_new_course');
