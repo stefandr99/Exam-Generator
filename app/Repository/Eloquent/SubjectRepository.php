@@ -29,7 +29,7 @@ class SubjectRepository implements ISubjectRepository
             ->get();
     }
 
-    public function updateSubject($examId, $userId, $subjectWithAnswers, $forcedSubmit, $submitDate)
+    public function updateSubject($examId, $userId, $subjectWithAnswers, $forcedSubmit, $submitDate, $timePromoted)
     {
         DB::table('subjects')
             ->where('user_id', $userId)
@@ -40,7 +40,8 @@ class SubjectRepository implements ISubjectRepository
                 'results' => $subjectWithAnswers['results'],
                 'submitted_at' => $submitDate,
                 'forced_submit' => $forcedSubmit,
-                'penalizations' => session('userPenalty')
+                'penalizations' => session('userPenalty'),
+                'time_promoted' => $timePromoted
             ]);
     }
 
@@ -49,6 +50,14 @@ class SubjectRepository implements ISubjectRepository
         return DB::table('exams')
             ->select('penalization', 'starts_at', 'ends_at', 'hours', 'minutes')
             ->where('id', $id)
+            ->get()
+            ->first();
+    }
+
+    public function getExamDate($examId) {
+        return DB::table('exams')
+            ->where('id', $examId)
+            ->select('ends_at')
             ->get()
             ->first();
     }

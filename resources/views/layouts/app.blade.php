@@ -15,6 +15,7 @@
     <script src="{{ asset('js/examPreparation.js') }}" defer></script>
     <script src="{{ asset('js/examScheduling.js') }}" defer></script>
     <script src="{{ asset('js/examSubject.js') }}" defer></script>
+    <script src="{{ asset('js/examStatistics.js') }}" defer></script>
     <script src="{{ asset('js/user.js') }}" defer></script>
     <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>

@@ -5,7 +5,7 @@
 @endsection
 
 @section('content')
-    <class="container my-4">
+    <div class="container my-4">
         <div class="row">
             <form class="form-inline col" action="{{route('search_user')}}">
                 <div class="form-group search-user">

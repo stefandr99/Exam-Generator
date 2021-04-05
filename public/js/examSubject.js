@@ -60,15 +60,17 @@ var decodeHTML = function (html) {
 
 let limit = -1;
 function penalization(data) {
-    jQuery.ajaxSetup({
-        headers: {
-            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-        }
-    });
-    $.post("/examgenerator/exam/increase_penalty");
-
     data = decodeHTML(data);
     let penalty = JSON.parse(data);
+
+    if(penalty.type !== 'without') {
+        jQuery.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+        $.post("/examgenerator/exam/increase_penalty");
+    }
 
     switch (penalty.type) {
         case 'time':

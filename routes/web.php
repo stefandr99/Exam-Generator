@@ -30,19 +30,22 @@ Route::post('/users/add', 'UserController@registerByAdmin')->name('register_by_a
 
 Route::put('/users/next_semester/{semester}', 'UserController@passToNextSemester')->name('next_semester');
 Route::post('/users/uploadBulkUsers', 'UserController@registerBulk')->name('register_bulk_users');
-Route::put('/users/update/{id}/newRole={newRole}', 'UserController@updateUserRole')->name('update_role');
+Route::put('/users/update/{id}/new_role={newRole}', 'UserController@updateUserRole')->name('update_role');
 Route::delete('/users/deleteUser', 'UserController@deleteUser')->name('delete_user');
 Route::get('/users', 'UserController@showAll')->name('users');
 
 Route::get('/exam/prepare', 'ExamController@prepare')->name('prepare_exam');
 Route::post('/exam/schedule', 'ExamController@scheduleExam')->name('schedule_exam');
-Route::get('/exam/fraud/{examId}/steal_the_start/{userId}', 'ExamController@stealStart')->name('steal_start_exam');
+Route::get('/exam/fraud/steal_the_start/exam={examId}&user={userId}', 'ExamController@stealStart')->name('steal_start_exam');
 Route::get('/exam/{examId}/result/{userId}', 'ExamController@showResult')->name('show_partial_result');
 Route::get('/exam/{examId}/modify', 'ExamController@modifyExam')->name('modify_exam');
 Route::put('/exam/update', 'ExamController@updateExam')->name('update_exam');
 Route::get('/program/last30Days', 'ExamController@showLast30DaysExams')->name('show_last_30days_exams');
 Route::get('/program', 'ExamController@showExams')->name('show_exams');
-Route::get('/exam/{examId}/statistics', 'ExamController@showExamStats')->name('show_exam_stats');
+Route::get('/exam/statistics/filtered', 'ExamController@filterExamStats')->name('filter_exam_stats');
+Route::get('/exam/statistics/exam={examId}', 'ExamController@showExamStats')->name('show_exam_stats');
+Route::put('/exam/promote_student/exam={examId}&user={userId}', 'ExamController@promoteStudent')->name('promote_student');
+Route::put('/exam/no_promote_student/exam={examId}&user={userId}', 'ExamController@undoPromoteStudent')->name('undo_promote_student');
 
 
 Route::get('/exam/{id}', 'SubjectController@generate')->name('generate_exam');

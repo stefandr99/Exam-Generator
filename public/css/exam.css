@@ -2,22 +2,55 @@
     top: -5px;
 }
 
-#green-submit-time {
-    background-color: #1aff1a;
+#promoted-green {
+    background-color: #009900;
 }
 
-#very-red-submit-time {
-    background-color: #ff0000;
+#light-green-submit-time {
+    background-color: #33ff33;
+}
+
+#unpromoted-red {
+    background-color: #e60000;
 }
 
 #red-submit-time {
-    background-color: #ff6666;
+    background-color: #ff3333;
 }
 
 #light-red-submit-time {
-    background-color: #ffb3b3;
+    background-color: #ff6666;
 }
 
-#very-light-red-submit-time {
-    background-color: #ffe6e6;
+.exam-legend-rectangular {
+    height: 20px;
+    width: 30px;
+}
+
+.to-promote-button {
+    color: white;
+    background-color: #009900;
+    border-color: #009900;
+}
+
+.to-promote-button:hover, .to-promote-button:active, .to-promote-button:visited {
+    color: white;
+    background-color: #008000;
+    border-color: #008000;
+}
+
+.to-no-promote-button {
+    color: white;
+    background-color: #ff3333;
+    border-color: #ff3333;
+}
+
+.to-no-promote-button:hover, .to-no-promote-button:active, .to-no-promote-button:visited {
+    color: white;
+    background-color: #e60000;
+    border-color: #e60000;
+}
+
+.filter-students-align {
+    margin-left: 12px;
 }

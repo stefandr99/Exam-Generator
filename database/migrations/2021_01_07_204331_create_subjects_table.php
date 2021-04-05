@@ -26,6 +26,7 @@ class CreateSubjectsTable extends Migration
             $table->dateTime('submitted_at')->useCurrent();
             $table->boolean('forced_submit')->default(false);
             $table->integer('penalizations')->default(0);
+            $table->boolean('time_promoted')->default(true);
             $table->softDeletes();
             $table->timestamp('created_at')->default(DB::raw('CURRENT_TIMESTAMP'));
             $table->timestamp('updated_at')->default(DB::raw('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'));

@@ -5,7 +5,6 @@ namespace App\Business;
 
 
 use App\Repository\Interfaces\ISubjectRepository;
-use App\Timing;
 use DateInterval;
 use DateTime;
 use DateTimeZone;
@@ -159,10 +158,23 @@ class SubjectBusiness
         );
 
         $submitDate = new DateTime("now", new DateTimeZone('Europe/Tiraspol'));
-        $this->subjectRepository->updateSubject($examId, $userId, $subjectWithAnswers, $forcedSubmit, $submitDate);
+        $timePromoted = $this->isTimePromoted($submitDate, $examId);
+
+        $this->subjectRepository->updateSubject($examId, $userId, $subjectWithAnswers, $forcedSubmit, $submitDate, $timePromoted);
         session()->forget('userPenalty');
 
-        return array(0 => $examId, 1 => $userId);
+        return array($examId, $userId);
+    }
+
+    private function isTimePromoted($submitDate, $examId) {
+        $endTime = $this->subjectRepository->getExamDate($examId);
+
+        $endTime = new DateTime($endTime->ends_at);
+        $difference = $submitDate->diff($endTime);
+
+        if($difference->invert == 1 && $difference->h >= 0 && $difference->i >= 0 && $difference->s > 30)
+            return 0;
+        return 1;
     }
 
     private function getPoints($exercisesResult,$subjectExercises, $penalization)

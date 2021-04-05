@@ -143,26 +143,95 @@ class ExamRepository implements IExamRepository
             ]);
     }
 
-    public function getExamStats($id) {
-        $examInformation = DB::table('exams')
+    public function getExamInfoForStudentStats($id) {
+        return DB::table('exams')
             ->join('courses', 'courses.id', '=', 'exams.course_id')
             ->select('exams.id as exam_id', 'exams.type', 'courses.name as course_name', 'exams.starts_at', 'exams.ends_at',
                 'exams.total_points', 'exams.minimum_points')
             ->where('exams.id', $id)
             ->get()
             ->first();
+    }
+
+    public function getExamStats($id) {
+        $examInformation = $this->getExamInfoForStudentStats($id);
 
         $subjectInfo = DB::table('users')
             ->join('subjects', 'users.id', '=', 'subjects.user_id')
-            ->select('users.id', 'users.name', 'users.group as student_group', 'subjects.obtained_points',
-                'subjects.submitted_at', 'subjects.forced_submit', 'subjects.penalizations')
+            ->join('exams', 'exams.id', '=', 'subjects.exam_id')
+            ->select('subjects.id', 'users.id as user_id', 'users.name as user_name', 'users.group as student_group',
+                'subjects.obtained_points', 'subjects.submitted_at', 'subjects.forced_submit', 'subjects.penalizations',
+                'subjects.time_promoted',
+                DB::raw('TIMEDIFF(subjects.submitted_at, exams.ends_at) as time_diff'),
+                DB::raw('TIMESTAMPDIFF(SECOND, exams.ends_at, subjects.submitted_at) as second_diff')) // negativ daca nu a intarziat, pozitiv altfel
             ->where('subjects.exam_id', $id)
             ->orderBy('subjects.submitted_at', 'desc')
-            ->get();
+            ->paginate(50);
 
         return array(
             'exam' => $examInformation,
             'subject' => $subjectInfo
         );
+    }
+
+    public function getFilteredExamStats($id, $filter) {
+        $examInformation = $this->getExamInfoForStudentStats($id);
+
+        $subjectInfo = $this->getPromotedSubjectsFiltered($id);
+
+        return array(
+            'exam' => $examInformation,
+            'subject' => $subjectInfo
+        );
+    }
+
+    private function getPromotedSubjectsFiltered($id) {
+        return DB::table('users')
+            ->join('subjects', 'users.id', '=', 'subjects.user_id')
+            ->join('exams', 'exams.id', '=', 'subjects.exam_id')
+            ->select('subjects.id', 'users.id as user_id', 'users.name as user_name', 'users.group as student_group',
+                'subjects.obtained_points', 'subjects.submitted_at', 'subjects.forced_submit', 'subjects.penalizations',
+                'subjects.time_promoted',
+                DB::raw('TIMEDIFF(subjects.submitted_at, exams.ends_at) as time_diff'),
+                DB::raw('TIMESTAMPDIFF(SECOND, exams.ends_at, subjects.submitted_at) as second_diff')) // negativ daca nu a intarziat, pozitiv altfel
+            ->where('subjects.exam_id', $id)
+            ->where('subjects.obtained_points', '>=', 'exams.minimum_points')
+            ->where('subjects.time_promoted', 1)
+            ->orderBy('subjects.submitted_at', 'desc')
+            ->paginate(50);
+    }
+
+    private function getFirstLevelLatenessSubjectsFiltered($id) {
+        return DB::table('users')
+            ->join('subjects', 'users.id', '=', 'subjects.user_id')
+            ->join('exams', 'exams.id', '=', 'subjects.exam_id')
+            ->select('subjects.id', 'users.id as user_id', 'users.name as user_name', 'users.group as student_group',
+                'subjects.obtained_points', 'subjects.submitted_at', 'subjects.forced_submit', 'subjects.penalizations',
+                'subjects.time_promoted',
+                DB::raw('TIMEDIFF(subjects.submitted_at, exams.ends_at) as time_diff'),
+                DB::raw('TIMESTAMPDIFF(SECOND, exams.ends_at, subjects.submitted_at) as second_diff')) // negativ daca nu a intarziat, pozitiv altfel
+            ->where('subjects.exam_id', $id)
+            ->orderBy('subjects.submitted_at', 'desc')
+            ->paginate(50);
+    }
+
+    public function promoteByTimeStudent($examId, $userId)
+    {
+        DB::table('subjects')
+            ->where('exam_id', $examId)
+            ->where('user_id', $userId)
+            ->update([
+                'time_promoted' => 1
+            ]);
+    }
+
+    public function undoPromoteByTimeStudent($examId, $userId)
+    {
+        DB::table('subjects')
+            ->where('exam_id', $examId)
+            ->where('user_id', $userId)
+            ->update([
+                'time_promoted' => 0
+            ]);
     }
 }

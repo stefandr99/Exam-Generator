@@ -116,11 +116,40 @@ class ExamController extends Controller
 
     public function showExamStats($id) {
         $examStatistics = $this->examBusiness->getExamStats($id);
+        $neutralHour = DateTime::createFromFormat('H:i:s', '00:00:00')->format('H:i:s');
 
         return view('exam/showStatistics', [
             'exam' => $examStatistics['exam'],
             'subjects' => $examStatistics['subject'],
-            'time' => $examStatistics['time']
+            'neutralHour' => $neutralHour
         ]);
+    }
+
+    public function filterExamStats(Request $request) {
+        if ($request->ajax()) {
+            $examId = $request->query('exam');
+            $filter = $request->query('filter');
+            $examStatistics = $this->examBusiness->getFilteredExamStats($examId, $filter);
+            $neutralHour = DateTime::createFromFormat('H:i:s', '00:00:00')->format('H:i:s');
+            return view('home');
+            return view('exam/showStatistics', [
+                'exam' => $examStatistics['exam'],
+                'subjects' => $examStatistics['subject'],
+                'neutralHour' => $neutralHour
+            ]);
+        }
+        return view('home');
+    }
+
+    public function promoteStudent($examId, $userId) {
+        $this->examBusiness->promoteStudent($examId, $userId);
+
+        return redirect()->route('show_exam_stats', $examId);
+    }
+
+    public function undoPromoteStudent($examId, $userId) {
+        $this->examBusiness->undoPromoteStudent($examId, $userId);
+
+        return redirect()->route('show_exam_stats', $examId);
     }
 }

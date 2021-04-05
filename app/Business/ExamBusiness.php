@@ -142,14 +142,16 @@ class ExamBusiness
     public function getExamStats($examId) {
         $info = $this->examRepository->getExamStats($examId);
 
-        $endTime = $info['exam']->ends_at;
-        $timeInfo = $this->manageSubmitTime($endTime, $info['subject']);
+        return $info;
+    }
 
-        $info['time'] = $timeInfo;
+    public function getFilteredExamStats($examId, $filter) {
+        $info = $this->examRepository->getFilteredExamStats($examId, $filter);
 
         return $info;
     }
 
+    /*
     private function manageSubmitTime($endTime, $studentTimeInfo) {
         $endTime = new DateTime($endTime);
         $endHour = $endTime->format('H:i:s');
@@ -163,7 +165,6 @@ class ExamBusiness
                 'hours' => $difference->h,
                 'minutes' => $difference->i,
                 'seconds' => $difference->s,
-                'microseconds' => $difference->f,
                 'invert' => $difference->invert
             );
             $timeInfo[$subjectTimeDetails->id] = array(
@@ -174,5 +175,13 @@ class ExamBusiness
         }
 
         return $timeInfo;
+    }*/
+
+    public function promoteStudent($exam, $user) {
+        $this->examRepository->promoteByTimeStudent($exam, $user);
+    }
+
+    public function undoPromoteStudent($exam, $user) {
+        $this->examRepository->undoPromoteByTimeStudent($exam, $user);
     }
 }

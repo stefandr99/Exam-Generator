@@ -15,9 +15,10 @@ interface IExamRepository
     public function getTeachersByExam($examId);
     public function getExamById($id);
     public function getExamStats($id);
+    public function getFilteredExamStats($id, $filter);
 
     public function update($exam);
 
-
-
+    public function promoteByTimeStudent($examId, $userId);
+    public function undoPromoteByTimeStudent($examId, $userId);
 }
