@@ -184,4 +184,10 @@ class ExamBusiness
     public function undoPromoteStudent($exam, $user) {
         $this->examRepository->undoPromoteByTimeStudent($exam, $user);
     }
+
+    public function getFilteredExamStatsBySearch($examId, $name) {
+        $info = $this->examRepository->getExamStatsBySearch($examId, $name);
+
+        return $info;
+    }
 }

@@ -17,6 +17,8 @@ interface IExamRepository
     public function getExamStats($id);
     public function getFilteredExamStats($id, $filter);
 
+    public function getExamStatsBySearch($examId, $name);
+
     public function update($exam);
 
     public function promoteByTimeStudent($examId, $userId);

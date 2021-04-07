@@ -121,24 +121,22 @@ class ExamController extends Controller
         return view('exam/showStatistics', [
             'exam' => $examStatistics['exam'],
             'subjects' => $examStatistics['subject'],
-            'neutralHour' => $neutralHour
+            'neutralHour' => $neutralHour,
+            'filter' => 'none'
         ]);
     }
 
     public function filterExamStats(Request $request) {
-        if ($request->ajax()) {
-            $examId = $request->query('exam');
-            $filter = $request->query('filter');
-            $examStatistics = $this->examBusiness->getFilteredExamStats($examId, $filter);
-            $neutralHour = DateTime::createFromFormat('H:i:s', '00:00:00')->format('H:i:s');
-            return view('home');
-            return view('exam/showStatistics', [
-                'exam' => $examStatistics['exam'],
-                'subjects' => $examStatistics['subject'],
-                'neutralHour' => $neutralHour
-            ]);
-        }
-        return view('home');
+        $examId = $request->exam;
+        $filter = $request->filter;
+        $examStatistics = $this->examBusiness->getFilteredExamStats($examId, $filter);
+        $neutralHour = DateTime::createFromFormat('H:i:s', '00:00:00')->format('H:i:s');
+        return view('exam/showStatistics', [
+            'exam' => $examStatistics['exam'],
+            'subjects' => $examStatistics['subject'],
+            'neutralHour' => $neutralHour,
+            'filter' => $filter
+        ]);
     }
 
     public function promoteStudent($examId, $userId) {
@@ -151,5 +149,19 @@ class ExamController extends Controller
         $this->examBusiness->undoPromoteStudent($examId, $userId);
 
         return redirect()->route('show_exam_stats', $examId);
+    }
+
+    public function searchSubject(Request $request) {
+        $examId = $request->exam;
+        $name = $request->name;
+
+        $searchSubjectExamStatistics = $this->examBusiness->getFilteredExamStatsBySearch($examId, $name);
+        $neutralHour = DateTime::createFromFormat('H:i:s', '00:00:00')->format('H:i:s');
+        return view('exam/showStatistics', [
+            'exam' => $searchSubjectExamStatistics['exam'],
+            'subjects' => $searchSubjectExamStatistics['subject'],
+            'neutralHour' => $neutralHour,
+            'filter' => 'all'
+        ]);
     }
 }

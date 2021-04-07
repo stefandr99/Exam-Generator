@@ -28,10 +28,11 @@
         <div class="d-flex">
             <div class="mr-auto p-2">
                 <div class="row">
-                    <form class="form-inline col" action="{{route('search_user')}}">
-                        <div class="form-group search-user">
-                            <label for="search-course"><b>Student:</b></label>
-                            <input type="text" name="name" id="search-course" class="form-control mx-sm-4" placeholder="Nume">
+                    <form class="form-inline col" action="{{route('search_user_from_exam_stats')}}">
+                        <div class="form-group search-subject">
+                            <input name="exam" value="{{$exam->exam_id}}" hidden>
+                            <label for="search-exam-subject"><b>Student:</b></label>
+                            <input type="text" name="name" id="search-exam-subject" class="form-control mx-sm-4" placeholder="Nume">
                             <button type="submit" class="btn btn-primary">Caută</button>
                         </div>
                     </form>
@@ -39,18 +40,44 @@
             </div>
             <div class="p-2">
                 <div class="row">
-                    <div class="form-group filter-students-align">
-                        <label for="filter-students"><b>Filtreaza:</b></label>
-                        <select id="filter-students" class="form-control mx-sm-4" onchange="filterStudentsResult({{$exam->exam_id}})">
-                            <option value="no_filter">Niciun filtru</option>
-                            <option value="promoted">Promovati</option>
-                            <option value="failed">Nepromovati</option>
-                            <option value="first_level_lateness">Intarzierea raspunsurilor <= 30 sec.</option>
-                            <option value="second_level_lateness">Intarziere raspunsurilor intre 30 sec. - 3 min.</option>
-                            <option value="third_level_lateness">Intarziere raspunsurilor peste 3 min.</option>
-                        </select>
-                        <button onclick="filterStudentsResult({{$exam->exam_id}})">Apasa</button>
-                    </div>
+                    <form class="form-inline col" action="{{route('filter_exam_stats')}}">
+                        <div class="form-group">
+                            <input name="exam" value="{{$exam->exam_id}}" hidden>
+                            <label for="filter_students"><b>Filtreaza:</b></label>
+                            <select id="filter_students" name="filter" class="form-control mx-sm-4" onchange="this.form.submit()">
+                                @if($filter == 'all')
+                                <option value="all" selected>Toti</option>
+                                @else
+                                    <option value="all">Toti</option>
+                                @endif
+                                @if($filter == 'promoted')
+                                <option value="promoted" selected>Promovati</option>
+                                @else
+                                    <option value="promoted">Promovati</option>
+                                @endif
+                                @if($filter == 'failed')
+                                <option value="failed" selected>Nepromovati</option>
+                                @else
+                                    <option value="failed">Nepromovati</option>
+                                @endif
+                                @if($filter == 'first_level_lateness')
+                                <option value="first_level_lateness" selected>Intarzierea raspunsurilor <= 30 sec.</option>
+                                @else
+                                    <option value="first_level_lateness">Intarzierea raspunsurilor <= 30 sec.</option>
+                                @endif
+                                @if($filter == 'second_level_lateness')
+                                <option value="second_level_lateness" selected>Intarzierea raspunsurilor intre 30 sec. - 3 min.</option>
+                                @else
+                                    <option value="second_level_lateness">Intarzierea raspunsurilor intre 30 sec. - 3 min.</option>
+                                @endif
+                                @if($filter == 'third_level_lateness')
+                                <option value="third_level_lateness" selected>Intarzierea raspunsurilor peste 3 min.</option>
+                                @else
+                                    <option value="third_level_lateness">Intarzierea raspunsurilor peste 3 min.</option>
+                                @endif
+                            </select>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
@@ -197,4 +224,6 @@
         </div>
 
     </div>
+
+
 @endsection

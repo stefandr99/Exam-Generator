@@ -156,7 +156,16 @@ class ExamRepository implements IExamRepository
     public function getExamStats($id) {
         $examInformation = $this->getExamInfoForStudentStats($id);
 
-        $subjectInfo = DB::table('users')
+        $subjectInfo = $this->getAllSubjectStats($id);
+
+        return array(
+            'exam' => $examInformation,
+            'subject' => $subjectInfo
+        );
+    }
+
+    private function getAllSubjectStats($id) {
+        return DB::table('users')
             ->join('subjects', 'users.id', '=', 'subjects.user_id')
             ->join('exams', 'exams.id', '=', 'subjects.exam_id')
             ->select('subjects.id', 'users.id as user_id', 'users.name as user_name', 'users.group as student_group',
@@ -167,17 +176,33 @@ class ExamRepository implements IExamRepository
             ->where('subjects.exam_id', $id)
             ->orderBy('subjects.submitted_at', 'desc')
             ->paginate(50);
-
-        return array(
-            'exam' => $examInformation,
-            'subject' => $subjectInfo
-        );
     }
 
     public function getFilteredExamStats($id, $filter) {
         $examInformation = $this->getExamInfoForStudentStats($id);
 
-        $subjectInfo = $this->getPromotedSubjectsFiltered($id);
+        switch ($filter) {
+            case 'all':
+                $subjectInfo = $this->getAllSubjectStats($id);
+                break;
+            case 'promoted':
+                $subjectInfo = $this->getPromotedSubjectsFiltered($id);
+                break;
+            case 'failed':
+                $subjectInfo = $this->getUnpromotedSubjectsFiltered($id);
+                break;
+            case 'first_level_lateness':
+                $subjectInfo = $this->getFirstLevelLatenessSubjectsFiltered($id);
+                break;
+            case 'second_level_lateness':
+                $subjectInfo = $this->getSecondLevelLatenessSubjectsFiltered($id);
+                break;
+            case 'third_level_lateness':
+                $subjectInfo = $this->getThirdLevelLatenessSubjectsFiltered($id);
+                break;
+            default:
+                $subjectInfo = $this->getAllSubjectStats($id);
+        }
 
         return array(
             'exam' => $examInformation,
@@ -201,6 +226,21 @@ class ExamRepository implements IExamRepository
             ->paginate(50);
     }
 
+    private function getUnpromotedSubjectsFiltered($id) {
+        return DB::table('users')
+            ->join('subjects', 'users.id', '=', 'subjects.user_id')
+            ->join('exams', 'exams.id', '=', 'subjects.exam_id')
+            ->select('subjects.id', 'users.id as user_id', 'users.name as user_name', 'users.group as student_group',
+                'subjects.obtained_points', 'subjects.submitted_at', 'subjects.forced_submit', 'subjects.penalizations',
+                'subjects.time_promoted',
+                DB::raw('TIMEDIFF(subjects.submitted_at, exams.ends_at) as time_diff'),
+                DB::raw('TIMESTAMPDIFF(SECOND, exams.ends_at, subjects.submitted_at) as second_diff')) // negativ daca nu a intarziat, pozitiv altfel
+            ->where('subjects.exam_id', $id)
+            ->where('subjects.obtained_points', '<', 'exams.minimum_points')
+            ->orderBy('subjects.submitted_at', 'desc')
+            ->paginate(50);
+    }
+
     private function getFirstLevelLatenessSubjectsFiltered($id) {
         return DB::table('users')
             ->join('subjects', 'users.id', '=', 'subjects.user_id')
@@ -211,6 +251,40 @@ class ExamRepository implements IExamRepository
                 DB::raw('TIMEDIFF(subjects.submitted_at, exams.ends_at) as time_diff'),
                 DB::raw('TIMESTAMPDIFF(SECOND, exams.ends_at, subjects.submitted_at) as second_diff')) // negativ daca nu a intarziat, pozitiv altfel
             ->where('subjects.exam_id', $id)
+            ->where('subjects.time_promoted', 1)
+            ->whereRaw('TIMESTAMPDIFF(SECOND, exams.ends_at, subjects.submitted_at) > 0')
+            ->whereRaw('TIMESTAMPDIFF(SECOND, exams.ends_at, subjects.submitted_at) <= 30')
+            ->orderBy('subjects.submitted_at', 'desc')
+            ->paginate(50);
+    }
+
+    private function getSecondLevelLatenessSubjectsFiltered($id) {
+        return DB::table('users')
+            ->join('subjects', 'users.id', '=', 'subjects.user_id')
+            ->join('exams', 'exams.id', '=', 'subjects.exam_id')
+            ->select('subjects.id', 'users.id as user_id', 'users.name as user_name', 'users.group as student_group',
+                'subjects.obtained_points', 'subjects.submitted_at', 'subjects.forced_submit', 'subjects.penalizations',
+                'subjects.time_promoted',
+                DB::raw('TIMEDIFF(subjects.submitted_at, exams.ends_at) as time_diff'),
+                DB::raw('TIMESTAMPDIFF(SECOND, exams.ends_at, subjects.submitted_at) as second_diff')) // negativ daca nu a intarziat, pozitiv altfel
+            ->where('subjects.exam_id', $id)
+            ->whereRaw('TIMESTAMPDIFF(SECOND, exams.ends_at, subjects.submitted_at) > 30')
+            ->whereRaw('TIMESTAMPDIFF(SECOND, exams.ends_at, subjects.submitted_at) < 180')
+            ->orderBy('subjects.submitted_at', 'desc')
+            ->paginate(50);
+    }
+
+    private function getThirdLevelLatenessSubjectsFiltered($id) {
+        return DB::table('users')
+            ->join('subjects', 'users.id', '=', 'subjects.user_id')
+            ->join('exams', 'exams.id', '=', 'subjects.exam_id')
+            ->select('subjects.id', 'users.id as user_id', 'users.name as user_name', 'users.group as student_group',
+                'subjects.obtained_points', 'subjects.submitted_at', 'subjects.forced_submit', 'subjects.penalizations',
+                'subjects.time_promoted',
+                DB::raw('TIMEDIFF(subjects.submitted_at, exams.ends_at) as time_diff'),
+                DB::raw('TIMESTAMPDIFF(SECOND, exams.ends_at, subjects.submitted_at) as second_diff')) // negativ daca nu a intarziat, pozitiv altfel
+            ->where('subjects.exam_id', $id)
+            ->whereRaw('TIMESTAMPDIFF(SECOND, exams.ends_at, subjects.submitted_at) >= 180')
             ->orderBy('subjects.submitted_at', 'desc')
             ->paginate(50);
     }
@@ -233,5 +307,31 @@ class ExamRepository implements IExamRepository
             ->update([
                 'time_promoted' => 0
             ]);
+    }
+
+    private function getSubjectStatsBySearch($examId, $name) {
+        return DB::table('users')
+            ->join('subjects', 'users.id', '=', 'subjects.user_id')
+            ->join('exams', 'exams.id', '=', 'subjects.exam_id')
+            ->select('subjects.id', 'users.id as user_id', 'users.name as user_name', 'users.group as student_group',
+                'subjects.obtained_points', 'subjects.submitted_at', 'subjects.forced_submit', 'subjects.penalizations',
+                'subjects.time_promoted',
+                DB::raw('TIMEDIFF(subjects.submitted_at, exams.ends_at) as time_diff'),
+                DB::raw('TIMESTAMPDIFF(SECOND, exams.ends_at, subjects.submitted_at) as second_diff')) // negativ daca nu a intarziat, pozitiv altfel
+            ->where('subjects.exam_id', $examId)
+            ->where('users.name', 'like', '%'.$name.'%')
+            ->orderBy('subjects.submitted_at', 'desc')
+            ->paginate(50);
+    }
+
+    public function getExamStatsBySearch($examId, $name) {
+        $examInformation = $this->getExamInfoForStudentStats($examId);
+
+        $subjectInfo = $this->getSubjectStatsBySearch($examId, $name);
+
+        return array(
+            'exam' => $examInformation,
+            'subject' => $subjectInfo
+        );
     }
 }

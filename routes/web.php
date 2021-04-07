@@ -16,7 +16,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
-});
+})->name('welcome');
 
 Auth::routes();
 
@@ -42,11 +42,11 @@ Route::get('/exam/{examId}/modify', 'ExamController@modifyExam')->name('modify_e
 Route::put('/exam/update', 'ExamController@updateExam')->name('update_exam');
 Route::get('/program/last30Days', 'ExamController@showLast30DaysExams')->name('show_last_30days_exams');
 Route::get('/program', 'ExamController@showExams')->name('show_exams');
-Route::get('/exam/statistics/filtered', 'ExamController@filterExamStats')->name('filter_exam_stats');
+Route::get('/exam/statistics', 'ExamController@filterExamStats')->name('filter_exam_stats');
 Route::get('/exam/statistics/exam={examId}', 'ExamController@showExamStats')->name('show_exam_stats');
 Route::put('/exam/promote_student/exam={examId}&user={userId}', 'ExamController@promoteStudent')->name('promote_student');
 Route::put('/exam/no_promote_student/exam={examId}&user={userId}', 'ExamController@undoPromoteStudent')->name('undo_promote_student');
-
+Route::get('/exam/statistics/search', 'ExamController@searchSubject')->name('search_user_from_exam_stats');
 
 Route::get('/exam/{id}', 'SubjectController@generate')->name('generate_exam');
 Route::post('/exam/increase_penalty', 'SubjectController@increasePenalty')->name('increase_penalty');

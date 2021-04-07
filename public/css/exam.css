@@ -54,3 +54,11 @@
 .filter-students-align {
     margin-left: 12px;
 }
+
+#filter_students {
+    width: 200px;
+}
+
+.search-subject {
+    margin-left: 12px;
+}
