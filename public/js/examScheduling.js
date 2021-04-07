@@ -145,8 +145,10 @@ function updateExam(examId) {
     }
     exercises[2] = totalPoints;
 
+    let penalization = getPenalization();
+
     exercises = {info: JSON.stringify(examData), exercises: JSON.stringify(exercises),
-        id: examId};
+        penalization: JSON.stringify(penalization), id: examId};
 
     jQuery.ajaxSetup({
         headers: {

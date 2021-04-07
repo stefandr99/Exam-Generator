@@ -11,11 +11,11 @@
         <form class="form-group">
             <label for="exam-subject" class="dependencies-options">Materia:
                 <select id="exam-subject" class="form-control">
-                    @foreach(array('Baze de date', 'Proiectarea algoritmilor', 'Rețele de calculatoare', 'Programare avansată') as $subject)
-                        @if($exam->course_name == $subject)
-                            <option value="{{$subject}}" selected>{{$subject}}</option>
+                    @foreach($courses as $course)
+                        @if($exam->course_name == $course->name)
+                            <option value="{{ $course->id }}" selected>{{ $course->name }}</option>
                         @else
-                            <option value="{{$subject}}">{{$subject}}</option>
+                            <option value="{{ $course->id }}">{{ $course->name }}</option>
                         @endif
                     @endforeach
                 </select>
@@ -136,8 +136,8 @@
             </div>
 
             <br>
-            <button type="button" class="btn btn-primary" onclick="addOnModifyExercise({{$exam->number_of_exercises}})">Adăugați încă un exercițiu</button>
-            <button type="button" class="btn btn-danger" onclick="removeOnModifyExercise({{$exam->number_of_exercises}})">Stergeți ultimul exercițiu</button>
+            <button type="button" class="btn btn-primary" onclick="addOnModifyExercise()">Adăugați încă un exercițiu</button>
+            <button type="button" class="btn btn-danger" onclick="removeOnModifyExercise()">Stergeți ultimul exercițiu</button>
             <br>
             <br>
             <label for="exam-minimum" class="dependencies-options">Punctajul minim:
@@ -145,12 +145,219 @@
             </label>
             <br>
             <br>
+
+            <p class="dependencies-options"><b>Penalizare:</b>
+                <br>
+                <small>
+                    <b>INFO: </b>Aplicați penalizarea <b>"focus on exam"</b> pentru studenți. În timpul examenului dacă un student nu mai are în
+                    prim plan subiectul examenului (pagina web a aplicației), acestuia i se va aplica una din urmatoarele sancțiuni
+                    (<b>Important:</b> fiecare penalizare se va executa per greșeala):
+                </small>
+            </p>
+
+
+            <label>
+                @if($exam->penalization['type'] == 'points')
+                    <input id="examPenalty1" value="points" name="examPenalty" type="radio" data-toggle="collapse" data-target="#collapsePenalty1" aria-expanded="false" aria-controls="collapsePenalty1" checked onclick="onRadioPenaltyCollapse();">
+                @else
+                    <input id="examPenalty1" value="points" name="examPenalty" type="radio" data-toggle="collapse" data-target="#collapsePenalty1" aria-expanded="false" aria-controls="collapsePenalty1" onclick="onRadioPenaltyCollapse();">
+                @endif
+            </label>
+            Depunctare
+            <div class="collapse" id="collapsePenalty1">
+                <div class="card card-body" style="width: 8rem; height: 4.4rem">
+                    <div class="row">
+                        Puncte: &nbsp;
+                        <label for="points-penalization" class="dependencies-options">
+                            @if($exam->penalization['type'] == 'points')
+                                <input id="points-penalization" type="text" class="form-control exam-penalty-input" value="{{$exam->penalization['body']['points']}}">
+                            @else
+                                <input id="points-penalization" type="text" class="form-control exam-penalty-input" value="0">
+                            @endif
+
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <br>
+            <label>
+                @if($exam->penalization['type'] == 'time')
+                    <input id="examPenalty2" value="time" name="examPenalty" type="radio" data-toggle="collapse" data-target="#collapsePenalty2" aria-expanded="false" aria-controls="collapsePenalty2" checked onclick="onRadioPenaltyCollapse();">
+                @else
+                    <input id="examPenalty2" value="time" name="examPenalty" type="radio" data-toggle="collapse" data-target="#collapsePenalty2" aria-expanded="false" aria-controls="collapsePenalty2" onclick="onRadioPenaltyCollapse();">
+                @endif
+
+            </label>
+            Scăderea din timpul rămas
+            <div class="collapse" id="collapsePenalty2">
+                <div class="card card-body" style="width: 9rem;">
+                    <div class="row">
+                        @if($exam->penalization['type'] == 'time')
+                            <label for="minutes-penalization">
+                                Minute: &nbsp;<input id="minutes-penalization" type="text" class="form-control exam-penalty-input col" value="{{$exam->penalization['body']['minutes']}}">
+                            </label>
+                            <div style="width: 10px"></div>
+                            <label for="seconds-penalization">
+                                Secunde: &nbsp;<input id="seconds-penalization" type="text" class="form-control exam-penalty-input col" value="{{$exam->penalization['body']['seconds']}}">
+                            </label>
+                        @else
+                            <label for="minutes-penalization">
+                                Minute: &nbsp;<input id="minutes-penalization" type="text" class="form-control exam-penalty-input col" value="0">
+                            </label>
+                            <div style="width: 10px"></div>
+                            <label for="seconds-penalization">
+                                Secunde: &nbsp;<input id="seconds-penalization" type="text" class="form-control exam-penalty-input col" value="0">
+                            </label>
+                        @endif
+                    </div>
+                </div>
+            </div>
+            <br>
+
+            <label>
+                @if($exam->penalization['type'] == 'limitations')
+                    <input id="examPenalty3" value="limitations" name="examPenalty" type="radio" data-toggle="collapse" data-target="#collapsePenalty3" aria-expanded="false" aria-controls="collapsePenalty3" checked onclick="onRadioPenaltyCollapse();">
+                @else
+                    <input id="examPenalty3" value="limitations" name="examPenalty" type="radio" data-toggle="collapse" data-target="#collapsePenalty3" aria-expanded="false" aria-controls="collapsePenalty3" onclick="onRadioPenaltyCollapse();">
+                @endif
+
+            </label>
+            Permite încalcarea regulii cu limită
+            <div class="collapse" id="collapsePenalty3">
+                <div class="card card-body" style="width: 16rem;">
+                    <div class="row">
+                        De maxim: &nbsp;
+                        <label for="rule-limit" class="dependencies-options">
+                            @if($exam->penalization['type'] == 'limitations')
+                                <input id="rule-limit" type="text" class="form-control exam-penalty-input" value="{{$exam->penalization['body']['limit']}}">
+                            @else
+                                <input id="rule-limit" type="text" class="form-control exam-penalty-input" value="0">
+                            @endif
+
+                        </label>
+                        &nbsp;ori
+                    </div>
+                    <label for="rule-warnings" class="check-rule">
+                        @if($exam->penalization['type'] == 'limitations' && $exam->penalization['body']['warnings'] == true)
+                            <input id="rule-warnings" class="form-check-input warn-penalty-checkbox" type="checkbox" checked>
+                        @else
+                            <input id="rule-warnings" class="form-check-input warn-penalty-checkbox" type="checkbox">
+                        @endif
+
+                        &nbsp;<small>avertizează la fiecare abatere</small>
+                    </label>
+                    <div class="row">
+                        Sancțiune la depașirea limitei:
+                    </div>
+
+                    <label>
+                        @if($exam->penalization['type'] == 'limitations' && $exam->penalization['body']['exceeded']['type'] == 'points')
+                            <input id="examPenaltyLimit1" value="points" name="examPenaltyLimit" type="radio" data-toggle="collapse" data-target="#collapsePenaltyLimit1" aria-expanded="false" aria-controls="collapsePenaltyLimit1" checked onclick="onRadioPenaltyLimitCollapse();">
+                        @else
+                            <input id="examPenaltyLimit1" value="points" name="examPenaltyLimit" type="radio" data-toggle="collapse" data-target="#collapsePenaltyLimit1" aria-expanded="false" aria-controls="collapsePenaltyLimit1" onclick="onRadioPenaltyLimitCollapse();">
+                        @endif
+
+                        Depunctare
+                    </label>
+                    <div class="collapse" id="collapsePenaltyLimit1">
+                        <div class="card card-body" style="width: 8rem; height: 4.4rem">
+                            <div class="row">
+                                Puncte: &nbsp;
+                                <label for="limit-points-penalization" class="dependencies-options">
+                                    @if($exam->penalization['type'] == 'limitations' && $exam->penalization['body']['exceeded']['type'] == 'points')
+                                        <input id="limit-points-penalization" type="text" class="form-control exam-penalty-input" value="{{$exam->penalization['body']['exceeded']['points']}}">
+                                    @else
+                                        <input id="limit-points-penalization" type="text" class="form-control exam-penalty-input" value="0">
+                                    @endif
+
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <label>
+                        @if($exam->penalization['type'] == 'limitations' && $exam->penalization['body']['exceeded']['type'] == 'time')
+                            <input id="examPenaltyLimit2" value="time" name="examPenaltyLimit" type="radio" data-toggle="collapse" data-target="#collapsePenaltyLimit2" aria-expanded="false" aria-controls="collapsePenaltyLimit1" checked onclick="onRadioPenaltyLimitCollapse();">
+                        @else
+                            <input id="examPenaltyLimit2" value="time" name="examPenaltyLimit" type="radio" data-toggle="collapse" data-target="#collapsePenaltyLimit2" aria-expanded="false" aria-controls="collapsePenaltyLimit1" onclick="onRadioPenaltyLimitCollapse();">
+                        @endif
+
+                        Scăderea din timpul rămas
+                    </label>
+                    <div class="collapse" id="collapsePenaltyLimit2">
+                        <div class="card card-body" style="width: 9rem;">
+                            <div class="row">
+                                @if($exam->penalization['type'] == 'limitations' && $exam->penalization['body']['exceeded']['type'] == 'time')
+                                    <label for="limit-minutes-penalization">
+                                        Minute: &nbsp;<input id="limit-minutes-penalization" type="text" class="form-control exam-penalty-input col" value="{{$exam->penalization['body']['exceeded']['minutes']}}">
+                                    </label>
+                                    <div style="width: 10px"></div>
+                                    <label for="limit-seconds-penalization">
+                                        Secunde: &nbsp; <input id="limit-seconds-penalization" type="text" class="form-control exam-penalty-input col" value="{{$exam->penalization['body']['exceeded']['seconds']}}">
+                                    </label>
+                                @else
+                                    <label for="limit-minutes-penalization">
+                                        Minute: &nbsp;<input id="limit-minutes-penalization" type="text" class="form-control exam-penalty-input col" value="0">
+                                    </label>
+                                    <div style="width: 10px"></div>
+                                    <label for="limit-seconds-penalization">
+                                        Secunde: &nbsp; <input id="limit-seconds-penalization" type="text" class="form-control exam-penalty-input col" value="0">
+                                    </label>
+                                @endif
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <label>
+                        @if($exam->penalization['type'] == 'end')
+                            <input id="examPenaltyLimit3" value="end" name="examPenaltyLimit" type="radio" checked onclick="onRadioPenaltyLimitCollapse();">
+                        @else
+                            <input id="examPenaltyLimit3" value="end" name="examPenaltyLimit" type="radio" onclick="onRadioPenaltyLimitCollapse();">
+                        @endif
+
+                        Incheierea examenului pentru studentul în cauză
+                    </label>
+
+
+                </div>
+            </div>
+            <br>
+
+            <label>
+                @if($exam->penalization['type'] == 'end')
+                    <input id="examPenalty4" value="end" name="examPenalty" type="radio" checked onclick="onRadioPenaltyCollapse();">
+                @else
+                    <input id="examPenalty4" value="end" name="examPenalty" type="radio" onclick="onRadioPenaltyCollapse();">
+                @endif
+
+            </label>
+            Incheierea examenului pentru studentul în cauză
+            <br>
+
+            <label>
+                @if($exam->penalization['type'] == 'without')
+                    <input id="examPenalty5" value="without" name="examPenalty" type="radio" checked onclick="onRadioPenaltyCollapse();">
+                @else
+                    <input id="examPenalty5" value="without" name="examPenalty" type="radio" onclick="onRadioPenaltyCollapse();">
+                @endif
+
+            </label>
+            Fără penalizare
+            <br>
+
             <div class="r_relationship">
                 <button type="button" class="btn btn-success btn-lg btn-block" onclick="updateExam({{$exam->id}})">Salvați modificările</button>
             </div>
         </form>
 
     </div>
+
+    <script>
+        window.onload = function() {
+            setNumberOfExercises({{$exam->number_of_exercises}});
+        }
+    </script>
 
 @endsection
 

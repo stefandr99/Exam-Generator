@@ -73,7 +73,7 @@ class ExamBusiness
         return $endTime;
     }
 
-    public function getExams($userId, $userRole, $yearAndSem): array
+    public function getExams($userId, $userRole, $yearAndSem)
     {
         if ($userRole->role == 2)
             return $this->getExamsForTeacher($userId, $yearAndSem);
@@ -86,7 +86,7 @@ class ExamBusiness
         return $this->examRepository->getlast30DaysExamsForTeacher($userId, $yearAndSem->semester);
     }
 
-    private function getExamsForTeacher($userId, $yearAndSemester): array
+    private function getExamsForTeacher($userId, $yearAndSemester)
     {
         $exams = $this->examRepository->getAllForTeachers($userId, $yearAndSemester->semester);
 
@@ -94,7 +94,7 @@ class ExamBusiness
         return $examsInformation;
     }
 
-    private function getExamsForStudents($userId, $yearAndSemester): array
+    private function getExamsForStudents($userId, $yearAndSemester)
     {
         $exams = $this->examRepository->getAllForStudents($userId, $yearAndSemester->year, $yearAndSemester->semester);
 
@@ -104,7 +104,7 @@ class ExamBusiness
         return $examsInformation;
     }
 
-    public function getExamTeachers($exams): array
+    public function getExamTeachers($exams)
     {
         $teachers = array();
         foreach ($exams as $exam) {
@@ -114,17 +114,17 @@ class ExamBusiness
         return $teachers;
     }
 
-    public function getExamById($examId): \Illuminate\Support\Collection
+    public function getExamById($examId)
     {
         return $this->examRepository->getExamById($examId);
     }
 
-    public function updateExam($id, $info, $exercises, $course) {
+    public function updateExam($id, $info, $exercises, $penalization) {
         $endTime = $this->getExamEndTime($info[2], $info[3], $info[4]);
 
         $exam = array(
             'id' => $id,
-            'course_id' => $course->id,
+            'course_id' => $info[0],
             'type' => $info[1],
             'starts_at' => $info[2],
             'ends_at' => $endTime,
@@ -133,7 +133,8 @@ class ExamBusiness
             'number_of_exercises' => $exercises[0],
             'exercises_type' => json_encode($exercises[1]),
             'total_points' => $exercises[2],
-            'minimum_points' => $info[5]
+            'minimum_points' => $info[5],
+            'penalization' => $penalization
         );
 
         $this->examRepository->update($exam);

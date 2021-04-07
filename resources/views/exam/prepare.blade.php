@@ -13,7 +13,7 @@
                 <select id="exam-subject" class="form-control">
                     <option value="no-subject">--</option>
                     @foreach($courses as $course)
-                    <option value="{{ $course->id }}">{{ $course->name }}</option>
+                        <option value="{{ $course->id }}">{{ $course->name }}</option>
                     @endforeach
                 </select>
             </label>

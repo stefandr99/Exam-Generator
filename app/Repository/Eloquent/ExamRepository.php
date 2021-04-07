@@ -122,7 +122,8 @@ class ExamRepository implements IExamRepository
             ->join('courses as c', 'c.id', '=', 'e.course_id')
             ->select('c.name as course_name', 'e.*')
             ->where('e.id', $id)
-            ->get();
+            ->get()
+            ->first();
     }
 
     public function update($exam)
@@ -131,7 +132,7 @@ class ExamRepository implements IExamRepository
             ->where('id', $exam['id'])
             ->update([
                 'course_id' => $exam['course_id'],
-                'type' => $exam['info'],
+                'type' => $exam['type'],
                 'starts_at' => $exam['starts_at'],
                 'ends_at' => $exam['ends_at'],
                 'hours' => $exam['hours'],
@@ -139,7 +140,8 @@ class ExamRepository implements IExamRepository
                 'number_of_exercises' => $exam['number_of_exercises'],
                 'exercises_type' => $exam['exercises_type'],
                 'total_points' => $exam['total_points'],
-                'minimum_points' => $exam['minimum_points']
+                'minimum_points' => $exam['minimum_points'],
+                'penalization' => $exam['penalization']
             ]);
     }
 

@@ -25,20 +25,19 @@ function removeExercise() {
     }
 }
 
+var exerciseModifyNumber;
+function setNumberOfExercises(exercisesNr) {
+    exerciseModifyNumber = exercisesNr - 1;
+}
 
-var exerciseModifyNumber = -1;
-function addOnModifyExercise(nr) {
-    if(exerciseModifyNumber === -1)
-        exerciseModifyNumber = nr - 1;
+function addOnModifyExercise() {
     exerciseModifyNumber++;
     let exerciseId = "exercise-" + exerciseModifyNumber;
     let ex = document.getElementById(exerciseId);
     ex.removeAttribute("hidden");
 }
 
-function removeOnModifyExercise(nr) {
-    if(exerciseModifyNumber === -1)
-        exerciseModifyNumber = nr - 1;
+function removeOnModifyExercise() {
     if(exerciseModifyNumber > 0) {
         let exerciseId = "exercise-" + exerciseModifyNumber;
         let ex = document.getElementById(exerciseId);

@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\DB;
 
 class CourseRepository implements ICourseRepository
 {
-    public function getAll(): \Illuminate\Support\Collection
+    public function getAll()
     {
         return DB::table('courses')
             ->orderBy('year')

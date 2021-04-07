@@ -96,21 +96,27 @@ class ExamController extends Controller
 
 
     public function modifyExam($examId) {
+        $courses = $this->courseBusiness->getAll();
         $exam = $this->examBusiness->getExamById($examId);
-        $exam[0]->exercises_type = json_decode($exam[0]->exercises_type, true);
-        return view('exam/modify', ['exam' => $exam[0]]);
+        $exam->exercises_type = json_decode($exam->exercises_type, true);
+        $exam->penalization = json_decode($exam->penalization, true);
+        return view('exam/modify', [
+            'exam' => $exam,
+            'courses' => $courses
+        ]);
     }
 
     public function updateExam(Request $request) {
         if ($request->ajax()) {
             $examInfo = $request->input('info');
             $examExercises = $request->input('exercises');
+            $penalization = $request->input('penalization');
             $examId = $request->input('id');
             $examInfo = json_decode($examInfo, true);
             $examExercises = json_decode($examExercises, true);
+            $penalization = json_decode($penalization, true);
 
-            $course = $this->courseBusiness->getIdByName($examInfo[0]);
-            $this->examBusiness->updateExam($examId, $examInfo, $examExercises, $course);
+            $this->examBusiness->updateExam($examId, $examInfo, $examExercises, $penalization);
         }
     }
 
