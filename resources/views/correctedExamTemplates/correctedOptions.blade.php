@@ -2,7 +2,7 @@
 
 <div class="px-lg-5">
     @for($option = 0; $option < $options["counter"]; $option++)
-        <div class="form-check dependencies-options">
+        <div class="form-check large-text-font">
             @if($studentAnswers[$number][$option])
                 <input class="form-check-input" type="checkbox" value="" checked onclick="return false;">
             @else

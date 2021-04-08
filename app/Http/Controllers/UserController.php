@@ -115,7 +115,6 @@ class UserController extends Controller
     }
 
     public function deleteUser(Request $request) {
-        echo '<script>console.log(22)</script>';
         $id = $request->userId;
         $this->userBusiness->delete($id);
 

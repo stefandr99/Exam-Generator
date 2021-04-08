@@ -41,11 +41,41 @@ class ExamController extends Controller
         ]);
     }
 
-    public function prepare() {
+    public function prepareDB() {
         $courses = $this->courseBusiness->getAll();
+        $tomorrow = new DateTime("now", new DateTimeZone('Europe/Tiraspol'));
+        $tomorrow->modify('+1 day');
+        $tomorrow = $tomorrow->format('Y-m-d');
         return view('exam/prepare', [
-            'courses' => $courses
+            'courses' => $courses,
+            'tomorrow' => $tomorrow
         ]);
+    }
+
+    public function prepareAny() {
+        $courses = $this->courseBusiness->getAll();
+        $tomorrow = new DateTime("now", new DateTimeZone('Europe/Tiraspol'));
+        $tomorrow->modify('+1 day');
+        $tomorrow = $tomorrow->format('Y-m-d');
+        return view('exam/prepareAnyExam', [
+            'courses' => $courses,
+            'tomorrow' => $tomorrow
+        ]);
+    }
+
+    public function scheduleAnyExam(Request $request)
+    {
+        if ($request->ajax()) {
+            $examInfo = $request->input('info');
+            $examExercises = $request->input('exercises');
+            $examPenalization = $request->input('penalization');
+
+            $examInfo = json_decode($examInfo, true);
+            $examExercises = json_decode($examExercises, true);
+            $examPenalization = json_decode($examPenalization, true);
+
+            $this->examBusiness->schedule($examInfo, $examExercises, $examPenalization);
+        }
     }
 
     public function scheduleExam(Request $request)

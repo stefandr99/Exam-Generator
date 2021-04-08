@@ -9,7 +9,7 @@
         <h1 id="partial-title"><b>Modificați examenul</b></h1>
         <br>
         <form class="form-group">
-            <label for="exam-subject" class="dependencies-options">Materia:
+            <label for="exam-subject" class="large-text-font">Materia:
                 <select id="exam-subject" class="form-control">
                     @foreach($courses as $course)
                         @if($exam->course_name == $course->name)
@@ -22,7 +22,7 @@
             </label>
             <br>
 
-            <label for="exam-type" class="dependencies-options">Tipul examenului:
+            <label for="exam-type" class="large-text-font">Tipul examenului:
                 <select id="exam-type" class="form-control">
                     @foreach(array("Parțial", "Examen", "Restanță") as $examType)
                         @if($examType == $exam->type)
@@ -35,13 +35,13 @@
             </label>
             <br>
 
-            <label for="exam-date" class="dependencies-options">
+            <label for="exam-date" class="large-text-font">
                 Data și ora examenului:
                 <input class="form-control" type="datetime-local" value="{{explode(" ", $exam->starts_at)[0] . "T" . explode(" ", $exam->starts_at)[1]}}" id="exam-date">
             </label>
             <br>
 
-            <label for="exam-duration" class="dependencies-options">Durata examenului:
+            <label for="exam-duration" class="large-text-font">Durata examenului:
                 <div class="row">
                     <div class="col-3">
                         <input type="text" class="form-control" placeholder="Ore" id="exam-duration-hours" value="{{$exam->hours}}">
@@ -53,13 +53,13 @@
             </label>
             <br>
 
-            <div class="dependencies-options">
+            <div class="large-text-font">
                 <b>Exerciții:</b>
                 @for($i = 0; $i < $exam->number_of_exercises; $i++)
                     <div id="exercise-{{$i}}">
                         Exercițiul {{$i + 1}}.
                         <br>
-                        <label for="exam-exercise-{{$i}}" class="dependencies-options">Tipul exercițiului:
+                        <label for="exam-exercise-{{$i}}" class="large-text-font">Tipul exercițiului:
                             <select id="exam-exercise-{{$i}}" class="form-control">
 
                                 @if($exam->exercises_type[$i][0] == "type-1")
@@ -98,7 +98,7 @@
                         </label>
 
                         <br>
-                        <label for="exercise-{{$i}}-points" class="dependencies-options">Puncte:
+                        <label for="exercise-{{$i}}-points" class="large-text-font">Puncte:
                             <input type="text" class="form-control" id="exercise-{{$i}}-points" placeholder="Puncte" value="{{$exam->exercises_type[$i][1]}}">
                         </label>
                     </div>
@@ -109,7 +109,7 @@
                         <div hidden id="exercise-{{$ex}}">
                             Exercițiul {{ $ex + 1 }}.
                             <br>
-                            <label for="exam-exercise-{{$ex}}" class="dependencies-options">Tipul exercitiului:
+                            <label for="exam-exercise-{{$ex}}" class="large-text-font">Tipul exercitiului:
                                 <select id="exam-exercise-{{$ex}}" class="form-control">
                                     <option value="no-exercise">--</option>
                                     <option value="type-1">
@@ -127,7 +127,7 @@
                                 </select>
                             </label>
                             <br>
-                            <label for="exercise-{{$ex}}-points" class="dependencies-options">Puncte:
+                            <label for="exercise-{{$ex}}-points" class="large-text-font">Puncte:
                                 <input type="text" class="form-control" id="exercise-{{$ex}}-points" placeholder="Puncte">
                             </label>
                         </div>
@@ -140,13 +140,13 @@
             <button type="button" class="btn btn-danger" onclick="removeOnModifyExercise()">Stergeți ultimul exercițiu</button>
             <br>
             <br>
-            <label for="exam-minimum" class="dependencies-options">Punctajul minim:
+            <label for="exam-minimum" class="large-text-font">Punctajul minim:
                 <input type="text" class="form-control" placeholder="Punctaj minim" id="exam-minimum" value="{{$exam->minimum_points}}">
             </label>
             <br>
             <br>
 
-            <p class="dependencies-options"><b>Penalizare:</b>
+            <p class="large-text-font"><b>Penalizare:</b>
                 <br>
                 <small>
                     <b>INFO: </b>Aplicați penalizarea <b>"focus on exam"</b> pentru studenți. În timpul examenului dacă un student nu mai are în
@@ -168,7 +168,7 @@
                 <div class="card card-body" style="width: 8rem; height: 4.4rem">
                     <div class="row">
                         Puncte: &nbsp;
-                        <label for="points-penalization" class="dependencies-options">
+                        <label for="points-penalization" class="large-text-font">
                             @if($exam->penalization['type'] == 'points')
                                 <input id="points-penalization" type="text" class="form-control exam-penalty-input" value="{{$exam->penalization['body']['points']}}">
                             @else
@@ -227,7 +227,7 @@
                 <div class="card card-body" style="width: 16rem;">
                     <div class="row">
                         De maxim: &nbsp;
-                        <label for="rule-limit" class="dependencies-options">
+                        <label for="rule-limit" class="large-text-font">
                             @if($exam->penalization['type'] == 'limitations')
                                 <input id="rule-limit" type="text" class="form-control exam-penalty-input" value="{{$exam->penalization['body']['limit']}}">
                             @else
@@ -263,7 +263,7 @@
                         <div class="card card-body" style="width: 8rem; height: 4.4rem">
                             <div class="row">
                                 Puncte: &nbsp;
-                                <label for="limit-points-penalization" class="dependencies-options">
+                                <label for="limit-points-penalization" class="large-text-font">
                                     @if($exam->penalization['type'] == 'limitations' && $exam->penalization['body']['exceeded']['type'] == 'points')
                                         <input id="limit-points-penalization" type="text" class="form-control exam-penalty-input" value="{{$exam->penalization['body']['exceeded']['points']}}">
                                     @else
@@ -353,7 +353,7 @@
 
     </div>
 
-    <script>
+    <script type="application/javascript">
         window.onload = function() {
             setNumberOfExercises({{$exam->number_of_exercises}});
         }

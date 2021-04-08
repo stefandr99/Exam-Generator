@@ -1,21 +1,21 @@
 
 var exerciseNumber = 0;
-function addExercise() {
+function addDBExercise() {
     exerciseNumber++;
     let exerciseId = "exercise-" + exerciseNumber;
     let ex = document.getElementById(exerciseId);
     ex.removeAttribute("hidden");
 }
 
-function removeExercise() {
+function removeDBExercise() {
     if(exerciseNumber > 0) {
         let exerciseId = "exercise-" + exerciseNumber;
         let ex = document.getElementById(exerciseId);
 
         ex.hidden = true;
 
-        let exerciseTypeId = "exam-exercise-" + exerciseNumber;
-        let exerciseType = document.getElementById(exerciseTypeId);
+        let exerciseTextId = "exam-exercise-" + exerciseNumber;
+        document.getElementById(exerciseTextId).value = '';
         let exercisePointsId = "exercise-" + exerciseNumber + "-points";
         let exercisePoints = document.getElementById(exercisePointsId);
         exerciseType.value = 'no-exercise';

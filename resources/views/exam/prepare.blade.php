@@ -1,60 +1,63 @@
 @extends('layouts.app')
 
 @section('title')
-    <title>Pregatire examen</title>
+    <title>Pregatire examen BD</title>
 @endsection
 
 @section('content')
     <div class="container my-4">
-        <h1 class="text-center"><b>Pregătiți examenul</b></h1>
+        <h1 class="text-center"><b>Pregătiți examenul la Baze de date</b></h1>
         <br>
         <form class="form-group">
-            <label for="exam-subject" class="dependencies-options"><b>Materia:</b>
-                <select id="exam-subject" class="form-control">
-                    <option value="no-subject">--</option>
-                    @foreach($courses as $course)
-                        <option value="{{ $course->id }}">{{ $course->name }}</option>
-                    @endforeach
-                </select>
-            </label>
-            <br>
-
-            <label for="exam-type" class="dependencies-options"><b>Tipul examenului:</b>
-                <select id="exam-type" class="form-control">
-                    <option value="no-type">--</option>
-                    <option value="Parțial">Parțial</option>
-                    <option value="Examen">Examen</option>
-                    <option value="Restanță">Restanță</option>
-                </select>
-            </label>
-            <br>
-
-            <label for="exam-date" class="dependencies-options">
-                <b>Data și ora examenului:</b>
-                <input id="exam-date" class="form-control" type="datetime-local" value="2021-03-15T08:00:00">
-            </label>
-            <br>
-
-            <label for="exam-duration" class="dependencies-options"><b>Durata examenului:</b>
-                <div class="row">
-                    <div class="col-3">
-                        <input id="exam-duration-hours" type="text" class="form-control" placeholder="Ore">
-                    </div>
-                    <div class="col-3">
-                        <input id="exam-duration-minutes" type="text" class="form-control" placeholder="Minute">
-                    </div>
+            <div class="d-flex">
+                <div class="p-2">
+                <label for="exam-subject" class="large-text-font"><b>Materia:</b>
+                    <select id="exam-subject" class="form-control">
+                        <option value="no-subject" selected disabled>--</option>
+                        @foreach($courses as $course)
+                            <option value="{{ $course->id }}">{{ $course->name }}</option>
+                        @endforeach
+                    </select>
+                </label>
                 </div>
-            </label>
-            <br>
 
-            <div class="dependencies-options">
+                <div class="p-2">
+                <label for="exam-type" class="large-text-font"><b>Tipul examenului:</b>
+                    <select id="exam-type" class="form-control">
+                        <option value="no-type" selected disabled>--</option>
+                        <option value="Parțial">Parțial</option>
+                        <option value="Examen">Examen</option>
+                        <option value="Restanță">Restanță</option>
+                    </select>
+                </label>
+                </div>
+
+                <div class="ml-auto p-2">
+                <label for="exam-date" class="large-text-font">
+                    <b>Data și ora examenului:</b>
+                    <input id="exam-date" class="form-control" type="datetime-local" value="{{$tomorrow . "T08:00:00"}}">
+                </label>
+                </div>
+
+                <div class="p-2">
+                <label for="exam-duration" class="large-text-font"><b>Durata examenului:</b>
+                    <div class="min-and-hour-exam-parent">
+                        <input id="exam-duration-hours" type="text" class="form-control hour-exam-column" size="5" placeholder="Ore">
+
+                        <input id="exam-duration-minutes" type="text" class="form-control min-exam-column" size="5" placeholder="Minute">
+                    </div>
+                </label>
+                </div>
+            </div>
+
+            <div class="large-text-font">
                 <b>Exerciții:</b>
                 <br>
                 Exercițiul 1.
                 <br>
-                <label for="exam-exercise-0" class="dependencies-options">Tipul exercițiului:
+                <label for="exam-exercise-0" class="large-text-font">Tipul exercițiului:
                     <select id="exam-exercise-0" class="form-control">
-                        <option value="no-exercise">--</option>
+                        <option value="no-exercise" selected disabled>--</option>
                         <option value="type-1">
                             Determinarea dependețelor în funcție de o relație "r" dată tabelar
                         </option>
@@ -70,7 +73,7 @@
                     </select>
                 </label>
                 <br>
-                <label for="exercise-0-points" class="dependencies-options">Puncte:
+                <label for="exercise-0-points" class="large-text-font">Puncte:
                     <input id="exercise-0-points" type="text" class="form-control" placeholder="Puncte">
                 </label>
 
@@ -79,9 +82,9 @@
                         <div hidden id="exercise-{{$ex}}">
                             Exercițiul {{ $ex + 1 }}.
                             <br>
-                            <label for="exam-exercise-{{$ex}}" class="dependencies-options">Tipul exercitiului:
+                            <label for="exam-exercise-{{$ex}}" class="large-text-font">Tipul exercitiului:
                                 <select id="exam-exercise-{{$ex}}" class="form-control">
-                                    <option value="no-exercise">--</option>
+                                    <option value="no-exercise" selected disabled>--</option>
                                     <option value="type-1">
                                         Determinarea dependețelor în funcție de o relație "r" dată tabelar
                                     </option>
@@ -97,7 +100,7 @@
                                 </select>
                             </label>
                             <br>
-                            <label for="exercise-{{$ex}}-points" class="dependencies-options">Puncte:
+                            <label for="exercise-{{$ex}}-points" class="large-text-font">Puncte:
                                 <input id="exercise-{{$ex}}-points" type="text" class="form-control" placeholder="Puncte">
                             </label>
                         </div>
@@ -106,16 +109,16 @@
             </div>
 
             <br>
-            <button type="button" class="btn btn-primary" onclick="addExercise()">Adăugați încă un exercițiu</button>
-            <button type="button" class="btn btn-danger" onclick="removeExercise()">Stergeți ultimul exercițiu</button>
+            <button type="button" class="btn btn-primary" onclick="addDBExercise()">Adăugați încă un exercițiu</button>
+            <button type="button" class="btn btn-danger" onclick="removeDBExercise()">Stergeți ultimul exercițiu</button>
             <br>
             <br>
-            <label for="exam-minimum" class="dependencies-options"><b>Punctajul minim:</b>
+            <label for="exam-minimum" class="large-text-font"><b>Punctajul minim:</b>
                 <input id="exam-minimum" type="text" class="form-control" placeholder="Punctaj minim">
             </label>
             <br>
             <br>
-            <p class="dependencies-options"><b>Penalizare:</b>
+            <p class="large-text-font"><b>Penalizare:</b>
                 <br>
                 <small>
                     <b>INFO: </b>Aplicați penalizarea <b>"focus on exam"</b> pentru studenți. În timpul examenului dacă un student nu mai are în
@@ -132,7 +135,7 @@
                 <div class="card card-body" style="width: 8rem; height: 4.4rem">
                     <div class="row">
                     Puncte: &nbsp;
-                    <label for="points-penalization" class="dependencies-options">
+                    <label for="points-penalization" class="large-text-font">
                         <input id="points-penalization" type="text" class="form-control exam-penalty-input" value="0">
                     </label>
                     </div>
@@ -166,7 +169,7 @@
                 <div class="card card-body" style="width: 16rem;">
                     <div class="row">
                         De maxim: &nbsp;
-                        <label for="rule-limit" class="dependencies-options">
+                        <label for="rule-limit" class="large-text-font">
                             <input id="rule-limit" type="text" class="form-control exam-penalty-input" value="0">
                         </label>
                         &nbsp;ori
@@ -187,7 +190,7 @@
                         <div class="card card-body" style="width: 8rem; height: 4.4rem">
                             <div class="row">
                                 Puncte: &nbsp;
-                                <label for="limit-points-penalization" class="dependencies-options">
+                                <label for="limit-points-penalization" class="large-text-font">
                                     <input id="limit-points-penalization" type="text" class="form-control exam-penalty-input" value="0">
                                 </label>
                             </div>
@@ -229,7 +232,7 @@
             <br>
 
             <label>
-                <input id="examPenalty5" value="without" name="examPenalty" type="radio" onclick="onRadioPenaltyCollapse();">
+                <input id="examPenalty5" value="without" name="examPenalty" type="radio" checked onclick="onRadioPenaltyCollapse();">
             </label>
             Fără penalizare
             <br>

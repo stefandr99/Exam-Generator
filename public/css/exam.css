@@ -62,3 +62,29 @@
 .search-subject {
     margin-left: 12px;
 }
+
+.first-margin-left-exam-exercises {
+    margin-left: 10px;
+}
+
+.second-margin-left-exam-exercises {
+    margin-left: 20px;
+}
+
+.third-margin-left-exam-exercises {
+    margin-left: 20px;
+}
+
+.inline-elements {
+    display: flex;
+    flex-direction:row;
+}
+
+.nr-of-ops-per-ex {
+    height: 20px;
+}
+
+.correct-wrong-options {
+    height: 20px;
+    width: 50px;
+}

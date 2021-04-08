@@ -9,13 +9,13 @@
         <h1 class="text-center"><b>Adaugați un nou curs</b></h1>
         <br>
         <form class="form-group">
-            <label for="course-name" class="dependencies-options">Numele cursului:
+            <label for="course-name" class="large-text-font">Numele cursului:
                 <input type="text" class="form-control" id="course-name" placeholder="Nume">
             </label>
             <br>
 
 
-            <label for="course-teachers" class="dependencies-options">Profesorii cursului:
+            <label for="course-teachers" class="large-text-font">Profesorii cursului:
                 <select id="course-teachers" class="form-control" onchange="addTeacherToUList();">
                     <option value="no-teacher">--</option>
                     @foreach($teachers as $teacher)
@@ -28,7 +28,7 @@
             </ul>
 
             <div class="row">
-                <label for="course-year" class="col-1 dependencies-options">Anul:
+                <label for="course-year" class="col-1 large-text-font">Anul:
                         <select id="course-year" class="form-control">
                             <option value="no-type">--</option>
                             <option value="1">1</option>
@@ -37,7 +37,7 @@
                         </select>
                 </label>
                 <br>
-                <label for="course-semester" class="col-1 dependencies-options">Semestrul:
+                <label for="course-semester" class="col-1 large-text-font">Semestrul:
                     <select id="course-semester" class="form-control">
                         <option value="no-type">--</option>
                         <option value="1">I</option>
@@ -47,7 +47,7 @@
                 <br>
             </div>
 
-            <label for="course-credits" class="dependencies-options">Numărul de credite:
+            <label for="course-credits" class="large-text-font">Numărul de credite:
                 <select id="course-credits" class="form-control">
                     <option value="no-type">--</option>
                     @for($i = 1; $i < 9; $i++)

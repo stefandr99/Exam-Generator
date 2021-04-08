@@ -24,7 +24,7 @@
         </div>
         <div class="col py-5 px-lg-5 bg-light">
             @for($option = 0; $option < $options["counter"]; $option++)
-                <div class="form-check dependencies-options">
+                <div class="form-check large-text-font">
                     <input class="form-check-input" type="checkbox" value="" id="ex{{$number}}option{{$option}}">
                     <label class="form-check-label" for="ex{{$number}}option{{$option}}">
                         {!! $options["solution"][$option + 1]["option"] !!}

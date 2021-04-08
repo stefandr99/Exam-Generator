@@ -11,6 +11,7 @@
 
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}" defer></script>
+    <script src="{{ asset('js/anyExamPreparation.js') }}" defer></script>
     <script src="{{ asset('js/course.js') }}" defer></script>
     <script src="{{ asset('js/examPreparation.js') }}" defer></script>
     <script src="{{ asset('js/examScheduling.js') }}" defer></script>
@@ -60,7 +61,11 @@
                                 </a>
 
                                 <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDropdownTeacherExam">
-                                    <a class="dropdown-item" href="{{ route('prepare_exam') }}">
+                                    <a class="dropdown-item" href="{{ route('prepare_DB_exam') }}">
+                                        {{ __('Pregatește examen Baze de date') }}
+                                    </a>
+
+                                    <a class="dropdown-item" href="{{ route('prepare_any_exam') }}">
                                         {{ __('Pregatește examen') }}
                                     </a>
 
@@ -97,8 +102,8 @@
                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
 
                                     @if (Auth::user()->role == 2)
-                                        <a class="dropdown-item" href="{{ route('prepare_exam') }}">
-                                            {{ __('Pregatește examen') }}
+                                        <a class="dropdown-item" href="{{ route('prepare_DB_exam') }}">
+                                            {{ __('Pregatește examen Baze de date') }}
                                         </a>
                                     @endif
 

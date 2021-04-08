@@ -4,7 +4,11 @@
     align-content: center;
 }
 
-.dependencies-options {
+.dependecies-options {
+    font-size: large;
+}
+
+.large-text-font {
     font-size: large;
 }
 
@@ -138,3 +142,19 @@ input[type="checkbox"] {
     height: 10px;
     width: 10px;
 }
+
+
+.min-and-hour-exam-parent {
+    display: flex;
+    flex-direction:row;
+}
+
+.hour-exam-column {
+    flex: 1 1 0;
+}
+
+.min-exam-column {
+    flex: 1 1 0;
+    margin-left: 15px;
+}
+
