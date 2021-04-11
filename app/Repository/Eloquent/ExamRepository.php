@@ -41,6 +41,7 @@ class ExamRepository implements IExamRepository
         $newExam->exercises = $exam['exercises'];
         $newExam->total_points = $exam['totalPoints'];
         $newExam->minimum_points = $exam['minimumPoints'];
+        $newExam->penalization = $exam['penalization'];
         $newExam->save();
     }
 

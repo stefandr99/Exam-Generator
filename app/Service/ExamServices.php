@@ -69,4 +69,53 @@ class ExamServices
         return $body;
     }
 
+    public function getExamPenalization($exam) {
+        $penalization = array();
+
+        $penaltyType = $exam['examPenalty'];
+        $penalization['type'] = $penaltyType;
+        $penalization['body'] = array();
+
+        switch ($penaltyType) {
+            case 'points':
+                $points = $exam['points_penalization'];
+                $penalization['body']['points'] = $points;
+                break;
+            case 'time':
+                $minutes = $exam['minutes_penalization'];
+                $seconds = $exam['seconds_penalization'];
+                $penalization['body']['minutes'] = $minutes;
+                $penalization['body']['seconds'] = $seconds;
+                break;
+            case 'limitations':
+                $limit = $exam['rule_limit'];
+                $warnings = array_key_exists('rule_warnings', $exam);
+                $penalization['body']['limit'] = $limit;
+                $penalization['body']['warnings'] = $warnings;
+
+                $limitationExceededType = $exam['examPenaltyLimit'];
+                $penalization['body']['exceeded'] = $this->getPenalizationWhenExceeded($exam, $limitationExceededType);
+                break;
+        }
+
+        return $penalization;
+    }
+
+    private function getPenalizationWhenExceeded($exam, $exceededType) {
+        $body = array();
+        $body['type'] = $exceededType;
+        switch ($exceededType) {
+            case 'points':
+                $points = $exam['limit_points_penalization'];
+                $body['points'] = $points;
+                break;
+            case 'time':
+                $minutes = $exam['limit_minutes_penalization'];
+                $seconds = $exam['limit_seconds_penalization'];
+                $body['minutes'] = $minutes;
+                $body['seconds'] = $seconds;
+                break;
+        }
+        return $body;
+    }
 }

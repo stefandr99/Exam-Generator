@@ -81,7 +81,7 @@ class ExamBusiness
         $newExam['exercises'] = json_encode($exercisesInfo[0]);
         $newExam['totalPoints'] = $exercisesInfo[1];
         $newExam['minimumPoints'] = $exam['exam_minimum'];
-        //$newExam['penalization'] = $this->examService->getExamPenalization($exam);
+        $newExam['penalization'] = json_encode($this->examService->getExamPenalization($exam));
 
         $this->examRepository->createAny($newExam);
     }
