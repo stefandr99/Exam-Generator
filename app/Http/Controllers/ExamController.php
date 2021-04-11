@@ -13,6 +13,7 @@ use DateTime;
 use DateTimeZone;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
 
 class ExamController extends Controller
 {
@@ -63,19 +64,27 @@ class ExamController extends Controller
         ]);
     }
 
+    protected function validator(array $data)
+    {
+        return Validator::make($data, [
+            'exam_course' => ['required'],
+            'exam_type' => ['required'],
+            'exam_date' => ['date', 'after:today'],
+            'exam_hours' => ['required', 'integer', 'between:0,48'],
+            'exam_minutes' => ['required', 'integer', 'between:0,59'],
+            'text_exercise_0' => ['required', 'string'],
+            'exercise_0_option_0' => ['required', 'string'],
+            'correct_options_ex_0' => ['required', 'integer'],
+            'wrong_options_ex_0' => ['required', 'integer'],
+            'points_ex_0' => ['required', 'integer'],
+            'exam_minimum' => ['required', 'integer']
+        ]);
+    }
+
     public function scheduleAnyExam(Request $request)
     {
-        if ($request->ajax()) {
-            $examInfo = $request->input('info');
-            $examExercises = $request->input('exercises');
-            $examPenalization = $request->input('penalization');
-
-            $examInfo = json_decode($examInfo, true);
-            $examExercises = json_decode($examExercises, true);
-            $examPenalization = json_decode($examPenalization, true);
-
-            $this->examBusiness->schedule($examInfo, $examExercises, $examPenalization);
-        }
+        $this->validator($request->all())->validate();
+        $data = $request->all();
     }
 
     public function scheduleExam(Request $request)

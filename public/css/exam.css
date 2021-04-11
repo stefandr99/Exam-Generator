@@ -88,3 +88,16 @@
     height: 20px;
     width: 50px;
 }
+
+.invalid-tooltip {
+    opacity: 0.8 !important;
+}
+
+.invalid-tooltip-upper {
+    margin-top: -5px;
+}
+
+.invalid-tooltip-upper-and-right {
+    margin-top: -30px;
+    margin-left: 25px;
+}

@@ -12,6 +12,9 @@ function addExerciseOption(exercise) {
     let exerciseOptionId = "exercise-" + exercise + "-hidden-option-" + numberOfExerciseOptions[exercise];
     let option = document.getElementById(exerciseOptionId);
     option.removeAttribute("hidden");
+
+    nrOfOptionsId = "number_of_options_exercise_" + exercise;
+    document.getElementById(nrOfOptionsId).value = numberOfExerciseOptions[exercise];
 }
 
 function removeExerciseOption(exercise) {
@@ -28,6 +31,8 @@ function removeExerciseOption(exercise) {
         document.getElementById(optionCorrectness).checked = true;
 
         numberOfExerciseOptions[exercise]--;
+        nrOfOptionsId = "number_of_options_exercise_" + exercise;
+        document.getElementById(nrOfOptionsId).value = numberOfExerciseOptions[exercise];
     }
 }
 
@@ -36,6 +41,9 @@ function addExercise() {
     let exerciseId = "exam-exercise-" + numberOfExamExercises;
     let exercise = document.getElementById(exerciseId);
     exercise.removeAttribute("hidden");
+
+    nrOfExercisesId = "number_of_exercises";
+    document.getElementById(nrOfExercisesId).value = numberOfExamExercises;
 }
 
 function removeExercise() {
@@ -54,6 +62,9 @@ function removeExercise() {
         removeAllOptionsFromExercise(numberOfExamExercises);
 
         numberOfExamExercises--;
+
+        nrOfExercisesId = "number_of_exercises";
+        document.getElementById(nrOfExercisesId).value = numberOfExamExercises;
     }
 }
 
