@@ -114,12 +114,12 @@
                                         </div>
                                     @enderror
                                     </label>
-                                    <label>&nbsp;&nbsp;
+                                    &nbsp;<label>
                                         <input id="exercise-0-option-0-true" value="true" name="exercise_0_option_0_answer" type="radio" checked>
-                                        </label>&nbsp;Corect &nbsp;&nbsp;
-                                        <label>
-                                            <input id="exercise-0-option-0-false" value="false" name="exercise_0_option_0_answer" type="radio">
-                                        </label>&nbsp;Gresit
+                                    </label>&nbsp;Corect &nbsp;
+                                    &nbsp;<label>
+                                        <input id="exercise-0-option-0-false" value="false" name="exercise_0_option_0_answer" type="radio">
+                                    </label>&nbsp;Gresit
 
                                     </div>
                                 </div>
@@ -145,15 +145,15 @@
                                 <small>Numarul de variante de raspuns generate:</small>
 
                                     <label>
-                                        <input id="number-of-options-exercise-0" name="number_of_options_exercise_0" type="text" class="form-control nr-of-ops-per-ex @error('number_of_options_exercise_0') is-invalid @enderror" size="1" placeholder="Nr" onchange="$('#collapseExerciseCorrectness').collapse();">
-                                        @error('number_of_options_exercise_0')
+                                        <input id="number-of-options-exercise-0" name="number_of_generated_options_0" type="text" class="form-control nr-of-ops-per-ex @error('number_of_generated_options_0') is-invalid @enderror" size="1" placeholder="Nr" onchange="$('#collapseExerciseCorrectness_0').collapse();">
+                                        @error('number_of_generated_options_0')
                                             <div class="invalid-tooltip">
                                                 {{ $message }}
                                             </div>
                                         @enderror
                                     </label>
                                 </div>
-                                <div class="collapse" id="collapseExerciseCorrectness">
+                                <div class="collapse" id="collapseExerciseCorrectness_0">
                                     <div class="card card-body" style="width: 8.1rem; height: 5.4rem;">
                                         <div class="row" style=" padding-bottom: 30px;">
                                             <small>
@@ -220,7 +220,7 @@
                                     <div class="third-margin-left-exam-exercises">
                                         <div class="inline-elements">
                                             1.&nbsp;&nbsp;
-                                            <input id="exercise-{{$ex}}-option-0" name="exercise_{{$ex}}-option_0" type="text" size="100" class="form-control" placeholder="Varianta de raspuns">
+                                            <input id="exercise-{{$ex}}-option-0" name="exercise_{{$ex}}_option_0" type="text" size="100" class="form-control" placeholder="Varianta de raspuns">
                                             &nbsp;<label>
                                                 <input id="exercise-{{$ex}}-option-0-true" value="true" name="exercise_{{$ex}}_option_0_answer" type="radio" checked>
                                             </label>&nbsp;Corect &nbsp;
@@ -247,8 +247,26 @@
                                         <br>
                                         <small>Numarul de variante de raspuns generate:</small>
                                         <label>
-                                            <input id="number-of-options-exercise-{{$ex}}" name="number_of_options_exercise_{{$ex}}" type="text" class="form-control nr-of-ops-per-ex" size="1" placeholder="Nr">
+                                            <input id="number-of-options-exercise-{{$ex}}" name="number_of_generated_options_{{$ex}}" type="text" class="form-control nr-of-ops-per-ex" size="1" placeholder="Nr" onchange="$('#collapseExerciseCorrectness_{{$ex}}').collapse();">
                                         </label>
+
+                                        <div class="collapse" id="collapseExerciseCorrectness_{{$ex}}">
+                                            <div class="card card-body" style="width: 8.1rem; height: 5.4rem;">
+                                                <div class="row" style=" padding-bottom: 30px;">
+                                                    <small>
+                                                            <label for="correct-options-ex-{{$ex}}">
+                                                                Corecte:&nbsp;
+                                                                <input id="correct-options-ex-{{$ex}}" name="correct_options_ex_{{$ex}}" type="text" class="form-control col correct-wrong-options" value="0">
+                                                            </label>
+                                                            <label for="wrong-options-ex-{{$ex}}">
+                                                                Gresite:&nbsp;
+                                                                <input id="wrong-options-ex-{{$ex}}" name="wrong_options_ex_{{$ex}}" type="text" class="form-control col correct-wrong-options" value="0">
+                                                            </label>
+                                                    </small>
+                                                </div>
+                                            </div>
+                                        </div>
+
                                         <br>
                                         <label>
                                             <input id="shuffle-exercise-{{$ex}}-options" name="shuffle_{{$ex}}" type="checkbox">
@@ -258,7 +276,7 @@
                                 <!-- </OPTIONS> -->
 
                                 <label for="points-exercise-{{$ex}}" class="large-text-font">Puncte:
-                                    <input id="points-exercise-{{$ex}}" name="points_exercise_{{$ex}}" type="text" class="form-control" placeholder="Puncte">
+                                    <input id="points-exercise-{{$ex}}" name="points_ex_{{$ex}}" type="text" class="form-control" placeholder="Puncte">
                                 </label>
                             </div>
                         </div>

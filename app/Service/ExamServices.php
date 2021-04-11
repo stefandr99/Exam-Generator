@@ -13,7 +13,7 @@ class ExamServices
         $exercises['total_count'] = $numberOfExercises;
         $exercises['exercises'] = array();
 
-        for($exCounter = 0; $exCounter <= $numberOfExercises; $exCounter++) {
+        for($exCounter = 0; $exCounter < $numberOfExercises; $exCounter++) {
             $exercises['exercises'][$exCounter] = array();
 
             $fieldName = 'text_exercise_' . $exCounter;
@@ -27,7 +27,6 @@ class ExamServices
         }
 
         return array($exercises, $totalPoints);
-
     }
 
     private function getExerciseOptions($index, $exam) {
@@ -41,7 +40,7 @@ class ExamServices
         else $options['shuffle'] = false;
 
         $options['generate'] = array();
-        $fieldName = 'number_of_options_exercise_' . $index;
+        $fieldName = 'number_of_generated_options_' . $index;
         $options['generate']['total'] = $exam[$fieldName];
 
         $fieldName = 'correct_options_ex_' . $index;
@@ -57,16 +56,14 @@ class ExamServices
 
     private function getExerciseOptionsBody($index, $optionCounter, $exam) {
         $body = array();
-        $body['counter'] = $optionCounter;
-        $body['body'] = array();
-        for($i = 0; $i <= $optionCounter; $i++) {
-            $body['body'][$i] = array();
+        for($i = 0; $i < $optionCounter; $i++) {
+            $body[$i] = array();
 
             $fieldName = 'exercise_' . $index .'_option_' . $i;
-            $body['body'][$i]['option_text'] = $exam[$fieldName];
+            $body[$i]['option_text'] = $exam[$fieldName];
 
             $fieldName = 'exercise_' . $index .'_option_' . $i . '_answer';
-            $body['body'][$i]['answer'] = $exam[$fieldName];
+            $body[$i]['answer'] = $exam[$fieldName];
         }
 
         return $body;
