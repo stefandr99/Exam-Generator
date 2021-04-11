@@ -70,7 +70,7 @@ class SubjectBusiness
 
     public function generate($examId, $examInfo)
     {
-        $examInfo[0]->exercises_type = json_decode($examInfo[0]->exercises_type);
+        $examInfo[0]->exercises = json_decode($examInfo[0]->exercises);
 
         switch ($examInfo[0]->course_name) {
             case 'Baze de date':
@@ -101,26 +101,26 @@ class SubjectBusiness
 
         for($ex = 0; $ex < $examInfo->number_of_exercises; $ex++) {
             $exercises[$ex] = array();
-            switch ($examInfo->exercises_type[$ex][0]) {
+            switch ($examInfo->exercises[$ex][0]) {
                 case 'type-1':
                     $exercise = $this->generateDBType1();
                     $exercises[$ex]['exercise'] = json_decode($exercise, true);
-                    $exercises[$ex]['points'] = $examInfo->exercises_type[$ex][1];
+                    $exercises[$ex]['points'] = $examInfo->exercises[$ex][1];
                     break;
                 case 'type-2':
                     $exercise = $this->generateDBType2();
                     $exercises[$ex]['exercise'] = json_decode($exercise, true);
-                    $exercises[$ex]['points'] = $examInfo->exercises_type[$ex][1];
+                    $exercises[$ex]['points'] = $examInfo->exercises[$ex][1];
                     break;
                 case 'type-3':
                     $exercise = $this->generateDBType3();
                     $exercises[$ex]['exercise'] = json_decode($exercise, true);
-                    $exercises[$ex]['points'] = $examInfo->exercises_type[$ex][1];
+                    $exercises[$ex]['points'] = $examInfo->exercises[$ex][1];
                     break;
                 case 'type-4':
                     $exercise = $this->generateDBType4();
                     $exercises[$ex]['exercise'] = json_decode($exercise, true);
-                    $exercises[$ex]['points'] = $examInfo->exercises_type[$ex][1];
+                    $exercises[$ex]['points'] = $examInfo->exercises[$ex][1];
                     break;
             }
 

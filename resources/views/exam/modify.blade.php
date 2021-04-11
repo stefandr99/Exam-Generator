@@ -62,7 +62,7 @@
                         <label for="exam-exercise-{{$i}}" class="large-text-font">Tipul exercițiului:
                             <select id="exam-exercise-{{$i}}" class="form-control">
 
-                                @if($exam->exercises_type[$i][0] == "type-1")
+                                @if($exam->exercises[$i][0] == "type-1")
                                     <option value="type-1" selected>
                                 @else
                                     <option value="type-1">
@@ -70,7 +70,7 @@
                                     Determinarea dependețelor în funcție de o relație "r" dată tabelar
                                 </option>
 
-                                @if($exam->exercises_type[$i][0] == "type-2")
+                                @if($exam->exercises[$i][0] == "type-2")
                                     <option value="type-2" selected>
                                 @else
                                     <option value="type-2">
@@ -78,7 +78,7 @@
                                     Determinarea dependețelor în funcție de o relație "Catalog(elev, notă, materie, datăNotare, profesor)" ce impune anumite restricții
                                 </option>
 
-                                @if($exam->exercises_type[$i][0] == "type-3")
+                                @if($exam->exercises[$i][0] == "type-3")
                                     <option value="type-3" selected>
                                 @else
                                     <option value="type-3">
@@ -86,7 +86,7 @@
                                     Determinarea X+ în funcție de o schemă de relație "R" și o mulțime &Sigma; de dependențe funcționale
                                 </option>
 
-                                @if($exam->exercises_type[$i][0] == "type-4")
+                                @if($exam->exercises[$i][0] == "type-4")
                                     <option value="type-4" selected>
                                 @else
                                     <option value="type-4">
@@ -99,7 +99,7 @@
 
                         <br>
                         <label for="exercise-{{$i}}-points" class="large-text-font">Puncte:
-                            <input type="text" class="form-control" id="exercise-{{$i}}-points" placeholder="Puncte" value="{{$exam->exercises_type[$i][1]}}">
+                            <input type="text" class="form-control" id="exercise-{{$i}}-points" placeholder="Puncte" value="{{$exam->exercises[$i][1]}}">
                         </label>
                     </div>
                 @endfor

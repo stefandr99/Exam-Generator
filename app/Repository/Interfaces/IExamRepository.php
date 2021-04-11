@@ -6,7 +6,8 @@ namespace App\Repository\Interfaces;
 
 interface IExamRepository
 {
-    public function create($exam);
+    public function createDB($exam);
+    public function createAny($exam);
 
     public function getInfoById($id);
     public function getResult($examId, $userId);

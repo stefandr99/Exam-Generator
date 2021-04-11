@@ -4,17 +4,19 @@
 namespace App\Business;
 
 use App\Repository\Interfaces\IExamRepository;
+use App\Service\ExamServices;
 use DateInterval;
 use DateTime;
-use DateTimeZone;
 
 class ExamBusiness
 {
     private $examRepository;
+    private $examService;
 
     public function __construct(IExamRepository $examRepository)
     {
         $this->examRepository = $examRepository;
+        $this->examService = new ExamServices();
     }
 
     public function getExamInfo($examId)
@@ -45,7 +47,7 @@ class ExamBusiness
         return $this->examRepository->getResult($examId, $userId);
     }
 
-    public function schedule($info, $exercises, $penalization) {
+    public function scheduleDB($info, $exercises, $penalization) {
         $courseId = $info[0];
         $endTime = $this->getExamEndTime($info[2], $info[3], $info[4]);
 
@@ -57,12 +59,31 @@ class ExamBusiness
             'hours' => $info[3],
             'minutes' => $info[4],
             'number_of_exercises' => $exercises[0],
-            'exercises_type' => json_encode($exercises[1]),
+            'exercises' => json_encode($exercises[1]),
             'total_points' => $exercises[2],
             'minimum_points' => $info[5],
             'penalization' => json_encode($penalization)
         );
-        $this->examRepository->create($exam);
+        $this->examRepository->createDB($exam);
+    }
+
+    public function scheduleAny($exam) {
+        $newExam = array();
+        $newExam['courseId'] = $exam['exam_course'];
+        $newExam['type'] = $exam['exam_type'];
+        $newExam['startsAt'] = $exam['exam_date'];
+        $newExam['endsAt'] = $this->getExamEndTime($exam['exam_date'], $exam['exam_hours'], $exam['exam_minutes']);
+        $newExam['hours'] = $exam['exam_hours'];
+        $newExam['minutes'] = $exam['exam_minutes'];
+        $newExam['totalExercises'] = $exam['number_of_exercises'];
+
+        $exercisesInfo = $this->examService->createExercisesJSON($exam);
+        $newExam['exercises'] = json_encode($exercisesInfo[0]);
+        $newExam['totalPoints'] = $exercisesInfo[1];
+        $newExam['minimumPoints'] = $exam['exam_minimum'];
+        //$newExam['penalization'] = $this->examService->getExamPenalization($exam);
+
+        $this->examRepository->createAny($newExam);
     }
 
     public function getExamEndTime($start, $hours, $minutes) {
@@ -131,7 +152,7 @@ class ExamBusiness
             'hours' => $info[3],
             'minutes' => $info[4],
             'number_of_exercises' => $exercises[0],
-            'exercises_type' => json_encode($exercises[1]),
+            'exercises' => json_encode($exercises[1]),
             'total_points' => $exercises[2],
             'minimum_points' => $info[5],
             'penalization' => $penalization

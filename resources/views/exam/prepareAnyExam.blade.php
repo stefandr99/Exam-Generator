@@ -114,11 +114,11 @@
                                         </div>
                                     @enderror
                                     </label>
-                                    <label>&nbsp;
-                                        <input id="exercise-0-option-0-true" value="true" name="exercise_0_options_nr_0" type="radio" checked>
+                                    <label>&nbsp;&nbsp;
+                                        <input id="exercise-0-option-0-true" value="true" name="exercise_0_option_0_answer" type="radio" checked>
                                         </label>&nbsp;Corect &nbsp;&nbsp;
                                         <label>
-                                            <input id="exercise-0-option-0-false" value="false" name="exercise_0_options_nr_0" type="radio">
+                                            <input id="exercise-0-option-0-false" value="false" name="exercise_0_option_0_answer" type="radio">
                                         </label>&nbsp;Gresit
 
                                     </div>
@@ -129,10 +129,10 @@
                                         {{$op + 1}}.&nbsp;&nbsp;
                                         <input id="exercise-0-option-{{$op}}" name="exercise_0_option_{{$op}}" type="text" size="100" class="form-control" placeholder="Varianta de raspuns">
                                         &nbsp;<label>
-                                            <input id="exercise-0-option-{{$op}}-true" value="true" name="exercise_0_options_nr_{{$op}}" type="radio" checked>
+                                            <input id="exercise-0-option-{{$op}}-true" value="true" name="exercise_0_option_{{$op}}_answer" type="radio" checked>
                                         </label>&nbsp;Corect &nbsp;
                                         &nbsp;<label>
-                                            <input id="exercise-0-option-{{$op}}-false" value="false" name="exercise_0_options_nr_{{$op}}" type="radio">
+                                            <input id="exercise-0-option-{{$op}}-false" value="false" name="exercise_0_option_{{$op}}_answer" type="radio">
                                         </label>&nbsp;Gresit
                                     </div>
                                 @endfor
@@ -222,10 +222,10 @@
                                             1.&nbsp;&nbsp;
                                             <input id="exercise-{{$ex}}-option-0" name="exercise_{{$ex}}-option_0" type="text" size="100" class="form-control" placeholder="Varianta de raspuns">
                                             &nbsp;<label>
-                                                <input id="exercise-{{$ex}}-option-0-true" value="true" name="exercise_{{$ex}}_options_nr_0" type="radio" checked>
+                                                <input id="exercise-{{$ex}}-option-0-true" value="true" name="exercise_{{$ex}}_option_0_answer" type="radio" checked>
                                             </label>&nbsp;Corect &nbsp;
                                             &nbsp;<label>
-                                                <input id="exercise-{{$ex}}-option-0-false" value="false" name="exercise_{{$ex}}_options_nr_0" type="radio">
+                                                <input id="exercise-{{$ex}}-option-0-false" value="false" name="exercise_{{$ex}}_option_0_answer" type="radio">
                                             </label>&nbsp;Gresit
                                         </div>
 
@@ -234,10 +234,10 @@
                                                 {{$op + 1}}.&nbsp;&nbsp;
                                                 <input id="exercise-{{$ex}}-option-{{$op}}" name="exercise_{{$ex}}_option_{{$op}}" type="text" size="100" class="form-control" placeholder="Varianta de raspuns">
                                                 &nbsp;<label>
-                                                    <input id="exercise-{{$ex}}-option-{{$op}}-true" value="true" name="exercise-{{$ex}}-options-nr-{{$op}}" type="radio" checked>
+                                                    <input id="exercise-{{$ex}}-option-{{$op}}-true" value="true" name="exercise_{{$ex}}_option_{{$op}}_answer" type="radio" checked>
                                                 </label>&nbsp;Corect &nbsp;
                                                 &nbsp;<label>
-                                                    <input id="exercise-{{$ex}}-option-{{$op}}-false" value="false" name="exercise-{{$ex}}-options-nr-{{$op}}" type="radio">
+                                                    <input id="exercise-{{$ex}}-option-{{$op}}-false" value="false" name="exercise_{{$ex}}_option_{{$op}}_answer" type="radio">
                                                 </label>&nbsp;Gresit
                                             </div>
                                         @endfor

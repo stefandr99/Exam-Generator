@@ -13,8 +13,7 @@ use Illuminate\Support\Facades\DB;
 class ExamRepository implements IExamRepository
 {
 
-    public function create($exam)
-    {
+    public function createDB($exam) {
         $newExam = new Exam;
         $newExam->course_id = $exam['id'];
         $newExam->type = $exam['type'];
@@ -23,19 +22,33 @@ class ExamRepository implements IExamRepository
         $newExam->hours = $exam['hours'];
         $newExam->minutes = $exam['minutes'];
         $newExam->number_of_exercises = $exam['number_of_exercises'];
-        $newExam->exercises_type = $exam['exercises_type'];
+        $newExam->exercises = $exam['exercises'];
         $newExam->total_points = $exam['total_points'];
         $newExam->minimum_points = $exam['minimum_points'];
         $newExam->penalization = $exam['penalization'];
         $newExam->save();
     }
 
-    public function getInfoById($id)
-    {
+    public function createAny($exam) {
+        $newExam = new Exam;
+        $newExam->course_id = $exam['courseId'];
+        $newExam->type = $exam['type'];
+        $newExam->starts_at = $exam['startsAt'];
+        $newExam->ends_at = $exam['endsAt'];
+        $newExam->hours = $exam['hours'];
+        $newExam->minutes = $exam['minutes'];
+        $newExam->number_of_exercises = $exam['totalExercises'];
+        $newExam->exercises = $exam['exercises'];
+        $newExam->total_points = $exam['totalPoints'];
+        $newExam->minimum_points = $exam['minimumPoints'];
+        $newExam->save();
+    }
+
+    public function getInfoById($id) {
         return DB::table('exams')
             ->join('courses', 'courses.id', '=', 'exams.course_id')
             ->select('courses.name as course_name', 'type', 'starts_at', 'hours', 'minutes',
-                'number_of_exercises', 'exercises_type', 'total_points', 'penalization')
+                'number_of_exercises', 'exercises', 'total_points', 'penalization')
             ->where('exams.id', $id)
             ->get();
     }
@@ -138,7 +151,7 @@ class ExamRepository implements IExamRepository
                 'hours' => $exam['hours'],
                 'minutes' => $exam['minutes'],
                 'number_of_exercises' => $exam['number_of_exercises'],
-                'exercises_type' => $exam['exercises_type'],
+                'exercises' => $exam['exercises'],
                 'total_points' => $exam['total_points'],
                 'minimum_points' => $exam['minimum_points'],
                 'penalization' => $exam['penalization']

@@ -64,7 +64,7 @@ class ExamController extends Controller
         ]);
     }
 
-    protected function validator(array $data)
+    protected function anyExamValidator(array $data)
     {
         return Validator::make($data, [
             'exam_course' => ['required'],
@@ -83,8 +83,13 @@ class ExamController extends Controller
 
     public function scheduleAnyExam(Request $request)
     {
-        $this->validator($request->all())->validate();
+        $this->anyExamValidator($request->all())->validate();
         $data = $request->all();
+
+        //print_r($data);
+        $this->examBusiness->scheduleAny($data);
+
+        return redirect()->route('home');
     }
 
     public function scheduleExam(Request $request)
@@ -98,7 +103,7 @@ class ExamController extends Controller
             $examExercises = json_decode($examExercises, true);
             $examPenalization = json_decode($examPenalization, true);
 
-            $this->examBusiness->schedule($examInfo, $examExercises, $examPenalization);
+            $this->examBusiness->scheduleDB($examInfo, $examExercises, $examPenalization);
         }
     }
 
@@ -137,7 +142,7 @@ class ExamController extends Controller
     public function modifyExam($examId) {
         $courses = $this->courseBusiness->getAll();
         $exam = $this->examBusiness->getExamById($examId);
-        $exam->exercises_type = json_decode($exam->exercises_type, true);
+        $exam->exercises = json_decode($exam->exercises, true);
         $exam->penalization = json_decode($exam->penalization, true);
         return view('exam/modify', [
             'exam' => $exam,
