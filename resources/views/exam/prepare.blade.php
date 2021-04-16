@@ -9,6 +9,8 @@
         <h1 class="text-center"><b>Pregătiți examenul la Baze de date</b></h1>
         <br>
         <form class="form-group">
+            @csrf
+
             <div class="d-flex">
                 <div class="p-2">
                 <label for="exam-subject" class="large-text-font"><b>Materia:</b>
@@ -50,68 +52,76 @@
                 </div>
             </div>
 
+            <!-- <EXERCITII> -->
             <div class="large-text-font">
-                <b>Exerciții:</b>
-                <br>
-                Exercițiul 1.
-                <br>
-                <label for="exam-exercise-0" class="large-text-font">Tipul exercițiului:
-                    <select id="exam-exercise-0" class="form-control">
-                        <option value="no-exercise" selected disabled>--</option>
-                        <option value="type-1">
-                            Determinarea dependețelor în funcție de o relație "r" dată tabelar
-                        </option>
-                        <option value="type-2">
-                            Determinarea dependețelor în funcție de o relație "Catalog(elev, notă, materie, datăNotare, profesor)" ce impune anumite restricții
-                        </option>
-                        <option value="type-3">
-                            Determinarea X+ în funcție de o schemă de relație "R" și o mulțime &Sigma; de dependențe funcționale
-                        </option>
-                        <option value="type-4">
-                            Determinarea cheilor candidat pentru o schemă de relație "R" și mulțimile de dependență &Sigma; și &Delta;
-                        </option>
-                    </select>
+                <b>Exerciții:</b><label>
+                    <input hidden id="number_of_exercises" name="number_of_exercises" value="0">
                 </label>
-                <br>
-                <label for="exercise-0-points" class="large-text-font">Puncte:
-                    <input id="exercise-0-points" type="text" class="form-control" placeholder="Puncte">
-                </label>
+                <div class="first-margin-left-exam-exercises">
+                    Exercițiul 1.
+                    <br>
+                    <div class="second-margin-left-exam-exercises">
+                        <label for="exam-exercise-0" class="large-text-font">Tipul exercițiului:
+                            <select id="exam-exercise-0" class="form-control">
+                                <option value="no-exercise" selected disabled>--</option>
+                                <option value="type-1">
+                                    Determinarea dependețelor în funcție de o relație "r" dată tabelar
+                                </option>
+                                <option value="type-2">
+                                    Determinarea dependețelor în funcție de o relație "Catalog(elev, notă, materie, datăNotare, profesor)" ce impune anumite restricții
+                                </option>
+                                <option value="type-3">
+                                    Determinarea X+ în funcție de o schemă de relație "R" și o mulțime &Sigma; de dependențe funcționale
+                                </option>
+                                <option value="type-4">
+                                    Determinarea cheilor candidat pentru o schemă de relație "R" și mulțimile de dependență &Sigma; și &Delta;
+                                </option>
+                            </select>
+                        </label>
+                        <br>
+                        <label for="exercise-0-points" class="large-text-font">Puncte:
+                            <input id="exercise-0-points" type="text" class="form-control" placeholder="Puncte">
+                        </label>
+                    </div>
 
-                <div class="extra-exercises">
-                    @for($ex = 1; $ex < 100; $ex++)
-                        <div hidden id="exercise-{{$ex}}">
-                            Exercițiul {{ $ex + 1 }}.
-                            <br>
-                            <label for="exam-exercise-{{$ex}}" class="large-text-font">Tipul exercitiului:
-                                <select id="exam-exercise-{{$ex}}" class="form-control">
-                                    <option value="no-exercise" selected disabled>--</option>
-                                    <option value="type-1">
-                                        Determinarea dependețelor în funcție de o relație "r" dată tabelar
-                                    </option>
-                                    <option value="type-2">
-                                        Determinarea dependețelor în funcție de o relație "Catalog(elev, notă, materie, datăNotare, profesor)" ce impune anumite restricții
-                                    </option>
-                                    <option value="type-3">
-                                        Determinarea X+ în funcție de o schemă de relație "R" și o mulțime &Sigma; de dependențe funcționale
-                                    </option>
-                                    <option value="type-4">
-                                        Determinarea cheilor candidat pentru o schemă de relație "R" și mulțimile de dependență &Sigma; și &Delta;
-                                    </option>
-                                </select>
-                            </label>
-                            <br>
-                            <label for="exercise-{{$ex}}-points" class="large-text-font">Puncte:
-                                <input id="exercise-{{$ex}}-points" type="text" class="form-control" placeholder="Puncte">
-                            </label>
-                        </div>
-                    @endfor
+                    <div class="extra-exercises">
+                        @for($ex = 1; $ex < 100; $ex++)
+                            <div hidden id="exercise-{{$ex}}">
+                                Exercițiul {{ $ex + 1 }}.
+                                <br>
+                                <div class="second-margin-left-exam-exercises">
+                                    <label for="exam-exercise-{{$ex}}" class="large-text-font">Tipul exercitiului:
+                                        <select id="exam-exercise-{{$ex}}" class="form-control">
+                                            <option value="no-exercise" selected disabled>--</option>
+                                            <option value="type-1">
+                                                Determinarea dependețelor în funcție de o relație "r" dată tabelar
+                                            </option>
+                                            <option value="type-2">
+                                                Determinarea dependețelor în funcție de o relație "Catalog(elev, notă, materie, datăNotare, profesor)" ce impune anumite restricții
+                                            </option>
+                                            <option value="type-3">
+                                                Determinarea X+ în funcție de o schemă de relație "R" și o mulțime &Sigma; de dependențe funcționale
+                                            </option>
+                                            <option value="type-4">
+                                                Determinarea cheilor candidat pentru o schemă de relație "R" și mulțimile de dependență &Sigma; și &Delta;
+                                            </option>
+                                        </select>
+                                    </label>
+                                    <br>
+                                    <label for="exercise-{{$ex}}-points" class="large-text-font">Puncte:
+                                        <input id="exercise-{{$ex}}-points" type="text" class="form-control" placeholder="Puncte">
+                                    </label>
+                                </div>
+                            </div>
+                        @endfor
+                    </div>
+
+
+                    <br>
+                    <button type="button" class="btn btn-outline-primary" onclick="addDBExercise()">Adăugați încă un exercițiu</button>
+                    <button type="button" class="btn btn-outline-danger" onclick="removeDBExercise()">Stergeți ultimul exercițiu</button>
                 </div>
             </div>
-
-            <br>
-            <button type="button" class="btn btn-primary" onclick="addDBExercise()">Adăugați încă un exercițiu</button>
-            <button type="button" class="btn btn-danger" onclick="removeDBExercise()">Stergeți ultimul exercițiu</button>
-            <br>
             <br>
             <label for="exam-minimum" class="large-text-font"><b>Punctajul minim:</b>
                 <input id="exam-minimum" type="text" class="form-control" placeholder="Punctaj minim">

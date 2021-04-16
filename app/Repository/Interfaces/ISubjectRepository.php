@@ -6,7 +6,7 @@ namespace App\Repository\Interfaces;
 
 interface ISubjectRepository
 {
-    public function createSubject($subject);
+    public function createDBSubject($subject);
 
     public function getSubjectExercises($examId, $userId);
 

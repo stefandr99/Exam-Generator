@@ -27,7 +27,7 @@
                 <div class="form-check large-text-font">
                     <input class="form-check-input" type="checkbox" value="" id="ex{{$number}}option{{$option}}">
                     <label class="form-check-label" for="ex{{$number}}option{{$option}}">
-                        {!! $options["solution"][$option + 1]["option"] !!}
+                        {!! $options["solution"][$option]["option"] !!}
                     </label>
                 </div>
             @endfor

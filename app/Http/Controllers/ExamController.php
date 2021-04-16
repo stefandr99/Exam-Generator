@@ -89,7 +89,7 @@ class ExamController extends Controller
         //print_r($data);
         $this->examBusiness->scheduleAny($data);
 
-        return redirect()->route('home');
+        return redirect()->route('show_exams');
     }
 
     public function scheduleExam(Request $request)

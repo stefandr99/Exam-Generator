@@ -51,7 +51,8 @@ class ExamRepository implements IExamRepository
             ->select('courses.name as course_name', 'type', 'starts_at', 'hours', 'minutes',
                 'number_of_exercises', 'exercises', 'total_points', 'penalization')
             ->where('exams.id', $id)
-            ->get();
+            ->get()
+            ->first();
     }
 
     public function getResult($examId, $userId)

@@ -75,7 +75,7 @@ class ExamBusiness
         $newExam['endsAt'] = $this->getExamEndTime($exam['exam_date'], $exam['exam_hours'], $exam['exam_minutes']);
         $newExam['hours'] = $exam['exam_hours'];
         $newExam['minutes'] = $exam['exam_minutes'];
-        $newExam['totalExercises'] = $exam['number_of_exercises'];
+        $newExam['totalExercises'] = $exam['number_of_exercises'] + 1;
 
         $exercisesInfo = $this->examService->createExercisesJSON($exam);
         $newExam['exercises'] = json_encode($exercisesInfo[0]);

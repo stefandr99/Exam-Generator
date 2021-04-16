@@ -181,9 +181,6 @@
                                         </div>
                                     </div>
                                 </div>
-                                <label>
-                                    <input id="shuffle-exercise-0-options" name="shuffle_0" type="checkbox">
-                                </label> &nbsp;<small>Amesteca variantele de raspuns</small>
                             </div>
 
                         </label>
@@ -266,11 +263,6 @@
                                                 </div>
                                             </div>
                                         </div>
-
-                                        <br>
-                                        <label>
-                                            <input id="shuffle-exercise-{{$ex}}-options" name="shuffle_{{$ex}}" type="checkbox">
-                                        </label> &nbsp;<small>Amesteca variantele de raspuns</small>
                                     </div>
                                 </label>
                                 <!-- </OPTIONS> -->

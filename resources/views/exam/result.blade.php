@@ -24,29 +24,29 @@
 
             @for($index = 0; $index < count($info->exercises); $index++)
                 <h2><b>Exercitiul {{ $index + 1 }} ({{$info->exercises[$index]['points']}} puncte)</b></h2>
-                @foreach($info->exercises[$index]['exercise']["content"] as $field)
+                @foreach($info->exercises[$index]["content"] as $field)
                     @if(str_starts_with($field, 'text'))
-                        @include('examTemplates.text', ['text' => $info->exercises[$index]['exercise']['text'][intval($field[4])]])
+                        @include('examTemplates.text', ['text' => $info->exercises[$index]['text'][intval($field[4])]])
                     @else
                         @switch($field)
                             @case("list")
-                            @include('examTemplates.list', ['list' => $info->exercises[$index]['exercise']['list']])
+                            @include('examTemplates.list', ['list' => $info->exercises[$index]['list']])
                             @break
                             @case("options")
-                            @include('correctedExamTemplates.correctedOptions', ['options' => $info->exercises[$index]['exercise']['options'],
+                            @include('correctedExamTemplates.correctedOptions', ['options' => $info->exercises[$index]['options'],
                                                                     'number' => $index,
                                                                     'studentAnswers' => $info->student_answers,
                                                                     'results' => $info->results])
                             @break
                             @case("optionsAndTable")
-                            @include('correctedExamTemplates.correctedOptionsAndTable', ['options' => $info->exercises[$index]['exercise']['options'],
-                                                                            'table' => $info->exercises[$index]['exercise']['table'],
+                            @include('correctedExamTemplates.correctedOptionsAndTable', ['options' => $info->exercises[$index]['options'],
+                                                                            'table' => $info->exercises[$index]['table'],
                                                                             'number' => $index,
                                                                             'studentAnswers' => $info->student_answers,
                                                                             'results' => $info->results])
                             @break
                             @case("table")
-                            @include('examTemplates.table', ['table' => $info->exercises[$index]['exercise']['table']])
+                            @include('examTemplates.table', ['table' => $info->exercises[$index]['table']])
                         @endswitch
                     @endif
                 @endforeach

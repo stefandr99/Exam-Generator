@@ -10,7 +10,7 @@
             @endif
             <label class="form-check-label">
                 @if($results[$number][$option])
-                    <span id="correct-answer">{!! $options["solution"][$option + 1]["option"] !!}</span>
+                    <span id="correct-answer">{!! $options["solution"][$option]["option"] !!}</span>
                     ✅
                     @if($studentAnswers[$number][$option])
                         <span id="correct-answer-text"><b>*Corect bifat!*</b></span>
@@ -18,7 +18,7 @@
                         <span id="correct-answer-text"><b>*Da, acesta era un raspuns gresit!*</b></span>
                     @endif
                 @else
-                    <span id="wrong-answer">{!! $options["solution"][$option + 1]["option"] !!}</span>
+                    <span id="wrong-answer">{!! $options["solution"][$option]["option"] !!}</span>
                     ❌
                     @if($studentAnswers[$number][$option])
                         <span id="wrong-answer-text"><b>Gresit bifat!</b></span>

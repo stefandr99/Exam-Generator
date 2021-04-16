@@ -34,11 +34,6 @@ class ExamServices
         $fieldName = 'number_of_options_exercise_' . $index;
         $options['counter'] = $exam[$fieldName] + 1;
 
-        $fieldName = 'shuffle_' . $index;
-        if(array_key_exists($fieldName, $exam))
-            $options['shuffle'] = true;
-        else $options['shuffle'] = false;
-
         $options['generate'] = array();
         $fieldName = 'number_of_generated_options_' . $index;
         $options['generate']['total'] = $exam[$fieldName];
@@ -49,24 +44,24 @@ class ExamServices
         $fieldName = 'wrong_options_ex_' . $index;
         $options['generate']['wrong'] = $exam[$fieldName];
 
-        $options['body'] = $this->getExerciseOptionsBody($index, $options['counter'], $exam);
+        $options['solution'] = $this->getExerciseOptionsSolution($index, $options['counter'], $exam);
 
         return $options;
     }
 
-    private function getExerciseOptionsBody($index, $optionCounter, $exam) {
-        $body = array();
+    private function getExerciseOptionsSolution($index, $optionCounter, $exam) {
+        $solution = array();
         for($i = 0; $i < $optionCounter; $i++) {
-            $body[$i] = array();
+            $solution[$i] = array();
 
             $fieldName = 'exercise_' . $index .'_option_' . $i;
-            $body[$i]['option_text'] = $exam[$fieldName];
+            $solution[$i]['option'] = $exam[$fieldName];
 
             $fieldName = 'exercise_' . $index .'_option_' . $i . '_answer';
-            $body[$i]['answer'] = $exam[$fieldName];
+            $solution[$i]['answer'] = $exam[$fieldName] == "true";
         }
 
-        return $body;
+        return $solution;
     }
 
     public function getExamPenalization($exam) {

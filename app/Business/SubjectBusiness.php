@@ -68,16 +68,31 @@ class SubjectBusiness
         return $response;
     }
 
-    public function generate($examId, $examInfo)
-    {
-        $examInfo[0]->exercises = json_decode($examInfo[0]->exercises);
+    private function generateAnyExam($exercisesBody) {
+        $url = "http://localhost/bd/GenericGenerator.php";
+        $json = json_encode($exercisesBody);
 
-        switch ($examInfo[0]->course_name) {
+        $c = curl_init($url);
+        curl_setopt($c, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($c, CURLOPT_POSTFIELDS, $json);
+        curl_setopt($c, CURLOPT_HTTPHEADER, array('Content-Type: text/plain'));
+        $response = curl_exec($c);
+        curl_close($c);
+
+        return $response;
+    }
+
+    public function generateDB($examId, $examInfo)
+    {
+        $examInfo->exercises = json_decode($examInfo->exercises);
+
+        switch ($examInfo->course_name) {
             case 'Baze de date':
-                $exercises = $this->generateDBSubject($examInfo[0]);
+                $exercises = $this->generateDBSubject($examInfo);
                 break;
             default:
-                $exercises = $this->generateDBSubject($examInfo[0]);
+                //$exercises = $this->generateAny($examInfo);
+                $exercises = $this->generateDBSubject($examInfo);
                 break;
         }
 
@@ -88,11 +103,15 @@ class SubjectBusiness
             'user_id' => $userId,
             'exam_id' => $examId,
             'exercises' => $exercisesJson,
-            'total_points' => $examInfo[0]->total_points
+            'total_points' => $examInfo->total_points
         );
-        $this->subjectRepository->createSubject($subject);
+        $this->subjectRepository->createDBSubject($subject);
 
-        return array($exercises, $examInfo[0]);
+        return array($exercises, $examInfo);
+    }
+
+    public function generateAny($examInfo) {
+        return $this->generateAnyExam($examInfo->exercises);
     }
 
     private function generateDBSubject($examInfo)
@@ -104,22 +123,22 @@ class SubjectBusiness
             switch ($examInfo->exercises[$ex][0]) {
                 case 'type-1':
                     $exercise = $this->generateDBType1();
-                    $exercises[$ex]['exercise'] = json_decode($exercise, true);
+                    $exercises[$ex] = json_decode($exercise, true);
                     $exercises[$ex]['points'] = $examInfo->exercises[$ex][1];
                     break;
                 case 'type-2':
                     $exercise = $this->generateDBType2();
-                    $exercises[$ex]['exercise'] = json_decode($exercise, true);
+                    $exercises[$ex] = json_decode($exercise, true);
                     $exercises[$ex]['points'] = $examInfo->exercises[$ex][1];
                     break;
                 case 'type-3':
                     $exercise = $this->generateDBType3();
-                    $exercises[$ex]['exercise'] = json_decode($exercise, true);
+                    $exercises[$ex] = json_decode($exercise, true);
                     $exercises[$ex]['points'] = $examInfo->exercises[$ex][1];
                     break;
                 case 'type-4':
                     $exercise = $this->generateDBType4();
-                    $exercises[$ex]['exercise'] = json_decode($exercise, true);
+                    $exercises[$ex] = json_decode($exercise, true);
                     $exercises[$ex]['points'] = $examInfo->exercises[$ex][1];
                     break;
             }
@@ -135,14 +154,14 @@ class SubjectBusiness
         $subjectExercises = $this->subjectRepository->getSubjectExercises($examId, $userId);
         $examInformation = $this->subjectRepository->getPenalizationInfoById($examId);
         $examInformation->penalization = json_decode($examInformation->penalization, true);
-        $exercises = json_decode($subjectExercises[0]->exercises, true);
+        $exercises = json_decode($subjectExercises->exercises, true);
 
         $correctedExam = [];
         for ($currentExercise = 0; $currentExercise < $exercisesNumber; $currentExercise++) {
             $correctedExam[$currentExercise] = [];
             for ($i = 0; $i < $optionsNumber[$currentExercise]; $i++) {
                 $correctedExam[$currentExercise][$i] = ($studentAnswers[$currentExercise][$i]
-                    === $exercises[$currentExercise]['exercise']['options']['solution'][$i + 1]['answer']);
+                    === $exercises[$currentExercise]['options']['solution'][$i]['answer']);
             }
         }
 

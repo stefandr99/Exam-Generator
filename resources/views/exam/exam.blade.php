@@ -6,53 +6,53 @@
 
 @section('content')
     <form>
-    <div class="container my-4">
-        <h1 class="text-center">
-            <b>
-                {{ $info->type }} {{ $info->course_name }}
-                <br>
-                {{ date_format(date_create($info->starts_at), 'l, d-m-Y, H:i') }}
-                <br>
-                <div class="remaining-exam-time">
-                    Timp rămas: <p id="hourss"></p>:<p id="mins"></p>:<p id="secs"></p>
-                </div>
-            </b>
-        </h1>
-        <br>
-        @for($index = 0; $index < count($exercises); $index++)
-            <h2><b>Exercițiul {{ $index + 1 }} ({{$exercises[$index]['points']}} puncte)</b></h2>
-            @foreach($exercises[$index]['exercise']["content"] as $field)
-                @if(str_starts_with($field, 'text'))
-                    @include('examTemplates.text', ['text' => $exercises[$index]['exercise']['text'][intval($field[4])]])
-                @else
-                    @switch($field)
-                        @case("list")
-                            @include('examTemplates.list', ['list' => $exercises[$index]['exercise']['list']])
+        <div class="container my-4">
+            <h1 class="text-center">
+                <b>
+                    {{ $info->type }} {{ $info->course_name }}
+                    <br>
+                    {{ date_format(date_create($info->starts_at), 'l, d-m-Y, H:i') }}
+                    <br>
+                    <div class="remaining-exam-time">
+                        Timp rămas: <p id="hourss"></p>:<p id="mins"></p>:<p id="secs"></p>
+                    </div>
+                </b>
+            </h1>
+            <br>
+            @for($index = 0; $index < count($exercises); $index++)
+                <h2><b>Exercițiul {{ $index + 1 }} ({{$exercises[$index]['points']}} puncte)</b></h2>
+                @foreach($exercises[$index]["content"] as $field)
+                    @if(str_starts_with($field, 'text'))
+                        @include('examTemplates.text', ['text' => $exercises[$index]['text'][intval($field[4])]])
+                    @else
+                        @switch($field)
+                            @case("list")
+                            @include('examTemplates.list', ['list' => $exercises[$index]['list']])
                             @break
-                        @case("options")
-                            @include('examTemplates.options', ['options' => $exercises[$index]['exercise']['options'],
+                            @case("options")
+                            @include('examTemplates.options', ['options' => $exercises[$index]['options'],
                                                                     'number' => $index])
                             @break
-                        @case("optionsAndTable")
-                            @include('examTemplates.optionsAndTable', ['options' => $exercises[$index]['exercise']['options'],
-                                                                            'table' => $exercises[$index]['exercise']['table'],
+                            @case("optionsAndTable")
+                            @include('examTemplates.optionsAndTable', ['options' => $exercises[$index]['options'],
+                                                                            'table' => $exercises[$index]['table'],
                                                                             'number' => $index])
                             @break
-                        @case("table")
-                            @include('examTemplates.table', ['table' => $exercises[$index]['exercise']['table']])
-                    @endswitch
-                @endif
-            @endforeach
-            <br>
-        @endfor
-        <div class="r_relationship">
-            <button id="submitExam" type="button" class="btn btn-primary r_relationship" onclick="checkTest('{{ $info->number_of_exercises }}', '{{ json_encode($optionsNumber) }}', '{{ $examId }}', 0)">
-                Trimite răspunsurile
-            </button>
-            <button id="submitExamForced" type="button" onclick="checkTest('{{ $info->number_of_exercises }}', '{{ json_encode($optionsNumber) }}', '{{ $examId }}', 1)" hidden>
-            </button>
+                            @case("table")
+                            @include('examTemplates.table', ['table' => $exercises[$index]['table']])
+                        @endswitch
+                    @endif
+                @endforeach
+                <br>
+            @endfor
+            <div class="r_relationship">
+                <button id="submitExam" type="button" class="btn btn-primary r_relationship" onclick="checkTest('{{ $info->number_of_exercises }}', '{{ json_encode($optionsNumber) }}', '{{ $examId }}', 0)">
+                    Trimite răspunsurile
+                </button>
+                <button id="submitExamForced" type="button" onclick="checkTest('{{ $info->number_of_exercises }}', '{{ json_encode($optionsNumber) }}', '{{ $examId }}', 1)" hidden>
+                </button>
+            </div>
         </div>
-    </div>
 
         <div class="modal fade" id="fraudTheExam" tabindex="-1" role="dialog" aria-labelledby="fraudTheExamCenterTitle" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered" role="document">

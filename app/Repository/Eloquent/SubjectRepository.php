@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\DB;
 class SubjectRepository implements ISubjectRepository
 {
 
-    public function createSubject($subject)
+    public function createDBSubject($subject)
     {
         $newSubject = new Subject;
         $newSubject->user_id = $subject['user_id'];
@@ -26,7 +26,8 @@ class SubjectRepository implements ISubjectRepository
             ->select('exercises', 'total_points')
             ->where('user_id', $userId)
             ->where('exam_id', $examId)
-            ->get();
+            ->get()
+            ->first();
     }
 
     public function updateSubject($examId, $userId, $subjectWithAnswers, $forcedSubmit, $submitDate, $timePromoted)

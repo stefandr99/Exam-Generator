@@ -22,26 +22,40 @@ class SubjectController extends Controller
         $this->examBusiness = new ExamBusiness($examRepository);
     }
 
-
-    public function generate($id) {
+    public function generateAny($id) {
         $examInfo = $this->examBusiness->getExamInfo($id);
-        $penalization = json_decode($examInfo[0]->penalization, true);
+        $penalization = json_decode($examInfo->penalization, true);
 
         $userId = Auth::id();
 
-        if($this->examBusiness->checkStealExamStart($examInfo[0]))
+        if($this->examBusiness->checkStealExamStart($examInfo))
             return redirect()->route('steal_start_exam', array('examId' => $id, 'userId' => $userId));
 
-        $exercises = $this->subjectBusiness->generate($id, $examInfo);
+
+    }
+
+
+    public function generateDB($id) {
+        $examInfo = $this->examBusiness->getExamInfo($id);
+        $penalization = json_decode($examInfo->penalization, true);
+
+        $userId = Auth::id();
+
+        if($this->examBusiness->checkStealExamStart($examInfo))
+            return redirect()->route('steal_start_exam', array('examId' => $id, 'userId' => $userId));
+
+        $exercises = $this->subjectBusiness->generateDB($id, $examInfo);
+        //$exercises[0] = json_decode($exercises[0], true);
         $optionsNumber = array();
+        //print_r($exercises);
         for($index = 0; $index < count($exercises[0]); $index++) {
-            $optionsNumber[$index] = $exercises[0][$index]['exercise']['options']['counter'];
+            $optionsNumber[$index] = $exercises[0][$index]['options']['counter'];
         }
 
-        $examTime = $this->examBusiness->getExamTime($examInfo[0]);
+        $examTime = $this->examBusiness->getExamTime($examInfo);
         session(['userPenalty' => 0]);
 
-        return view('exam/exam', ['exercises' => $exercises[0], 'info' => $examInfo[0],
+        return view('exam/exam', ['exercises' => $exercises[0], 'info' => $examInfo,
             'optionsNumber' => $optionsNumber, 'examId' => $id,
             'examTime' => $examTime, 'penalization' => $penalization]);
     }
