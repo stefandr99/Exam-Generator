@@ -45,11 +45,11 @@ class SubjectController extends Controller
             return redirect()->route('steal_start_exam', array('examId' => $id, 'userId' => $userId));
 
         $exercises = $this->subjectBusiness->generateDB($id, $examInfo);
-        //$exercises[0] = json_decode($exercises[0], true);
+
         $optionsNumber = array();
-        //print_r($exercises);
-        for($index = 0; $index < count($exercises[0]); $index++) {
-            $optionsNumber[$index] = $exercises[0][$index]['options']['counter'];
+
+        for($index = 0; $index < $exercises[0]['counter']; $index++) {
+            $optionsNumber[$index] = $exercises[0]['exercises'][$index]['options']['counter'];
         }
 
         $examTime = $this->examBusiness->getExamTime($examInfo);

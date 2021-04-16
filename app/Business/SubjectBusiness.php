@@ -91,8 +91,8 @@ class SubjectBusiness
                 $exercises = $this->generateDBSubject($examInfo);
                 break;
             default:
-                //$exercises = $this->generateAny($examInfo);
-                $exercises = $this->generateDBSubject($examInfo);
+                $exercises = $this->generateAny($examInfo);
+                //$exercises = $this->generateDBSubject($examInfo);
                 break;
         }
 
@@ -111,35 +111,39 @@ class SubjectBusiness
     }
 
     public function generateAny($examInfo) {
-        return $this->generateAnyExam($examInfo->exercises);
+        $examExercises = $this->generateAnyExam($examInfo->exercises);
+        $examExercises = json_decode($examExercises, true);
+        return $examExercises;
     }
 
     private function generateDBSubject($examInfo)
     {
         $exercises = array();
+        $exercises['counter'] = $examInfo->number_of_exercises;
+        $exercises['exercises'] = array();
 
         for($ex = 0; $ex < $examInfo->number_of_exercises; $ex++) {
-            $exercises[$ex] = array();
+            $exercises['exercises'][$ex] = array();
             switch ($examInfo->exercises[$ex][0]) {
                 case 'type-1':
                     $exercise = $this->generateDBType1();
-                    $exercises[$ex] = json_decode($exercise, true);
-                    $exercises[$ex]['points'] = $examInfo->exercises[$ex][1];
+                    $exercises['exercises'][$ex] = json_decode($exercise, true);
+                    $exercises['exercises'][$ex]['points'] = $examInfo->exercises[$ex][1];
                     break;
                 case 'type-2':
                     $exercise = $this->generateDBType2();
-                    $exercises[$ex] = json_decode($exercise, true);
-                    $exercises[$ex]['points'] = $examInfo->exercises[$ex][1];
+                    $exercises['exercises'][$ex] = json_decode($exercise, true);
+                    $exercises['exercises'][$ex]['points'] = $examInfo->exercises[$ex][1];
                     break;
                 case 'type-3':
                     $exercise = $this->generateDBType3();
-                    $exercises[$ex] = json_decode($exercise, true);
-                    $exercises[$ex]['points'] = $examInfo->exercises[$ex][1];
+                    $exercises['exercises'][$ex] = json_decode($exercise, true);
+                    $exercises['exercises'][$ex]['points'] = $examInfo->exercises[$ex][1];
                     break;
                 case 'type-4':
                     $exercise = $this->generateDBType4();
-                    $exercises[$ex] = json_decode($exercise, true);
-                    $exercises[$ex]['points'] = $examInfo->exercises[$ex][1];
+                    $exercises['exercises'][$ex] = json_decode($exercise, true);
+                    $exercises['exercises'][$ex]['points'] = $examInfo->exercises[$ex][1];
                     break;
             }
 
