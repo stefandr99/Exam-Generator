@@ -43,12 +43,12 @@ class ExamController extends Controller
     }
 
     public function prepareDB() {
-        $courses = $this->courseBusiness->getAll();
+        $dbCourse = $this->courseBusiness->getDatabasesId();
         $tomorrow = new DateTime("now", new DateTimeZone('Europe/Tiraspol'));
         $tomorrow->modify('+1 day');
         $tomorrow = $tomorrow->format('Y-m-d');
-        return view('exam/prepare', [
-            'courses' => $courses,
+        return view('exam/prepareDB', [
+            'dbCourse' => $dbCourse,
             'tomorrow' => $tomorrow
         ]);
     }
@@ -58,10 +58,34 @@ class ExamController extends Controller
         $tomorrow = new DateTime("now", new DateTimeZone('Europe/Tiraspol'));
         $tomorrow->modify('+1 day');
         $tomorrow = $tomorrow->format('Y-m-d');
-        return view('exam/prepareAnyExam', [
+        return view('exam/prepareAny', [
             'courses' => $courses,
             'tomorrow' => $tomorrow
         ]);
+    }
+
+    protected function DBExamValidator(array $data)
+    {
+        return Validator::make($data, [
+            'exam_type' => ['required'],
+            'exam_date' => ['date', 'after:today'],
+            'exam_hours' => ['required', 'integer', 'between:0,48'],
+            'exam_minutes' => ['required', 'integer', 'between:0,59'],
+            'exam_exercise_0' => ['required'],
+            'exercise_0_points' => ['required', 'integer'],
+            'exam_minimum' => ['required', 'integer']
+        ]);
+    }
+
+    public function scheduleDBExam(Request $request)
+    {
+        //$this->DBExamValidator($request->all())->validate();
+        $data = $request->all();
+
+        print_r($data);
+        $this->examBusiness->scheduleDB($data);
+
+        return redirect()->route('show_exams');
     }
 
     protected function anyExamValidator(array $data)
@@ -92,6 +116,7 @@ class ExamController extends Controller
         return redirect()->route('show_exams');
     }
 
+    /*
     public function scheduleExam(Request $request)
     {
         if ($request->ajax()) {
@@ -105,7 +130,7 @@ class ExamController extends Controller
 
             $this->examBusiness->scheduleDB($examInfo, $examExercises, $examPenalization);
         }
-    }
+    }*/
 
     public function showExams() {
         $userId = Auth::id();

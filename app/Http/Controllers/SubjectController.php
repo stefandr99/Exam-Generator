@@ -22,20 +22,7 @@ class SubjectController extends Controller
         $this->examBusiness = new ExamBusiness($examRepository);
     }
 
-    public function generateAny($id) {
-        $examInfo = $this->examBusiness->getExamInfo($id);
-        $penalization = json_decode($examInfo->penalization, true);
-
-        $userId = Auth::id();
-
-        if($this->examBusiness->checkStealExamStart($examInfo))
-            return redirect()->route('steal_start_exam', array('examId' => $id, 'userId' => $userId));
-
-
-    }
-
-
-    public function generateDB($id) {
+    public function generate($id) {
         $examInfo = $this->examBusiness->getExamInfo($id);
         $penalization = json_decode($examInfo->penalization, true);
 

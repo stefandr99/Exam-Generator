@@ -8,45 +8,58 @@
     <div class="container my-4">
         <h1 class="text-center"><b>Pregătiți examenul la Baze de date</b></h1>
         <br>
-        <form class="form-group">
+        <form class="form-group" action="{{route('schedule_DB_exam')}}" method="POST">
             @csrf
 
             <div class="d-flex">
-                <div class="p-2">
-                <label for="exam-subject" class="large-text-font"><b>Materia:</b>
-                    <select id="exam-subject" class="form-control">
-                        <option value="no-subject" selected disabled>--</option>
-                        @foreach($courses as $course)
-                            <option value="{{ $course->id }}">{{ $course->name }}</option>
-                        @endforeach
-                    </select>
-                </label>
-                </div>
+
+                <input name="exam_course" value="{{$dbCourse->id}}" hidden>
 
                 <div class="p-2">
                 <label for="exam-type" class="large-text-font"><b>Tipul examenului:</b>
-                    <select id="exam-type" class="form-control">
-                        <option value="no-type" selected disabled>--</option>
+                    <select id="exam-type" name="exam_type" class="form-control">
                         <option value="Parțial">Parțial</option>
-                        <option value="Examen">Examen</option>
+                        <option selected value="Examen">Examen</option>
                         <option value="Restanță">Restanță</option>
                     </select>
                 </label>
                 </div>
 
                 <div class="ml-auto p-2">
-                <label for="exam-date" class="large-text-font">
-                    <b>Data și ora examenului:</b>
-                    <input id="exam-date" class="form-control" type="datetime-local" value="{{$tomorrow . "T08:00:00"}}">
-                </label>
+                    <div class="position-relative">
+                        <label for="exam-date" class="large-text-font">
+                            <b>Data și ora examenului:</b>
+                            <input id="exam-date" name="exam_date" class="form-control @error('exam_date') is-invalid @enderror" type="datetime-local" value="{{$tomorrow . "T08:00:00"}}">
+
+                            @error('exam_date')
+                            <span class="invalid-tooltip">
+                                        {{ $message }}
+                                    </span>
+                            @enderror
+                        </label>
+                    </div>
                 </div>
 
                 <div class="p-2">
                 <label for="exam-duration" class="large-text-font"><b>Durata examenului:</b>
                     <div class="min-and-hour-exam-parent">
-                        <input id="exam-duration-hours" type="text" class="form-control hour-exam-column" size="5" placeholder="Ore">
+                        <div class="position-relative">
+                            <input id="exam-duration-hours" name="exam_hours" type="text" class="form-control hour-exam-column" size="5" placeholder="Ore">
+                            @error('exam_hours')
+                            <div class="invalid-tooltip">
+                                {{ $message }}
+                            </div>
+                            @enderror
+                        </div>
 
-                        <input id="exam-duration-minutes" type="text" class="form-control min-exam-column" size="5" placeholder="Minute">
+                        <div class="position-relative">
+                            <input id="exam-duration-minutes" name="exam_minutes" type="text" class="form-control min-exam-column" size="5" placeholder="Minute">
+                            @error('exam_minutes')
+                            <div class="invalid-tooltip" style="margin-left: 15px;">
+                                {{ $message }}
+                            </div>
+                            @enderror
+                        </div>
                     </div>
                 </label>
                 </div>
@@ -61,27 +74,35 @@
                     Exercițiul 1.
                     <br>
                     <div class="second-margin-left-exam-exercises">
-                        <label for="exam-exercise-0" class="large-text-font">Tipul exercițiului:
-                            <select id="exam-exercise-0" class="form-control">
-                                <option value="no-exercise" selected disabled>--</option>
-                                <option value="type-1">
-                                    Determinarea dependețelor în funcție de o relație "r" dată tabelar
-                                </option>
-                                <option value="type-2">
-                                    Determinarea dependețelor în funcție de o relație "Catalog(elev, notă, materie, datăNotare, profesor)" ce impune anumite restricții
-                                </option>
-                                <option value="type-3">
-                                    Determinarea X+ în funcție de o schemă de relație "R" și o mulțime &Sigma; de dependențe funcționale
-                                </option>
-                                <option value="type-4">
-                                    Determinarea cheilor candidat pentru o schemă de relație "R" și mulțimile de dependență &Sigma; și &Delta;
-                                </option>
-                            </select>
-                        </label>
-                        <br>
-                        <label for="exercise-0-points" class="large-text-font">Puncte:
-                            <input id="exercise-0-points" type="text" class="form-control" placeholder="Puncte">
-                        </label>
+                        <div class="position-relative">
+                            <label for="exam-exercise-0" class="large-text-font">Tipul exercițiului:
+                                <select id="exam-exercise-0" name="exam_exercise_0"  class="form-control">
+                                    <option value="" selected disabled>--</option>
+                                    <option value="type-1">
+                                        Determinarea dependețelor în funcție de o relație "r" dată tabelar
+                                    </option>
+                                    <option value="type-2">
+                                        Determinarea dependețelor în funcție de o relație "Catalog(elev, notă, materie, datăNotare, profesor)" ce impune anumite restricții
+                                    </option>
+                                    <option value="type-3">
+                                        Determinarea X+ în funcție de o schemă de relație "R" și o mulțime &Sigma; de dependențe funcționale
+                                    </option>
+                                    <option value="type-4">
+                                        Determinarea cheilor candidat pentru o schemă de relație "R" și mulțimile de dependență &Sigma; și &Delta;
+                                    </option>
+                                </select>
+                            </label>
+                        </div>
+                        <div class="position-relative">
+                            <label for="exercise-0-points" class="large-text-font">Puncte:
+                                <input id="exercise-0-points" name="points_exercise_0" type="text" class="form-control" placeholder="Puncte">
+                                @error('exercise_0_points')
+                                <div class="invalid-tooltip invalid-tooltip-upper">
+                                    {{ $message }}
+                                </div>
+                                @enderror
+                            </label>
+                        </div>
                     </div>
 
                     <div class="extra-exercises">
@@ -91,8 +112,8 @@
                                 <br>
                                 <div class="second-margin-left-exam-exercises">
                                     <label for="exam-exercise-{{$ex}}" class="large-text-font">Tipul exercitiului:
-                                        <select id="exam-exercise-{{$ex}}" class="form-control">
-                                            <option value="no-exercise" selected disabled>--</option>
+                                        <select id="exam-exercise-{{$ex}}" name="exam_exercise_{{$ex}}" class="form-control">
+                                            <option value="" selected disabled>--</option>
                                             <option value="type-1">
                                                 Determinarea dependețelor în funcție de o relație "r" dată tabelar
                                             </option>
@@ -109,7 +130,7 @@
                                     </label>
                                     <br>
                                     <label for="exercise-{{$ex}}-points" class="large-text-font">Puncte:
-                                        <input id="exercise-{{$ex}}-points" type="text" class="form-control" placeholder="Puncte">
+                                        <input id="exercise-{{$ex}}-points" name="points_exercise_{{$ex}}" type="text" class="form-control" placeholder="Puncte">
                                     </label>
                                 </div>
                             </div>
@@ -123,10 +144,17 @@
                 </div>
             </div>
             <br>
-            <label for="exam-minimum" class="large-text-font"><b>Punctajul minim:</b>
-                <input id="exam-minimum" type="text" class="form-control" placeholder="Punctaj minim">
-            </label>
-            <br>
+
+            <div class="position-relative">
+                <label for="exam-minimum" class="large-text-font"><b>Punctajul minim:</b>
+                    <input id="exam-minimum" name="exam_minimum" type="text" class="form-control" placeholder="Punctaj minim">
+                    @error('exam_minimum')
+                    <div class="invalid-tooltip invalid-tooltip-upper">
+                        {{ $message }}
+                    </div>
+                    @enderror
+                </label>
+            </div>
             <br>
             <p class="large-text-font"><b>Penalizare:</b>
                 <br>
@@ -248,7 +276,7 @@
             <br>
 
             <div class="r_relationship">
-                <button type="button" class="btn btn-success btn-lg btn-block" onclick="scheduleExam()">Programați examenul</button>
+                <button type="submit" class="btn btn-success btn-lg btn-block">Programați examenul</button>
             </div>
         </form>
 

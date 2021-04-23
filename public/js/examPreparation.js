@@ -5,6 +5,9 @@ function addDBExercise() {
     let exerciseId = "exercise-" + exerciseNumber;
     let ex = document.getElementById(exerciseId);
     ex.removeAttribute("hidden");
+
+    nrOfExercisesId = "number_of_exercises";
+    document.getElementById(nrOfExercisesId).value = exerciseNumber;
 }
 
 function removeDBExercise() {
@@ -16,12 +19,17 @@ function removeDBExercise() {
 
         let exerciseTextId = "exam-exercise-" + exerciseNumber;
         document.getElementById(exerciseTextId).value = '';
+
         let exercisePointsId = "exercise-" + exerciseNumber + "-points";
-        let exercisePoints = document.getElementById(exercisePointsId);
-        exerciseType.value = 'no-exercise';
-        exercisePoints.value = '';
+        document.getElementById(exercisePointsId).value = '';
+
+        let exerciseTypeId = "exam-exercise-" + exerciseNumber;
+        document.getElementById(exerciseTypeId).value = 'no-exercise';
 
         exerciseNumber--;
+
+        nrOfExercisesId = "number_of_exercises";
+        document.getElementById(nrOfExercisesId).value = numberOfExamExercises;
     }
 }
 

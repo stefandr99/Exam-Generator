@@ -36,7 +36,7 @@ Route::get('/users', 'UserController@showAll')->name('users');
 
 Route::get('/exam/prepare/database', 'ExamController@prepareDB')->name('prepare_DB_exam');
 Route::get('/exam/prepare', 'ExamController@prepareAny')->name('prepare_any_exam');
-Route::post('/exam/schedule', 'ExamController@scheduleExam')->name('schedule_exam');
+Route::post('/exam/schedule', 'ExamController@scheduleDBExam')->name('schedule_DB_exam');
 Route::post('/exam/scheduleAny', 'ExamController@scheduleAnyExam')->name('schedule_any_exam');
 Route::get('/exam/fraud/steal_the_start/exam={examId}&user={userId}', 'ExamController@stealStart')->name('steal_start_exam');
 Route::get('/exam/{examId}/result/{userId}', 'ExamController@showResult')->name('show_partial_result');
@@ -50,8 +50,7 @@ Route::put('/exam/promote_student/exam={examId}&user={userId}', 'ExamController@
 Route::put('/exam/no_promote_student/exam={examId}&user={userId}', 'ExamController@undoPromoteStudent')->name('undo_promote_student');
 Route::get('/exam/statistics/search', 'ExamController@searchSubject')->name('search_user_from_exam_stats');
 
-Route::get('/exam/{id}', 'SubjectController@generateDB')->name('generate_exam');
-//Route::get('/exam/{id}', 'SubjectController@generate')->name('generate_exam');
+Route::get('/exam/{id}', 'SubjectController@generate')->name('generate_exam');
 Route::post('/exam/increase_penalty', 'SubjectController@increasePenalty')->name('increase_penalty');
 Route::post('/exam/correct', 'SubjectController@correctExam')->name('correct_exam');
 

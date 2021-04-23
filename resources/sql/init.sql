@@ -1,5 +1,5 @@
 insert into `users` (name, email, password, role) values ('Administrator', 'administrator@gmail.com', '00000000', 1);
-insert into `users` (name, email, password, role) values ('Dragoi Stefan', 'stefan.dragoi@info.uaic.ro', '00000000', 2);
+insert into `users` (name, email, password, role) values ('Dragoi Stefan', 'stefandragoi99@gmail.com', '00000000', 2);
 insert into `users` (name, email, password, role) values ('Cosmin Varlan', 'cosmin.varlan@gmail.com', '00000000', 2);
 insert into `users` (name, email, password, role) values ('Ciobaca Stefan', 'ciobaca.stefan@gmail.com', '00000000', 2);
 insert into `users` (name, email, password, role) values ('Vitcu Anca', 'vitcu.anca@gmail.com', '00000000', 2);

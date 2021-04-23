@@ -13,23 +13,7 @@ use Illuminate\Support\Facades\DB;
 class ExamRepository implements IExamRepository
 {
 
-    public function createDB($exam) {
-        $newExam = new Exam;
-        $newExam->course_id = $exam['id'];
-        $newExam->type = $exam['type'];
-        $newExam->starts_at = $exam['starts_at'];
-        $newExam->ends_at = $exam['ends_at'];
-        $newExam->hours = $exam['hours'];
-        $newExam->minutes = $exam['minutes'];
-        $newExam->number_of_exercises = $exam['number_of_exercises'];
-        $newExam->exercises = $exam['exercises'];
-        $newExam->total_points = $exam['total_points'];
-        $newExam->minimum_points = $exam['minimum_points'];
-        $newExam->penalization = $exam['penalization'];
-        $newExam->save();
-    }
-
-    public function createAny($exam) {
+    public function create($exam) {
         $newExam = new Exam;
         $newExam->course_id = $exam['courseId'];
         $newExam->type = $exam['type'];

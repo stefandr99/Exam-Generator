@@ -28,8 +28,9 @@
                     <div class="position-relative">
                     <label for="exam-type" class="large-text-font"><b>Tipul examenului:</b>
                         <select id="exam-type" name="exam_type" class="form-control">
+                            <option selected value="">--</option>
                             <option value="Parțial">Parțial</option>
-                            <option selected value="Examen">Examen</option>
+                            <option value="Examen">Examen</option>
                             <option value="Restanță">Restanță</option>
                         </select>
                     </label>
@@ -38,16 +39,16 @@
 
                 <div class="ml-auto p-2">
                     <div class="position-relative">
-                    <label for="exam-date" class="large-text-font">
-                        <b>Data și ora examenului:</b>
-                        <input id="exam-date" name="exam_date" class="form-control @error('exam_date') is-invalid @enderror" type="datetime-local" value="{{$tomorrow . "T08:00:00"}}">
+                        <label for="exam-date" class="large-text-font">
+                            <b>Data și ora examenului:</b>
+                            <input id="exam-date" name="exam_date" class="form-control @error('exam_date') is-invalid @enderror" type="datetime-local" value="{{$tomorrow . "T08:00:00"}}">
 
-                        @error('exam_date')
-                            <span class="invalid-tooltip">
-                                {{ $message }}
-                            </span>
-                        @enderror
-                    </label>
+                            @error('exam_date')
+                                <span class="invalid-tooltip">
+                                    {{ $message }}
+                                </span>
+                            @enderror
+                        </label>
                     </div>
                 </div>
 
@@ -137,7 +138,6 @@
                                     </div>
                                 @endfor
 
-
                                 <button type="button" class="btn btn-outline-info btn-sm" onclick="addExerciseOption(0)">Adăugați încă o varianta</button>
                                 <button type="button" class="btn btn-outline-danger btn-sm" onclick="removeExerciseOption(0)">Stergeți ultima varianta</button>
                                 <br>
@@ -188,7 +188,7 @@
 
                         <div class="position-relative">
                             <label for="points-exercise-0" class="large-text-font">Puncte:
-                                <input id="points-exercise-0" name="points_ex_0" type="text" class="form-control @error('points_ex_0') is-invalid @enderror" placeholder="Puncte">
+                                <input id="points-exercise-0" name="points_exercise_0" type="text" class="form-control @error('points_ex_0') is-invalid @enderror" placeholder="Puncte">
                                 @error('points_ex_0')
                                     <div class="invalid-tooltip invalid-tooltip-upper">
                                         {{ $message }}
@@ -268,7 +268,7 @@
                                 <!-- </OPTIONS> -->
 
                                 <label for="points-exercise-{{$ex}}" class="large-text-font">Puncte:
-                                    <input id="points-exercise-{{$ex}}" name="points_ex_{{$ex}}" type="text" class="form-control" placeholder="Puncte">
+                                    <input id="points-exercise-{{$ex}}" name="points_exercise_{{$ex}}" type="text" class="form-control" placeholder="Puncte">
                                 </label>
                             </div>
                         </div>
@@ -294,6 +294,7 @@
                 </label>
             </div>
 
+            <br>
             <p class="large-text-font"><b>Penalizare:</b>
                 <br>
                 <small>

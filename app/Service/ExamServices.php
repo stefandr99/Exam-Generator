@@ -6,6 +6,25 @@ namespace App\Service;
 
 class ExamServices
 {
+    public function createDBExercisesJSON($exam) {
+        $numberOfExercises = $exam['number_of_exercises'] + 1;
+        $totalPoints = 0;
+        $exercises = array();
+
+        for($exCounter = 0; $exCounter < $numberOfExercises; $exCounter++) {
+            $exercises[$exCounter] = array();
+
+            $fieldName = 'exam_exercise_' . $exCounter;
+            $exercises[$exCounter][0] = $exam[$fieldName];
+
+            $fieldName = 'points_exercise_' . $exCounter;
+            $exercises[$exCounter][1] = $exam[$fieldName];
+            $totalPoints += $exam[$fieldName];
+        }
+
+        return array($exercises, $totalPoints);
+    }
+
     public function createExercisesJSON($exam) {
         $numberOfExercises = $exam['number_of_exercises'] + 1;
         $totalPoints = 0;
@@ -19,7 +38,7 @@ class ExamServices
             $fieldName = 'text_exercise_' . $exCounter;
             $exercises['exercises'][$exCounter]['text'] = $exam[$fieldName];
 
-            $fieldName = 'points_ex_' . $exCounter;
+            $fieldName = 'points_exercise_' . $exCounter;
             $exercises['exercises'][$exCounter]['points'] = $exam[$fieldName];
             $totalPoints += $exam[$fieldName];
 

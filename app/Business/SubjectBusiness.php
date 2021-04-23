@@ -165,7 +165,7 @@ class SubjectBusiness
             $correctedExam[$currentExercise] = [];
             for ($i = 0; $i < $optionsNumber[$currentExercise]; $i++) {
                 $correctedExam[$currentExercise][$i] = ($studentAnswers[$currentExercise][$i]
-                    === $exercises[$currentExercise]['options']['solution'][$i]['answer']);
+                    === $exercises['exercises'][$currentExercise]['options']['solution'][$i]['answer']);
             }
         }
 
@@ -211,7 +211,7 @@ class SubjectBusiness
         foreach ($exercisesResult as $exercise) {
             $trues = count(array_filter($exercise));
             $falses = count($exercise) - $trues;
-            $currExercisePoints = $subjectExercises[$currExercise]['points'];
+            $currExercisePoints = $subjectExercises['exercises'][$currExercise]['points'];
             $points += ($currExercisePoints - $falses > 0) ? ($currExercisePoints - $falses) : 0;
         }
         return $points;
