@@ -130,9 +130,57 @@ return [
     */
 
     'custom' => [
-        'attribute-name' => [
-            'rule-name' => 'custom-message',
+        'exam_type' => [
+            'required' => 'Selectati tipul examenului.'
         ],
+        'exam_course' => [
+            'required'=> 'Introduceti cursul examenului.'
+        ],
+        'exam_date' => [
+            'date' => 'Introduceti o data valida.',
+            'after:today' => 'Data examenului trebuie sa fie dupa ziua de astazi.'
+        ],
+        'exam_hours' => [
+            'required' => 'Introduceti durata in ore a examenului.',
+            'integer' => 'Orele trebuie sa fie un numar intreg.',
+            'between.numeric' => 'Numarul orelor trebuie sa fie intre :min si :max'
+        ],
+        'exam_minutes' => [
+            'required' => 'Introduceti durata in minute a examenului.',
+            'integer' => 'Minutele trebuie sa fie un numar intreg.',
+            'between.numeric' => 'Numarul minutelor trebuie sa fie intre :min si :max'
+        ],
+        'exam_exercise_0' => [
+            'required' => 'Selectati tipul exercitiului.'
+        ],
+        'text_exercise_0' => [
+            'required' => 'Introduceti enuntul exercitiului.',
+            'string' => 'Enuntul exercitiului trebuie sa fie un text valid.'
+        ],
+        'exercise_0_option_0' => [
+            'required' => 'Introduceti enuntul variantei de raspuns.',
+            'string' => 'Textul variantei de raspuns trebuie sa fie valid.'
+        ],
+        'number_of_generated_options_0' => [
+            'required' => 'Introduceti numarul de variante de raspuns generate.',
+            'integer' => 'Numarul variantelor de raspuns generate trebuie sa fie intreg.'
+        ],
+        'correct_options_ex_0' => [
+            'required' => 'Introduceti numarul de variante de raspuns corecte generate.',
+            'integer' => 'Numarul variantelor de raspuns corecte generate trebuie sa fie intreg.'
+        ],
+        'wrong_options_ex_0' => [
+            'required' => 'Introduceti numarul de variante de raspuns gresite generate.',
+            'integer' => 'Numarul variantelor de raspuns gresite generate trebuie sa fie intreg.'
+        ],
+        'points_exercise_0' => [
+            'required' => 'Introduceti numarul de puncte pentru acest exercitiu.',
+            'integer' => 'Punctele trebuie sa fie un numar intreg.',
+        ],
+        'exam_minimum' => [
+            'required' => 'Introduceti minimul de puncte al examenului.',
+            'integer' => 'Minimul de puncte trebuie sa fie un numar intreg.',
+        ]
     ],
 
     /*

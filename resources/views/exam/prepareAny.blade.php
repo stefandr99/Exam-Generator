@@ -14,26 +14,37 @@
             <div class="d-flex">
                 <div class="p-2">
                     <div class="position-relative">
-                    <label for="exam-subject" class="large-text-font"><b>Materia:</b>
-                        <select id="exam-subject" name="exam_course" class="form-control">
-                            @foreach($courses as $course)
-                                <option value="{{ $course->id }}">{{ $course->name }}</option>
-                            @endforeach
-                        </select>
-                    </label>
+                        <label for="exam-subject" class="large-text-font"><b>Materia:</b>
+                            <select id="exam-subject" name="exam_course" class="form-control custom-select @error('exam_type') is-invalid @enderror">
+                                <option  disabled selected value="">--</option>
+                                @foreach($courses as $course)
+                                    <option value="{{ $course->id }}">{{ $course->name }}</option>
+                                @endforeach
+                            </select>
+
+                            @error('exam_course')
+                                <span class="invalid-tooltip invalid-tooltip-upper">
+                                    {{ $message }}
+                                </span>
+                            @enderror
+                        </label>
                     </div>
                 </div>
 
                 <div class="p-2">
                     <div class="position-relative">
-                    <label for="exam-type" class="large-text-font"><b>Tipul examenului:</b>
-                        <select id="exam-type" name="exam_type" class="form-control">
+                        <label for="exam-type" class="large-text-font"><b>Tipul examenului:</b></label><br>
+                        <select id="exam-type" name="exam_type" class="form-control custom-select @error('exam_type') is-invalid @enderror" style="width: 150px; margin-top: -8px">
                             <option selected value="">--</option>
                             <option value="Parțial">Parțial</option>
                             <option value="Examen">Examen</option>
                             <option value="Restanță">Restanță</option>
                         </select>
-                    </label>
+                        @error('exam_type')
+                        <span class="invalid-tooltip">
+                                    {{ $message }}
+                                </span>
+                        @enderror
                     </div>
                 </div>
 
@@ -142,15 +153,10 @@
                                 <button type="button" class="btn btn-outline-danger btn-sm" onclick="removeExerciseOption(0)">Stergeți ultima varianta</button>
                                 <br>
                                 <div class="position-relative">
-                                <small>Numarul de variante de raspuns generate:</small>
+                                    <small>Numarul de variante de raspuns generate:</small>
 
                                     <label>
                                         <input id="number-of-options-exercise-0" name="number_of_generated_options_0" type="text" class="form-control nr-of-ops-per-ex @error('number_of_generated_options_0') is-invalid @enderror" size="1" placeholder="Nr" onchange="$('#collapseExerciseCorrectness_0').collapse();">
-                                        @error('number_of_generated_options_0')
-                                            <div class="invalid-tooltip">
-                                                {{ $message }}
-                                            </div>
-                                        @enderror
                                     </label>
                                 </div>
                                 <div class="collapse" id="collapseExerciseCorrectness_0">
@@ -161,20 +167,10 @@
                                                     <label for="correct-options-ex-0">
                                                         Corecte: &nbsp;
                                                         <input id="correct-options-ex-0" name="correct_options_ex_0" type="text" class="form-control col correct-wrong-options @error('correct_options_ex_0') is-invalid @enderror" value="0">
-                                                        @error('correct_options_ex_0')
-                                                            <div class="invalid-tooltip">
-                                                                {{ $message }}
-                                                            </div>
-                                                        @enderror
                                                     </label>
                                                     <label for="wrong-options-ex-0">
                                                         Gresite:&nbsp;
                                                         <input id="wrong-options-ex-0" name="wrong_options_ex_0" type="text" class="form-control col correct-wrong-options @error('wrong_options_ex_0') is-invalid @enderror" value="0">
-                                                        @error('wrong_options_ex_0')
-                                                            <div class="invalid-tooltip">
-                                                                {{ $message }}
-                                                            </div>
-                                                        @enderror
                                                     </label>
                                                 </div>
                                             </small>
@@ -188,8 +184,8 @@
 
                         <div class="position-relative">
                             <label for="points-exercise-0" class="large-text-font">Puncte:
-                                <input id="points-exercise-0" name="points_exercise_0" type="text" class="form-control @error('points_ex_0') is-invalid @enderror" placeholder="Puncte">
-                                @error('points_ex_0')
+                                <input id="points-exercise-0" name="points_exercise_0" type="text" class="form-control @error('points_exercise_0') is-invalid @enderror" placeholder="Puncte">
+                                @error('points_exercise_0')
                                     <div class="invalid-tooltip invalid-tooltip-upper">
                                         {{ $message }}
                                     </div>

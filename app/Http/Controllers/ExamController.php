@@ -72,17 +72,17 @@ class ExamController extends Controller
             'exam_hours' => ['required', 'integer', 'between:0,48'],
             'exam_minutes' => ['required', 'integer', 'between:0,59'],
             'exam_exercise_0' => ['required'],
-            'exercise_0_points' => ['required', 'integer'],
+            'points_exercise_0' => ['required', 'integer'],
             'exam_minimum' => ['required', 'integer']
         ]);
     }
 
     public function scheduleDBExam(Request $request)
     {
-        //$this->DBExamValidator($request->all())->validate();
+        $this->DBExamValidator($request->all())->validate();
         $data = $request->all();
 
-        print_r($data);
+        //print_r($data);
         $this->examBusiness->scheduleDB($data);
 
         return redirect()->route('show_exams');
@@ -98,9 +98,10 @@ class ExamController extends Controller
             'exam_minutes' => ['required', 'integer', 'between:0,59'],
             'text_exercise_0' => ['required', 'string'],
             'exercise_0_option_0' => ['required', 'string'],
+            'number_of_generated_options_0' => ['required', 'integer'],
             'correct_options_ex_0' => ['required', 'integer'],
             'wrong_options_ex_0' => ['required', 'integer'],
-            'points_ex_0' => ['required', 'integer'],
+            'points_exercise_0' => ['required', 'integer'],
             'exam_minimum' => ['required', 'integer']
         ]);
     }
