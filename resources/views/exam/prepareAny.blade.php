@@ -15,10 +15,10 @@
                 <div class="p-2">
                     <div class="position-relative">
                         <label for="exam-subject" class="large-text-font"><b>Materia:</b>
-                            <select id="exam-subject" name="exam_course" class="form-control custom-select @error('exam_type') is-invalid @enderror">
-                                <option  disabled selected value="">--</option>
+                            <select id="exam-subject" name="exam_course" class="form-control custom-select @error('exam_course') is-invalid @enderror">
+                                <option disabled selected value="">--</option>
                                 @foreach($courses as $course)
-                                    <option value="{{ $course->id }}">{{ $course->name }}</option>
+                                    <option value="{{ $course->id }}" {{ (old("exam_course") == $course->id ? "selected":"") }}>{{ $course->name }}</option>
                                 @endforeach
                             </select>
 
@@ -35,15 +35,15 @@
                     <div class="position-relative">
                         <label for="exam-type" class="large-text-font"><b>Tipul examenului:</b></label><br>
                         <select id="exam-type" name="exam_type" class="form-control custom-select @error('exam_type') is-invalid @enderror" style="width: 150px; margin-top: -8px">
-                            <option selected value="">--</option>
-                            <option value="Parțial">Parțial</option>
-                            <option value="Examen">Examen</option>
-                            <option value="Restanță">Restanță</option>
+                            <option selected disabled value="">--</option>
+                            @foreach(array('Parțial', 'Examen', 'Restanță') as $type)
+                                <option value="{{$type}}">{{$type}} {{ (old("exam_type") == $type ? "selected":"") }}</option>
+                            @endforeach
                         </select>
                         @error('exam_type')
                         <span class="invalid-tooltip">
-                                    {{ $message }}
-                                </span>
+                            {{ $message }}
+                        </span>
                         @enderror
                     </div>
                 </div>
@@ -100,6 +100,7 @@
                         <div class="position-relative">
                             <label for="text-exercise-0" class="large-text-font">Enuntul exercitiului:
                                 <textarea id="text-exercise-0" name="text_exercise_0" class="form-control @error('text_exercise_0') is-invalid @enderror" rows="3" cols="100" placeholder="Enunt">
+                                    {{old('text_exercise_0')}}
                                 </textarea>
                                 @error('text_exercise_0')
                                     <div class="invalid-tooltip invalid-tooltip-upper">
@@ -119,7 +120,7 @@
 
                                     1.&nbsp;&nbsp;
                                     <label>
-                                    <input id="exercise-0-option-0" name="exercise_0_option_0" type="text" size="100" class="form-control @error('exercise_0_option_0') is-invalid @enderror" placeholder="Varianta de raspuns">&nbsp;
+                                    <input id="exercise-0-option-0" name="exercise_0_option_0" type="text" size="100" class="form-control @error('exercise_0_option_0') is-invalid @enderror" value="{{old('exercise_0_option_0')}}" placeholder="Varianta de raspuns">&nbsp;
                                     @error('exercise_0_option_0')
                                         <div class="invalid-tooltip invalid-tooltip-upper-and-right">
                                             {{ $message }}

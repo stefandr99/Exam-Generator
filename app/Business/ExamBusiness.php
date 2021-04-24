@@ -7,6 +7,7 @@ use App\Repository\Interfaces\IExamRepository;
 use App\Service\ExamServices;
 use DateInterval;
 use DateTime;
+use DateTimeZone;
 
 class ExamBusiness
 {
@@ -26,15 +27,13 @@ class ExamBusiness
 
     public function checkStealExamStart($examInfo) {
         $examDate = new DateTime($examInfo->starts_at);
-        $presentDate = new DateTime("now");
-        $presentDate->add(new DateInterval('PT3H'));
+        $presentDate = new DateTime("now", new DateTimeZone('Europe/Tiraspol'));
         return $presentDate < $examDate;
     }
 
     public function getExamTime($examInfo) {
         $examDate = new DateTime($examInfo->starts_at);
-        $presentDate = new DateTime("now");
-        $presentDate->add(new DateInterval('PT3H'));
+        $presentDate = new DateTime("now", new DateTimeZone('Europe/Tiraspol'));
 
         $examHours = intval($examDate->format('H')) + $examInfo->hours - intval($presentDate->format('H'));
         $examMinutes = intval($examDate->format('i')) + $examInfo->minutes - intval($presentDate->format('i'));

@@ -8,6 +8,7 @@ use App\Exam;
 use App\Repository\Interfaces\IExamRepository;
 use DateInterval;
 use DateTime;
+use DateTimeZone;
 use Illuminate\Support\Facades\DB;
 
 class ExamRepository implements IExamRepository
@@ -85,9 +86,10 @@ class ExamRepository implements IExamRepository
     }
 
     public function getlast30DaysExamsForTeacher($userId, $semester) {
-        $presentDate = new DateTime("now");
-        $presentDate->add(new DateInterval('PT3H'));
-        $presentDate->sub(new DateInterval('P30D'));
+        $presentDate = new DateTime("now", new DateTimeZone('Europe/Tiraspol'));
+
+        $lastThirtyDaysDate = new DateTime("now", new DateTimeZone('Europe/Tiraspol'));
+        $lastThirtyDaysDate->sub(new DateInterval('P30D'));
 
         return DB::table('users')
             ->join('didactics', 'users.id', '=', 'didactics.teacher_id')
@@ -98,8 +100,9 @@ class ExamRepository implements IExamRepository
                 'exams.total_points', 'exams.minimum_points')
             ->where('users.id', $userId)
             ->where('courses.semester', $semester)
-            ->where('exams.ends_at', '>', $presentDate)
-            ->orderBy('exams.starts_at')
+            ->where('exams.starts_at', '>', $lastThirtyDaysDate)
+            ->where('exams.ends_at', '<', $presentDate)
+            ->orderBy('exams.starts_at', 'desc')
             ->get();
     }
 

@@ -11,18 +11,16 @@
         <form class="form-group" action="{{route('schedule_DB_exam')}}" method="POST">
             @csrf
 
-            <div class="d-flex  justify-content-around">
+            <div class="d-flex  justify-content-between">
 
                 <input name="exam_course" value="{{$dbCourse->id}}" hidden>
-
-
                     <div class="position-relative">
                         <label for="exam-type" class="large-text-font"><b>Tipul examenului:</b></label><br>
-                            <select id="exam-type" name="exam_type" class="form-control custom-select @error('exam_type') is-invalid @enderror" style="width: 150px; margin-top: -10px">
-                                <option  disabled selected value="">--</option>
-                                <option value="Parțial">Parțial</option>
-                                <option value="Examen">Examen</option>
-                                <option value="Restanță">Restanță</option>
+                            <select id="exam-type" name="exam_type" class="form-control custom-select @error('exam_type') is-invalid @enderror" style="width: 150px; margin-top: -8px">
+                                <option disabled selected value="">--</option>
+                                @foreach(array('Parțial', 'Examen', 'Restanță') as $type)
+                                    <option value="{{$type}}">{{$type}} {{ (old("exam_type") == $type ? "selected":"") }}</option>
+                                @endforeach
                             </select>
 
                             @error('exam_type')
@@ -39,6 +37,9 @@
                             <input id="exam-date" name="exam_date" class="form-control @error('exam_date') is-invalid @enderror" type="datetime-local" value="{{$tomorrow . "T08:00:00"}}">
 
                             @error('exam_date')
+                                <script>
+                                    document.getElementById("exam-date").value = {{old('exam_date')}}
+                                </script>
                                 <span class="invalid-tooltip">
                                     {{ $message }}
                                 </span>
@@ -51,7 +52,7 @@
                 <label for="exam-duration" class="large-text-font"><b>Durata examenului:</b>
                     <div class="min-and-hour-exam-parent">
                         <div class="position-relative">
-                            <input id="exam-duration-hours" name="exam_hours" type="text" class="form-control hour-exam-column @error('exam_hours') is-invalid @enderror" size="5" placeholder="Ore">
+                            <input id="exam-duration-hours" name="exam_hours" type="text" class="form-control hour-exam-column @error('exam_hours') is-invalid @enderror" value="{{old('exam_hours')}}" size="5" placeholder="Ore">
                             @error('exam_hours')
                             <div class="invalid-tooltip">
                                 {{ $message }}
@@ -60,7 +61,7 @@
                         </div>
 
                         <div class="position-relative">
-                            <input id="exam-duration-minutes" name="exam_minutes" type="text" class="form-control min-exam-column @error('exam_minutes') is-invalid @enderror" size="5" placeholder="Minute">
+                            <input id="exam-duration-minutes" name="exam_minutes" type="text" class="form-control min-exam-column @error('exam_minutes') is-invalid @enderror" value="{{old('exam_minutes')}}" size="5" placeholder="Minute">
                             @error('exam_minutes')
                             <div class="invalid-tooltip" style="margin-left: 15px;">
                                 {{ $message }}
@@ -84,16 +85,16 @@
                             <label for="exam-exercise-0" class="large-text-font">Tipul exercițiului:
                                 <select id="exam-exercise-0" name="exam_exercise_0"  class="custom-select form-control @error('exam_exercise_0') is-invalid @enderror">
                                     <option value="" selected disabled>--</option>
-                                    <option value="type-1">
+                                    <option value="type-1" {{ (old("exam_exercise_0") == "type-1" ? "selected":"") }}>
                                         Determinarea dependețelor în funcție de o relație "r" dată tabelar
                                     </option>
-                                    <option value="type-2">
+                                    <option value="type-2" {{ (old("exam_exercise_0") == "type-2" ? "selected":"") }}>
                                         Determinarea dependețelor în funcție de o relație "Catalog(elev, notă, materie, datăNotare, profesor)" ce impune anumite restricții
                                     </option>
-                                    <option value="type-3">
+                                    <option value="type-3" {{ (old("exam_exercise_0") == "type-3" ? "selected":"") }}>
                                         Determinarea X+ în funcție de o schemă de relație "R" și o mulțime &Sigma; de dependențe funcționale
                                     </option>
-                                    <option value="type-4">
+                                    <option value="type-4" {{ (old("exam_exercise_0") == "type-4" ? "selected":"") }}>
                                         Determinarea cheilor candidat pentru o schemă de relație "R" și mulțimile de dependență &Sigma; și &Delta;
                                     </option>
                                 </select>
@@ -106,7 +107,7 @@
                         </div>
                         <div class="position-relative">
                             <label for="exercise-0-points" class="large-text-font">Puncte:
-                                <input id="exercise-0-points" name="points_exercise_0" type="text" class="form-control @error('points_exercise_0') is-invalid @enderror" placeholder="Puncte">
+                                <input id="exercise-0-points" name="points_exercise_0" type="text" class="form-control @error('points_exercise_0') is-invalid @enderror" value="{{old('points_exercise_0')}}" placeholder="Puncte">
                                 @error('points_exercise_0')
                                 <div class="invalid-tooltip invalid-tooltip-upper">
                                     Va rugam adaugati punctajul exercitiului.
@@ -158,7 +159,7 @@
 
             <div class="position-relative">
                 <label for="exam-minimum" class="large-text-font"><b>Punctajul minim:</b>
-                    <input id="exam-minimum" name="exam_minimum" type="text" class="form-control @error('exam_minimum') is-invalid @enderror" placeholder="Punctaj minim">
+                    <input id="exam-minimum" name="exam_minimum" type="text" class="form-control @error('exam_minimum') is-invalid @enderror" value="{{old('exam_minimum')}}" placeholder="Punctaj minim">
                     @error('exam_minimum')
                     <div class="invalid-tooltip invalid-tooltip-upper">
                         {{ $message }}
