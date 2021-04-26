@@ -82,7 +82,7 @@ class SubjectBusiness
         return $response;
     }
 
-    public function generateDB($examId, $examInfo)
+    public function generate($examId, $examInfo)
     {
         $examInfo->exercises = json_decode($examInfo->exercises);
 
@@ -96,6 +96,8 @@ class SubjectBusiness
                 break;
         }
 
+        //print_r($exercises);
+
         $exercisesJson = json_encode($exercises);
         $userId = Auth::id();
 
@@ -105,7 +107,7 @@ class SubjectBusiness
             'exercises' => $exercisesJson,
             'total_points' => $examInfo->total_points
         );
-        $this->subjectRepository->createDBSubject($subject);
+        $this->subjectRepository->createSubject($subject);
 
         return array($exercises, $examInfo);
     }
@@ -237,5 +239,59 @@ class SubjectBusiness
 
     private function calculatePointsPenalization($examPenalizationInfo, $counter) {
         return $counter * $examPenalizationInfo['body']['points'];
+    }
+
+
+    public function correctExam($data, $examId) {
+        $userId = Auth::id();
+        //print_r($data);
+        $subjectExercises = $this->subjectRepository->getSubjectExercises($examId, $userId);
+        $examInformation = $this->subjectRepository->getPenalizationInfoById($examId);
+        $examInformation->penalization = json_decode($examInformation->penalization, true);
+        $exercises = json_decode($subjectExercises->exercises, true);
+
+        $numberOfExercises = $exercises['counter'];
+
+
+        $correctedExam = [];
+        for ($currentExercise = 0; $currentExercise < $numberOfExercises; $currentExercise++) {
+            $correctedExam[$currentExercise] = [];
+            $numberOfOptions = $exercises['exercises'][$currentExercise]['options']['counter'];
+            for ($option = 0; $option < $numberOfOptions; $option++) {
+                $optionId = 'exercise_' . $currentExercise . '_option_' . $option;
+
+                if(array_key_exists($optionId, $data)){
+                    $response = true;
+                }
+                else{
+                    $response = false;
+                }
+                $correctedExam[$currentExercise][$option] =
+                    ($response === $exercises['exercises'][$currentExercise]['options']['solution'][$option]['answer']);
+            }
+        }
+
+        $points = $this->getPoints($correctedExam, $exercises, $examInformation->penalization);
+
+        $correctedExam = json_encode($correctedExam);
+
+        unset($data['_token']);
+        $studentAnswers = json_encode($data);
+
+        $subjectWithAnswers = array(
+            'obtained_points' => $points,
+            'student_answers' => $studentAnswers,
+            'results' => $correctedExam
+        );
+        $submitDate = new DateTime("now");
+        $submitDate->add(new DateInterval("PT3H"));
+        $timePromoted = $this->isTimePromoted($submitDate, $examId);
+
+        $forcedSubmit = $data['forced'];
+
+        $this->subjectRepository->updateSubject($examId, $userId, $subjectWithAnswers, $forcedSubmit, $submitDate, $timePromoted);
+        session()->forget('userPenalty');
+
+        return array($examId, $userId);
     }
 }

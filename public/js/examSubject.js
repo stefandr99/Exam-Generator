@@ -25,7 +25,6 @@ function checkTest(numberOfExercises, optionsNumber, examId, forced) {
         info = JSON.parse(info);
         window.location.href = "/examgenerator/exam/" + parseInt(info[0]).toString() + "/result/" + parseInt(info[1]).toString();
     })
-
 }
 
 var timer;
@@ -87,7 +86,8 @@ function penalization(data) {
             penalizationWithLimits(penalty);
             break;
         case 'end':
-            document.getElementById("submitExamForced").click();
+            document.getElementById("is_forced").value = 1;
+            document.getElementById("submitExam").click();
             break;
         default:
             break;
@@ -112,7 +112,8 @@ function penalizationWithLimits(penalty) {
                 startPoints -= parseFloat(penalty.body.exceeded.points);
                 break;
             case 'end':
-                document.getElementById("submitExamForced").click();
+                document.getElementById("is_forced").value = 1;
+                document.getElementById("submitExam").click();
                 break;
         }
     }
@@ -120,6 +121,7 @@ function penalizationWithLimits(penalty) {
 
 function checkTimeAfterPenalty() {
     if(timer < 0) {
-        document.getElementById("submitExamForced").click();
+        document.getElementById("is_forced").value = 1;
+        document.getElementById("submitExam").click();
     }
 }

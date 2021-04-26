@@ -27,7 +27,8 @@ class ExamBusiness
 
     public function checkStealExamStart($examInfo) {
         $examDate = new DateTime($examInfo->starts_at);
-        $presentDate = new DateTime("now", new DateTimeZone('Europe/Tiraspol'));
+        $presentDate = new DateTime("now");
+        $presentDate->add(new DateInterval("PT3H"));
         return $presentDate < $examDate;
     }
 

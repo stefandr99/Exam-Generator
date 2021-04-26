@@ -31,16 +31,13 @@ class SubjectController extends Controller
         if($this->examBusiness->checkStealExamStart($examInfo))
             return redirect()->route('steal_start_exam', array('examId' => $id, 'userId' => $userId));
 
-        $exercises = $this->subjectBusiness->generateDB($id, $examInfo);
+        $exercises = $this->subjectBusiness->generate($id, $examInfo);
 
         $optionsNumber = array();
 
-        for($index = 0; $index < $exercises[0]['counter']; $index++) {
-            $optionsNumber[$index] = $exercises[0]['exercises'][$index]['options']['counter'];
-        }
-
         $examTime = $this->examBusiness->getExamTime($examInfo);
         session(['userPenalty' => 0]);
+        session(['examId' => $id]);
 
         return view('exam/exam', ['exercises' => $exercises[0], 'info' => $examInfo,
             'optionsNumber' => $optionsNumber, 'examId' => $id,
@@ -53,7 +50,15 @@ class SubjectController extends Controller
     }
 
     public function correctExam(Request $request) {
+        $data = $request->all();
+        $userId = Auth::id();
+        $examId = session('examId');
+        session()->forget('examId');
 
+        $this->subjectBusiness->correctExam($data, $examId);
+
+        return redirect()->route('show_exam_result', ['examId' => $examId, 'userId' => $userId]);
+        /*
         if($request->ajax()) {
             $studentAnswers = $request->input('answers');
             $exercisesNumber = $request->input('exercisesNr');
@@ -68,5 +73,6 @@ class SubjectController extends Controller
         }
         else
             return 0;
+        */
     }
 }

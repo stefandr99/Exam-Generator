@@ -5,7 +5,9 @@
 @endsection
 
 @section('content')
-    <form>
+    <form action="{{route('correct_exam')}}" method="POST">
+        @csrf
+
         <div class="container my-4">
             <h1 class="text-center">
                 <b>
@@ -45,11 +47,10 @@
                 @endforeach
                 <br>
             @endfor
+            <input class="form-check-input" id="is_forced" name="forced" type="hidden" value="0">
             <div class="r_relationship">
-                <button id="submitExam" type="button" class="btn btn-primary r_relationship" onclick="checkTest('{{ $info->number_of_exercises }}', '{{ json_encode($optionsNumber) }}', '{{ $examId }}', 0)">
+                <button id="submitExam" type="submit" class="btn btn-primary r_relationship">
                     Trimite răspunsurile
-                </button>
-                <button id="submitExamForced" type="button" onclick="checkTest('{{ $info->number_of_exercises }}', '{{ json_encode($optionsNumber) }}', '{{ $examId }}', 1)" hidden>
                 </button>
             </div>
         </div>
@@ -66,7 +67,7 @@
                     <div class="modal-body">
                         Nu incerca sa copiezi, concentreaza-te pe subiectul tau.
                         <br>
-                        Acesta este un avertisment, daca se repeta vom fi nevoiti sa te sanctionam
+                        Acesta este un avertisment, daca se repeta vom fi nevoiti sa te sanctionam.
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-primary" data-dismiss="modal">Am inteles</button>

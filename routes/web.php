@@ -39,7 +39,7 @@ Route::get('/exam/prepare', 'ExamController@prepareAny')->name('prepare_any_exam
 Route::post('/exam/schedule', 'ExamController@scheduleDBExam')->name('schedule_DB_exam');
 Route::post('/exam/scheduleAny', 'ExamController@scheduleAnyExam')->name('schedule_any_exam');
 Route::get('/exam/fraud/steal_the_start/exam={examId}&user={userId}', 'ExamController@stealStart')->name('steal_start_exam');
-Route::get('/exam/{examId}/result/{userId}', 'ExamController@showResult')->name('show_partial_result');
+Route::get('/exam/{examId}/result/{userId}', 'ExamController@showResult')->name('show_exam_result');
 Route::get('/exam/{examId}/modify', 'ExamController@modifyExam')->name('modify_exam');
 Route::put('/exam/update', 'ExamController@updateExam')->name('update_exam');
 Route::get('/program/last30Days', 'ExamController@showLast30DaysExams')->name('show_last_30days_exams');

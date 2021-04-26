@@ -101,3 +101,11 @@
     margin-top: -30px;
     margin-left: 25px;
 }
+
+.correct-check {
+    color: lawngreen;
+}
+
+.wrong-check {
+    color: red;
+}

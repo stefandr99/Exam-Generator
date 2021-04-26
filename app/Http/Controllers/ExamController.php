@@ -160,6 +160,9 @@ class ExamController extends Controller
     public function stealStart($examId, $userId) {
         // de salvat in viitor in baza de date a fraudelor :))
         $userName = $this->userBusiness->getNameById($userId);
+        $data = new DateTime("now");
+        $data->add(new DateInterval("PT3H"));
+        print_r($data);
 
         return view('exam/stealTheStart', ['name' => $userName->name]);
     }

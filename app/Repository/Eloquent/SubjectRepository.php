@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\DB;
 class SubjectRepository implements ISubjectRepository
 {
 
-    public function createDBSubject($subject)
+    public function createSubject($subject)
     {
         $newSubject = new Subject;
         $newSubject->user_id = $subject['user_id'];
