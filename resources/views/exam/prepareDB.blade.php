@@ -14,40 +14,37 @@
             <div class="d-flex  justify-content-between">
 
                 <input name="exam_course" value="{{$dbCourse->id}}" hidden>
-                    <div class="position-relative">
-                        <label for="exam-type" class="large-text-font"><b>Tipul examenului:</b></label><br>
-                            <select id="exam-type" name="exam_type" class="form-control custom-select @error('exam_type') is-invalid @enderror" style="width: 150px; margin-top: -8px">
-                                <option disabled selected value="">--</option>
-                                @foreach(array('Parțial', 'Examen', 'Restanță') as $type)
-                                    <option value="{{$type}}">{{$type}} {{ (old("exam_type") == $type ? "selected":"") }}</option>
-                                @endforeach
-                            </select>
+                <div class="position-relative">
+                    <label for="exam-type" class="large-text-font"><b>Tipul examenului:</b></label><br>
+                        <select id="exam-type" name="exam_type" class="form-control custom-select @error('exam_type') is-invalid @enderror" style="width: 150px; margin-top: -8px">
+                            <option disabled selected value="">--</option>
+                            @foreach(array('Parțial', 'Examen', 'Restanță') as $type)
+                                <option value="{{$type}}">{{$type}} {{ (old("exam_type") == $type ? "selected":"") }}</option>
+                            @endforeach
+                        </select>
 
-                            @error('exam_type')
-                                <span class="invalid-tooltip invalid-tooltip-upper">
-                                    {{ $message }}
-                                </span>
-                            @enderror
-                    </div>
+                        @error('exam_type')
+                            <span class="invalid-tooltip invalid-tooltip-upper">
+                                {{ $message }}
+                            </span>
+                        @enderror
+                </div>
 
+                <div class="position-relative">
+                    <label for="exam-date" class="large-text-font">
+                        <b>Data și ora examenului:</b>
+                        <input id="exam-date" name="exam_date" class="form-control @error('exam_date') is-invalid @enderror" type="datetime-local" value="{{$tomorrow . "T08:00:00"}}">
 
-                    <div class="position-relative">
-                        <label for="exam-date" class="large-text-font">
-                            <b>Data și ora examenului:</b>
-                            <input id="exam-date" name="exam_date" class="form-control @error('exam_date') is-invalid @enderror" type="datetime-local" value="{{$tomorrow . "T08:00:00"}}">
-
-                            @error('exam_date')
-                                <script>
-                                    document.getElementById("exam-date").value = {{old('exam_date')}}
-                                </script>
-                                <span class="invalid-tooltip">
-                                    {{ $message }}
-                                </span>
-                            @enderror
-                        </label>
-                    </div>
-
-
+                        @error('exam_date')
+                            <script>
+                                document.getElementById("exam-date").value = {{old('exam_date')}}
+                            </script>
+                            <span class="invalid-tooltip">
+                                {{ $message }}
+                            </span>
+                        @enderror
+                    </label>
+                </div>
 
                 <label for="exam-duration" class="large-text-font"><b>Durata examenului:</b>
                     <div class="min-and-hour-exam-parent">
@@ -186,7 +183,7 @@
                     <div class="row">
                     Puncte: &nbsp;
                     <label for="points-penalization" class="large-text-font">
-                        <input id="points-penalization" type="text" class="form-control exam-penalty-input" value="0">
+                        <input id="points-penalization" name="points_penalization" type="text" class="form-control exam-penalty-input" value="0">
                     </label>
                     </div>
                 </div>
@@ -200,11 +197,11 @@
                 <div class="card card-body" style="width: 9rem;">
                     <div class="row">
                         <label for="minutes-penalization">
-                            Minute: &nbsp;<input id="minutes-penalization" type="text" class="form-control exam-penalty-input col" value="0">
+                            Minute: &nbsp;<input id="minutes-penalization" name="minutes_penalization" type="text" class="form-control exam-penalty-input col" value="0">
                         </label>
                         <div style="width: 10px"></div>
                         <label for="seconds-penalization">
-                            Secunde: &nbsp;<input id="seconds-penalization" type="text" class="form-control exam-penalty-input col" value="0">
+                            Secunde: &nbsp;<input id="seconds-penalization" name="seconds_penalization" type="text" class="form-control exam-penalty-input col" value="0">
                         </label>
                     </div>
                 </div>
@@ -220,12 +217,12 @@
                     <div class="row">
                         De maxim: &nbsp;
                         <label for="rule-limit" class="large-text-font">
-                            <input id="rule-limit" type="text" class="form-control exam-penalty-input" value="0">
+                            <input id="rule-limit" name="rule_limit" type="text" class="form-control exam-penalty-input" value="0">
                         </label>
                         &nbsp;ori
                     </div>
                     <label for="rule-warnings" class="check-rule">
-                        <input id="rule-warnings" class="form-check-input warn-penalty-checkbox" type="checkbox">
+                        <input id="rule-warnings" name="rule_warnings" class="form-check-input warn-penalty-checkbox" type="checkbox">
                         &nbsp;<small>avertizează la fiecare abatere</small>
                     </label>
                     <div class="row">
@@ -241,7 +238,7 @@
                             <div class="row">
                                 Puncte: &nbsp;
                                 <label for="limit-points-penalization" class="large-text-font">
-                                    <input id="limit-points-penalization" type="text" class="form-control exam-penalty-input" value="0">
+                                    <input id="limit-points-penalization" name="limit_points_penalization" type="text" class="form-control exam-penalty-input" value="0">
                                 </label>
                             </div>
                         </div>
@@ -255,11 +252,11 @@
                         <div class="card card-body" style="width: 9rem;">
                             <div class="row">
                                 <label for="limit-minutes-penalization">
-                                    Minute: &nbsp;<input id="limit-minutes-penalization" type="text" class="form-control exam-penalty-input col" value="0">
+                                    Minute: &nbsp;<input id="limit-minutes-penalization" name="limit_minutes_penalization" type="text" class="form-control exam-penalty-input col" value="0">
                                 </label>
                                 <div style="width: 10px"></div>
                                 <label for="limit-seconds-penalization">
-                                    Secunde: &nbsp; <input id="limit-seconds-penalization" type="text" class="form-control exam-penalty-input col" value="0">
+                                    Secunde: &nbsp; <input id="limit-seconds-penalization" name="limit_seconds_penalization" type="text" class="form-control exam-penalty-input col" value="0">
                                 </label>
                             </div>
                         </div>

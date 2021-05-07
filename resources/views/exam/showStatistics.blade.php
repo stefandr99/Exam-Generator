@@ -15,8 +15,8 @@
                 </h4>
             </div>
             <div class="p-2">
-                <h4><b>Data inceperii examenului:</b> {{ date_format(date_create($exam->starts_at), 'd-m-Y') }}, {{ date_format(date_create($exam->starts_at), 'H:i') }}</h4>
-                <h4><b>Data incheierii examenului:</b> {{ date_format(date_create($exam->ends_at), 'd-m-Y') }}, {{ date_format(date_create($exam->ends_at), 'H:i') }}</h4>
+                <h4><b>Data începerii examenului:</b> {{ date_format(date_create($exam->starts_at), 'd-m-Y') }}, {{ date_format(date_create($exam->starts_at), 'H:i') }}</h4>
+                <h4><b>Data încheierii examenului:</b> {{ date_format(date_create($exam->ends_at), 'd-m-Y') }}, {{ date_format(date_create($exam->ends_at), 'H:i') }}</h4>
             </div>
         </div>
 
@@ -43,37 +43,37 @@
                     <form class="form-inline col" action="{{route('filter_exam_stats')}}">
                         <div class="form-group">
                             <input name="exam" value="{{$exam->exam_id}}" hidden>
-                            <label for="filter_students"><b>Filtreaza:</b></label>
+                            <label for="filter_students"><b>Filtrează:</b></label>
                             <select id="filter_students" name="filter" class="form-control mx-sm-4" onchange="this.form.submit()">
                                 @if($filter == 'all')
-                                <option value="all" selected>Toti</option>
+                                <option value="all" selected>Toți</option>
                                 @else
-                                    <option value="all">Toti</option>
+                                    <option value="all">Toți</option>
                                 @endif
                                 @if($filter == 'promoted')
-                                <option value="promoted" selected>Promovati</option>
+                                <option value="promoted" selected>Promovați</option>
                                 @else
-                                    <option value="promoted">Promovati</option>
+                                    <option value="promoted">Promovați</option>
                                 @endif
                                 @if($filter == 'failed')
-                                <option value="failed" selected>Nepromovati</option>
+                                <option value="failed" selected>Nepromovați</option>
                                 @else
-                                    <option value="failed">Nepromovati</option>
+                                    <option value="failed">Nepromovați</option>
                                 @endif
                                 @if($filter == 'first_level_lateness')
-                                <option value="first_level_lateness" selected>Intarzierea raspunsurilor <= 30 sec.</option>
+                                <option value="first_level_lateness" selected>Întârzierea răspunsurilor <= 30 sec.</option>
                                 @else
-                                    <option value="first_level_lateness">Intarzierea raspunsurilor <= 30 sec.</option>
+                                    <option value="first_level_lateness">Întârzierea răspunsurilor <= 30 sec.</option>
                                 @endif
                                 @if($filter == 'second_level_lateness')
-                                <option value="second_level_lateness" selected>Intarzierea raspunsurilor intre 30 sec. - 3 min.</option>
+                                <option value="second_level_lateness" selected>Întârzierea răspunsurilor intre 30 sec. - 3 min.</option>
                                 @else
-                                    <option value="second_level_lateness">Intarzierea raspunsurilor intre 30 sec. - 3 min.</option>
+                                    <option value="second_level_lateness">Întârzierea răspunsurilor intre 30 sec. - 3 min.</option>
                                 @endif
                                 @if($filter == 'third_level_lateness')
-                                <option value="third_level_lateness" selected>Intarzierea raspunsurilor peste 3 min.</option>
+                                <option value="third_level_lateness" selected>Întârzierea răspunsurilor peste 3 min.</option>
                                 @else
-                                    <option value="third_level_lateness">Intarzierea raspunsurilor peste 3 min.</option>
+                                    <option value="third_level_lateness">Întârzierea răspunsurilor peste 3 min.</option>
                                 @endif
                             </select>
                         </div>
@@ -88,12 +88,12 @@
             <tr>
                 <th scope="col">Nume</th>
                 <th scope="col">Grupa</th>
-                <th scope="col">Ora trimiterii raspunsurilor</th>
-                <th scope="col">Intarziere trimitere</th>
-                <th scope="col">Numarul penalizarilor</th>
-                <th scope="col">Trimiterea raspunsurilor fortata?</th>
+                <th scope="col">Ora trimiterii răspunsurilor</th>
+                <th scope="col">Întârziere trimitere</th>
+                <th scope="col">Numărul penalizărilor</th>
+                <th scope="col">Trimiterea răspunsurilor forțată?</th>
                 <th scope="col">Rezultat</th>
-                <th scope="col">Actiune</th>
+                <th scope="col">Acțiune</th>
             </tr>
             </thead>
             <tbody>
@@ -201,22 +201,22 @@
             {{ $subjects->onEachSide(1)->links() }}
         </div>
 
-        <b>Legenda:</b>
+        <b>Legendă:</b>
         <div class="d-flex flex-row">
             <div class="p-2"><div id="promoted-green" class="exam-legend-rectangular"></div></div>
             <div class="p-2">Promovat</div>
         </div>
         <div class="d-flex flex-row">
             <div class="p-2"><div id="light-green-submit-time" class="exam-legend-rectangular"></div></div>
-            <div class="p-2">Promovat dpdv. al punctelor, dar trimitere intarziata a raspunsurilor (intarziere <= 30 sec.)</div>
+            <div class="p-2">Promovat dpdv. al punctelor, dar trimitere întârziată a răspunsurilor (întârziere <= 30 sec.)</div>
         </div>
         <div class="d-flex flex-row">
             <div class="p-2"><div id="light-red-submit-time" class="exam-legend-rectangular"></div></div>
-            <div class="p-2">Promovat dpdv. al punctelor, dar nepromovat dpdv. al trimiterii raspunsurilor (intarziere 30 sec. - 3 min.)</div>
+            <div class="p-2">Promovat dpdv. al punctelor, dar nepromovat dpdv. al trimiterii răspunsurilor (întârziere 30 sec. - 3 min.)</div>
         </div>
         <div class="d-flex flex-row">
             <div class="p-2"><div id="red-submit-time" class="exam-legend-rectangular"></div></div>
-            <div class="p-2">Promovat dpdv. al punctelor, dar nepromovat dpdv. al trimiterii raspunsurilor (intarziere peste 3 min.)</div>
+            <div class="p-2">Promovat dpdv. al punctelor, dar nepromovat dpdv. al trimiterii răspunsurilor (întârziere peste 3 min.)</div>
         </div>
         <div class="d-flex flex-row">
             <div class="p-2"><div id="unpromoted-red" class="exam-legend-rectangular"></div></div>

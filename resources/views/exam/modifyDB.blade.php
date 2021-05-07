@@ -1,57 +1,72 @@
 @extends('layouts.app')
 
 @section('title')
-    <title>Modificare examen</title>
+    <title>Modificare examen Baze de date</title>
 @endsection
 
 @section('content')
     <div class="container my-4">
-        <h1 id="partial-title"><b>Modificați examenul</b></h1>
+        <h1 class="text-center"><b>Modificați examenul la Baze de date</b></h1>
         <br>
         <form class="form-group">
-            <label for="exam-subject" class="large-text-font">Materia:
-                <select id="exam-subject" class="form-control">
-                    @foreach($courses as $course)
-                        @if($exam->course_name == $course->name)
-                            <option value="{{ $course->id }}" selected>{{ $course->name }}</option>
-                        @else
-                            <option value="{{ $course->id }}">{{ $course->name }}</option>
-                        @endif
-                    @endforeach
-                </select>
-            </label>
-            <br>
+            <div class="d-flex  justify-content-between">
 
-            <label for="exam-type" class="large-text-font">Tipul examenului:
-                <select id="exam-type" class="form-control">
-                    @foreach(array("Parțial", "Examen", "Restanță") as $examType)
-                        @if($examType == $exam->type)
-                            <option value="{{$examType}}" selected>{{$examType}}</option>
-                        @else
-                            <option value="{{$examType}}">{{$examType}}</option>
-                        @endif
-                    @endforeach
-                </select>
-            </label>
-            <br>
+                <input id="exam-course" name="exam_course" value="{{$dbCourse->id}}" hidden>
 
-            <label for="exam-date" class="large-text-font">
-                Data și ora examenului:
-                <input class="form-control" type="datetime-local" value="{{explode(" ", $exam->starts_at)[0] . "T" . explode(" ", $exam->starts_at)[1]}}" id="exam-date">
-            </label>
-            <br>
+                <div class="position-relative">
+                    <label for="exam-type" class="large-text-font"><b>Tipul examenului:</b></label><br>
+                    <select id="exam-type" name="exam_type" class="form-control custom-select @error('exam_type') is-invalid @enderror" style="width: 150px; margin-top: -8px">
+                        @foreach(array("Parțial", "Examen", "Restanță") as $examType)
+                            @if($examType == $exam->type)
+                                <option value="{{$examType}}" selected>{{$examType}}</option>
+                            @else
+                                <option value="{{$examType}}">{{$examType}}</option>
+                            @endif
+                        @endforeach
+                    </select>
 
-            <label for="exam-duration" class="large-text-font">Durata examenului:
-                <div class="row">
-                    <div class="col-3">
-                        <input type="text" class="form-control" placeholder="Ore" id="exam-duration-hours" value="{{$exam->hours}}">
-                    </div>
-                    <div class="col-3">
-                        <input type="text" class="form-control" placeholder="Minute" id="exam-duration-minutes" value="{{$exam->minutes}}">
-                    </div>
+                    @error('exam_type')
+                        <span class="invalid-tooltip invalid-tooltip-upper">
+                                {{ $message }}
+                        </span>
+                    @enderror
                 </div>
-            </label>
-            <br>
+
+                <div class="position-relative">
+                    <label for="exam-date" class="large-text-font">
+                        <b>Data și ora examenului:</b>
+                        <input id="exam-date" name="exam_date" class="form-control @error('exam_date') is-invalid @enderror" type="datetime-local" value="{{explode(" ", $exam->starts_at)[0] . "T" . explode(" ", $exam->starts_at)[1]}}">
+
+                        @error('exam_date')
+                            <span class="invalid-tooltip">
+                                {{ $message }}
+                            </span>
+                        @enderror
+                    </label>
+                </div>
+
+                <label for="exam-duration" class="large-text-font"><b>Durata examenului:</b>
+                    <div class="min-and-hour-exam-parent">
+                        <div class="position-relative">
+                            <input id="exam-duration-hours" name="exam_hours" type="text" class="form-control hour-exam-column @error('exam_hours') is-invalid @enderror" value="{{$exam->hours}}" size="5" placeholder="Ore">
+                            @error('exam_hours')
+                            <div class="invalid-tooltip">
+                                {{ $message }}
+                            </div>
+                            @enderror
+                        </div>
+
+                        <div class="position-relative">
+                            <input id="exam-duration-minutes" name="exam_minutes" type="text" class="form-control min-exam-column @error('exam_minutes') is-invalid @enderror" value="{{$exam->minutes}}" size="5" placeholder="Minute">
+                            @error('exam_minutes')
+                            <div class="invalid-tooltip" style="margin-left: 15px;">
+                                {{ $message }}
+                            </div>
+                            @enderror
+                        </div>
+                    </div>
+                </label>
+            </div>
 
             <div class="large-text-font">
                 <b>Exerciții:</b>

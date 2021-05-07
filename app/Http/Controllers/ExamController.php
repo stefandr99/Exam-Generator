@@ -169,13 +169,13 @@ class ExamController extends Controller
 
 
     public function modifyExam($examId) {
-        $courses = $this->courseBusiness->getAll();
+        $dbCourse = $this->courseBusiness->getDatabasesId();
         $exam = $this->examBusiness->getExamById($examId);
         $exam->exercises = json_decode($exam->exercises, true);
         $exam->penalization = json_decode($exam->penalization, true);
-        return view('exam/modify', [
+        return view('exam/modifyDB', [
             'exam' => $exam,
-            'courses' => $courses
+            'dbCourse' => $dbCourse
         ]);
     }
 

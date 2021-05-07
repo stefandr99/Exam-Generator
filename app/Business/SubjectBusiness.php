@@ -244,9 +244,10 @@ class SubjectBusiness
 
     public function correctExam($data, $examId) {
         $userId = Auth::id();
-        //print_r($data);
+        //print_r($examId);
         $subjectExercises = $this->subjectRepository->getSubjectExercises($examId, $userId);
         $examInformation = $this->subjectRepository->getPenalizationInfoById($examId);
+        //print_r($examInformation);
         $examInformation->penalization = json_decode($examInformation->penalization, true);
         $exercises = json_decode($subjectExercises->exercises, true);
 

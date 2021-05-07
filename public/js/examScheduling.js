@@ -123,7 +123,7 @@ function getPenalizationBodyWhenLimit(type) {
 function updateExam(examId) {
     let examData = [];
     let totalPoints = 0;
-    examData[0] = document.getElementById("exam-subject").value;
+    examData[0] = document.getElementById("exam-course").value;
     examData[1] = document.getElementById("exam-type").value;
     examData[2] = document.getElementById("exam-date").value;
     examData[3] = document.getElementById("exam-duration-hours").value;
