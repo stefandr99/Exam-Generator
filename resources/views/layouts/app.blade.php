@@ -100,14 +100,7 @@
                                 </a>
 
                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-
-                                    @if (Auth::user()->role == 2)
-                                        <a class="dropdown-item" href="{{ route('prepare_DB_exam') }}">
-                                            {{ __('Pregatește examen Baze de date') }}
-                                        </a>
-                                    @endif
-
-                                    @if (Auth::user()->role != 1)
+                                    @if (Auth::user()->role == 3)
                                         <a class="dropdown-item" href="{{ route('show_exams') }}">
                                             {{ __('Examenele mele') }}
                                         </a>

@@ -11,285 +11,215 @@
         <form class="form-group" action="{{route('schedule_any_exam')}}" method="POST">
             @csrf
 
-            <div class="d-flex">
-                <div class="p-2">
-                    <div class="position-relative">
-                        <label for="exam-subject" class="large-text-font"><b>Materia:</b>
-                            <select id="exam-subject" name="exam_course" class="form-control custom-select @error('exam_course') is-invalid @enderror">
-                                <option disabled selected value="">--</option>
-                                @foreach($courses as $course)
-                                    <option value="{{ $course->id }}" {{ (old("exam_course") == $course->id ? "selected":"") }}>{{ $course->name }}</option>
-                                @endforeach
-                            </select>
+            <div class="row">
+                <div class="col-sm-5 mx-auto">
 
-                            @error('exam_course')
-                                <span class="invalid-tooltip invalid-tooltip-upper">
-                                    {{ $message }}
-                                </span>
-                            @enderror
-                        </label>
-                    </div>
-                </div>
-
-                <div class="p-2">
-                    <div class="position-relative">
-                        <label for="exam-type" class="large-text-font"><b>Tipul examenului:</b></label><br>
-                        <select id="exam-type" name="exam_type" class="form-control custom-select @error('exam_type') is-invalid @enderror" style="width: 150px; margin-top: -8px">
-                            <option selected disabled value="">--</option>
-                            @foreach(array('Parțial', 'Examen', 'Restanță') as $type)
-                                <option value="{{$type}}">{{$type}} {{ (old("exam_type") == $type ? "selected":"") }}</option>
-                            @endforeach
-                        </select>
-                        @error('exam_type')
-                        <span class="invalid-tooltip">
-                            {{ $message }}
-                        </span>
-                        @enderror
-                    </div>
-                </div>
-
-                <div class="ml-auto p-2">
-                    <div class="position-relative">
-                        <label for="exam-date" class="large-text-font">
-                            <b>Data și ora examenului:</b>
-                            <input id="exam-date" name="exam_date" class="form-control @error('exam_date') is-invalid @enderror" type="datetime-local" value="{{$tomorrow . "T08:00:00"}}">
-
-                            @error('exam_date')
-                                <span class="invalid-tooltip">
-                                    {{ $message }}
-                                </span>
-                            @enderror
-                        </label>
-                    </div>
-                </div>
-
-                <div class="p-2">
-                    <label for="exam-duration" class="large-text-font"><b>Durata examenului:</b>
-                        <div class="inline-elements">
-                            <div class="position-relative">
-                                <input id="exam-duration-hours" name="exam_hours" type="text" class="form-control hour-exam-column @error('exam_hours') is-invalid @enderror" size="5" placeholder="Ore" value="{{ old('exam_hours') }}" autofocus>
-                                @error('exam_hours')
-                                    <div class="invalid-tooltip">
-                                        {{ $message }}
-                                    </div>
-                                @enderror
+                        <div class="card mt-3 tab-card text-center">
+                            <div class="card-header tab-card-header">
+                                <ul class="nav nav-tabs card-header-tabs" id="examSubjectInfo" role="tablist">
+                                    <li class="nav-item">
+                                        <a class="nav-link" id="subject-tab" data-toggle="tab" href="#subject" role="tab" aria-controls="Materia" aria-selected="true">Materia</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" id="type-tab" data-toggle="tab" href="#type" role="tab" aria-controls="TipulExamenului" aria-selected="false">Tipul</a>
+                                    </li>
+                                </ul>
                             </div>
-                            <div class="position-relative">
-                                <input id="exam-duration-minutes" name="exam_minutes" type="text" class="form-control min-exam-column @error('exam_minutes') is-invalid @enderror" size="5" placeholder="Minute" value="{{ old('exam_minutes') }}" autofocus>
-                                @error('exam_minutes')
-                                    <div class="invalid-tooltip" style="margin-left: 15px;">
-                                        {{ $message }}
-                                    </div>
-                                @enderror
+
+                            <div class="tab-content" id="subjectTypeContent">
+                                <div class="tab-pane fade show active p-3" id="subject" role="tabpanel" aria-labelledby="subject-tab">
+                                    <h5 class="card-title">Materia examenului</h5>
+                                    <p class="card-text">Va rugam sa selectati materia pentru acest examen.</p>
+
+                                    <select id="exam-subject" name="exam_course" class="form-control custom-select @error('exam_course') is-invalid @enderror" style="width: 70%">
+                                        <option disabled selected value="">--</option>
+                                        @foreach($courses as $course)
+                                            <option value="{{ $course->id }}" {{ (old("exam_course") == $course->id ? "selected":"") }}>{{ $course->name }}</option>
+                                        @endforeach
+
+                                    </select>
+
+                                </div>
+                                <div class="tab-pane fade p-3" id="type" role="tabpanel" aria-labelledby="type-tab">
+                                    <h5 class="card-title">Tipul Examenului</h5>
+                                    <p class="card-text">Va rugam sa selectati ce fel de examen va fi acesta.</p>
+
+                                    <select id="exam-type" name="exam_type" class="form-control custom-select align-content-center @error('exam_type') is-invalid @enderror" style="width: 50%;">
+                                        <option selected disabled value="">--</option>
+                                        @foreach(array('Parțial', 'Examen', 'Restanță') as $type)
+                                            <option value="{{$type}}" {{ (old("exam_type") == $type ? "selected":"") }}>{{$type}}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+
                             </div>
                         </div>
-                    </label>
+
                 </div>
+
+
+                <div class="col-sm-5 mx-auto">
+                    <div class="card mt-3 tab-card text-center">
+                        <div class="card-header tab-card-header">
+                            <ul class="nav nav-tabs card-header-tabs" id="timeTab" role="tablist">
+                                <li class="nav-item">
+                                    <a class="nav-link" id="date-tab" data-toggle="tab" href="#dateTime" role="tab" aria-controls="Data" aria-selected="true">Data</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" id="hours-mins-tab" data-toggle="tab" href="#hoursAndMins" role="tab" aria-controls="OreMinute" aria-selected="false">Ore si minute</a>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div class="tab-content" id="dateTimeContent">
+                            <div class="tab-pane fade show active p-3" id="dateTime" role="tabpanel" aria-labelledby="date-tab">
+                                <h5 class="card-title">Data sustinerii examenului</h5>
+                                <p class="card-text">Va rugam sa alegeti data sustinerii examenului.</p>
+
+                                <input id="exam-date" name="exam_date" class="form-control mx-auto @error('exam_date') is-invalid @enderror" type="datetime-local" value="{{$tomorrow . "T08:00:00"}}" style="width: 60%;">
+
+                                @error('exam_date')
+                                    <span class="invalid-tooltip">
+                                        {{ $message }}
+                                    </span>
+                                @enderror
+
+                            </div>
+                            <div class="tab-pane fade p-3" id="hoursAndMins" role="tabpanel" aria-labelledby="hours-mins-tab">
+                                <h5 class="card-title">Durata examenului</h5>
+                                <p class="card-text">Va rugam sa introduceti durata examenului in ore si minute.</p>
+
+                                <div class="form-row">
+                                    <div class="col-4 mx-auto">
+                                        <input id="exam-duration-hours" name="exam_hours" type="text" class="form-control @error('exam_hours') is-invalid @enderror" placeholder="Ore" value="{{ old('exam_hours') }}" autofocus>
+                                        @error('exam_hours')
+                                            <div class="invalid-tooltip">
+                                                {{ $message }}
+                                            </div>
+                                        @enderror
+                                    </div>
+
+                                    <div class="col-4 mx-auto">
+                                        <input id="exam-duration-minutes" name="exam_minutes" type="text" class="form-control @error('exam_minutes') is-invalid @enderror" placeholder="Minute" value="{{ old('exam_minutes') }}" autofocus>
+                                        @error('exam_minutes')
+                                            <div class="invalid-tooltip">
+                                                {{ $message }}
+                                            </div>
+                                        @enderror
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
             </div>
 
             <!-- <EXERCITII> -->
             <div class="large-text-font">
-                <b>Exerciții:</b>
                 <label>
                     <input hidden id="number_of_exercises" name="number_of_exercises" value="0">
                 </label>
-                <div class="first-margin-left-exam-exercises">
-                    Exercițiul 1.
-                    <br>
-                    <div class="second-margin-left-exam-exercises">
-                        <div class="position-relative">
-                            <label for="text-exercise-0" class="large-text-font">Enuntul exercitiului:
-                                <textarea id="text-exercise-0" name="text_exercise_0" class="form-control @error('text_exercise_0') is-invalid @enderror" rows="3" cols="100" placeholder="Enunt">
-                                    {{old('text_exercise_0')}}
-                                </textarea>
-                                @error('text_exercise_0')
-                                    <div class="invalid-tooltip invalid-tooltip-upper">
-                                        {{ $message }}
-                                    </div>
-                                @enderror
-                            </label>
-                        </div>
+                    <div class="col-12 mx-auto">
+                        <div class="card mt-3 tab-card">
+                            <div class="card-header tab-card-header">
+                                <ul class="nav nav-tabs card-header-tabs" id="exercisesTab" role="tablist">
+                                    <li class="nav-item" id="exercise_1_tab">
+                                        <a class="nav-link" id="exercise_1_title" data-toggle="tab" href="#exercise_1" role="tab" aria-controls="Exercise1" aria-selected="true">Exercitiul 1 &nbsp;<span class="close mt-1" onclick="deleteTab(this.parentNode.parentNode.id);">&times;</span></a>
+                                    </li>
+                                    <li class="nav-item" id="add_exercise_tab">
+                                        <a class="nav-link" id="add_exercise_button" aria-selected="false" onclick="addNewTab();"><i class="fas fa-plus-circle"></i></a>
+                                    </li>
+                                </ul>
+                            </div>
 
-                        <!-- <OPTIONS> -->
-                        <label>
-                            <input hidden id="number_of_options_exercise_0" name="number_of_options_exercise_0" value="0">
-                        </label>
-                        <label for="exercise-0-option" class="large-text-font">Variante de raspuns:
-                            <div class="third-margin-left-exam-exercises"><div class="position-relative">
-                                <div class="inline-elements">
-
-                                    1.&nbsp;&nbsp;
-                                    <label>
-                                    <input id="exercise-0-option-0" name="exercise_0_option_0" type="text" size="100" class="form-control @error('exercise_0_option_0') is-invalid @enderror" value="{{old('exercise_0_option_0')}}" placeholder="Varianta de raspuns">&nbsp;
-                                    @error('exercise_0_option_0')
-                                        <div class="invalid-tooltip invalid-tooltip-upper-and-right">
+                            <div class="tab-content" id="exercisesContent">
+                                <div class="tab-pane fade show active p-3" id="exercise_1" role="tabpanel" aria-labelledby="ex-1-tab">
+                                    <label for="text-exercise-0" class="card-text text-uppercase font-weight-bold">Enunt:</label>
+                                    <textarea id="text-exercise-0" name="text_exercise_0" class="form-control @error('text_exercise_0') is-invalid @enderror" rows="3" cols="100" placeholder="Enunt">
+                                        {{old('text_exercise_0')}}
+                                    </textarea>
+                                    @error('text_exercise_0')
+                                        <div class="invalid-tooltip invalid-tooltip-upper">
                                             {{ $message }}
                                         </div>
                                     @enderror
-                                    </label>
-                                    &nbsp;<label>
-                                        <input id="exercise-0-option-0-true" value="true" name="exercise_0_option_0_answer" type="radio" checked>
-                                    </label>&nbsp;Corect &nbsp;
-                                    &nbsp;<label>
-                                        <input id="exercise-0-option-0-false" value="false" name="exercise_0_option_0_answer" type="radio">
-                                    </label>&nbsp;Gresit
 
-                                    </div>
-                                </div>
+                                    <input hidden id="number_of_options_exercise_0" name="number_of_options_exercise_0" value="0">
+                                    <label for="exercise-0-option" class="card-text text-uppercase font-weight-bold">Variante de raspuns:</label>
+                                    <div id="div_exercise_0_options">
+                                        <div id="div_exercise_0_option_0">
+                                            <div class="inline-elements">
+                                                <label for="exercise-0-option-0">1.&nbsp;&nbsp;</label>
+                                                <input id="exercise-0-option-0" name="exercise_0_option_0" type="text" class="form-control @error('exercise_0_option_0') is-invalid @enderror" value="{{old('exercise_0_option_0')}}" placeholder="Varianta de raspuns">&nbsp;
 
-                                @for($op = 1; $op < 30; $op++)
-                                    <div hidden id="exercise-0-hidden-option-{{$op}}" class="inline-elements">
-                                        {{$op + 1}}.&nbsp;&nbsp;
-                                        <input id="exercise-0-option-{{$op}}" name="exercise_0_option_{{$op}}" type="text" size="100" class="form-control" placeholder="Varianta de raspuns">
-                                        &nbsp;<label>
-                                            <input id="exercise-0-option-{{$op}}-true" value="true" name="exercise_0_option_{{$op}}_answer" type="radio" checked>
-                                        </label>&nbsp;Corect &nbsp;
-                                        &nbsp;<label>
-                                            <input id="exercise-0-option-{{$op}}-false" value="false" name="exercise_0_option_{{$op}}_answer" type="radio">
-                                        </label>&nbsp;Gresit
-                                    </div>
-                                @endfor
-
-                                <button type="button" class="btn btn-outline-info btn-sm" onclick="addExerciseOption(0)">Adăugați încă o varianta</button>
-                                <button type="button" class="btn btn-outline-danger btn-sm" onclick="removeExerciseOption(0)">Stergeți ultima varianta</button>
-                                <br>
-                                <div class="position-relative">
-                                    <small>Numarul de variante de raspuns generate:</small>
-
-                                    <label>
-                                        <input id="number-of-options-exercise-0" name="number_of_generated_options_0" type="text" class="form-control nr-of-ops-per-ex @error('number_of_generated_options_0') is-invalid @enderror" size="1" placeholder="Nr" onchange="$('#collapseExerciseCorrectness_0').collapse();">
-                                    </label>
-                                </div>
-                                <div class="collapse" id="collapseExerciseCorrectness_0">
-                                    <div class="card card-body" style="width: 8.1rem; height: 5.4rem;">
-                                        <div class="row" style=" padding-bottom: 30px;">
-                                            <small>
-                                                <div class="position-relative">
-                                                    <label for="correct-options-ex-0">
-                                                        Corecte: &nbsp;
-                                                        <input id="correct-options-ex-0" name="correct_options_ex_0" type="text" class="form-control col correct-wrong-options @error('correct_options_ex_0') is-invalid @enderror" value="0">
-                                                    </label>
-                                                    <label for="wrong-options-ex-0">
-                                                        Gresite:&nbsp;
-                                                        <input id="wrong-options-ex-0" name="wrong_options_ex_0" type="text" class="form-control col correct-wrong-options @error('wrong_options_ex_0') is-invalid @enderror" value="0">
-                                                    </label>
-                                                </div>
-                                            </small>
+                                                <label>
+                                                    <input id="exercise-0-option-0-true" value="true" name="exercise_0_option_0_answer" type="radio" checked>
+                                                </label>
+                                                <p>&nbsp;Corect&nbsp;&nbsp;</p>
+                                                <label>
+                                                    <input id="exercise-0-option-0-false" value="false" name="exercise_0_option_0_answer" type="radio">
+                                                </label>
+                                                <p>&nbsp;Gresit</p>
+                                            </div>
                                         </div>
                                     </div>
+
+                                    <button type="button" class="btn btn-outline-info btn-sm" onclick="addExerciseOption2(0)">Adăugați încă o varianta</button>
+                                    <button type="button" class="btn btn-outline-danger btn-sm" onclick="removeOption2(0)">Stergeți ultima varianta</button>
+
+                                    <br>
+                                    <small>Numarul de variante de raspuns generate:</small>
+                                    <label for="number-of-options-exercise-0">
+                                        <input id="number-of-options-exercise-0" name="number_of_generated_options_0" type="text" class="form-control nr-of-ops-per-ex @error('number_of_generated_options_0') is-invalid @enderror" size="1" placeholder="Nr" onchange="$('#collapseExerciseCorrectness_0').collapse();">
+                                    </label>
+
+                                    <div class="collapse" id="collapseExerciseCorrectness_0">
+                                        <div class="card card-body" style="width: 8.1rem; height: 5.4rem;">
+                                            <div class="row" style="padding-bottom: 30px;">
+                                                <small>
+                                                    <div class="position-relative">
+                                                        <label for="correct-options-ex-0">
+                                                            Corecte: &nbsp;
+                                                            <input id="correct-options-ex-0" name="correct_options_ex_0" type="text" class="form-control col correct-wrong-options @error('correct_options_ex_0') is-invalid @enderror" value="0">
+                                                        </label>
+                                                        <label for="wrong-options-ex-0">
+                                                            Gresite:&nbsp;
+                                                            <input id="wrong-options-ex-0" name="wrong_options_ex_0" type="text" class="form-control col correct-wrong-options @error('wrong_options_ex_0') is-invalid @enderror" value="0">
+                                                        </label>
+                                                    </div>
+                                                </small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <br>
+
+                                    <label for="points-exercise-0" class="card-text text-uppercase font-weight-bold">Puncte:
+                                        <input id="points-exercise-0" name="points_exercise_0" type="text" class="form-control @error('points_exercise_0') is-invalid @enderror" placeholder="Puncte">
+                                        @error('points_exercise_0')
+                                            <div class="invalid-tooltip invalid-tooltip-upper">
+                                                {{ $message }}
+                                            </div>
+                                        @enderror
+                                    </label>
                                 </div>
                             </div>
 
-                        </label>
-                        <!-- </OPTIONS> -->
+                            <div class="card-footer">
+                                <label for="exam-minimum" class="card-text text-uppercase font-weight-bold">Punctaj minim:
+                                    <input id="exam-minimum" name="exam_minimum" type="text" class="form-control @error('exam_minimum') is-invalid @enderror" placeholder="Punctaj minim">
+                                    @error('exam_minimum')
+                                        <div class="invalid-tooltip invalid-tooltip-upper">
+                                            {{ $message }}
+                                        </div>
+                                    @enderror
+                                </label>
+                            </div>
 
-                        <div class="position-relative">
-                            <label for="points-exercise-0" class="large-text-font">Puncte:
-                                <input id="points-exercise-0" name="points_exercise_0" type="text" class="form-control @error('points_exercise_0') is-invalid @enderror" placeholder="Puncte">
-                                @error('points_exercise_0')
-                                    <div class="invalid-tooltip invalid-tooltip-upper">
-                                        {{ $message }}
-                                    </div>
-                                @enderror
-                            </label>
                         </div>
                     </div>
 
-                    @for($ex = 1; $ex < 20; $ex++)
-                        <div hidden id="exam-exercise-{{$ex}}">
-                            Exercițiul {{$ex + 1}}.
-                            <br>
-                            <div class="second-margin-left-exam-exercises">
-                                <label for="text-exercise-{{$ex}}" class="large-text-font">Enuntul exercitiului:
-                                    <textarea id="text-exercise-{{$ex}}" name="text_exercise_{{$ex}}" class="form-control" rows="3" cols="100" placeholder="Enunt">
-                                </textarea>
-                                </label>
-                                <br>
 
-                                <!-- <OPTIONS> -->
-                                <label>
-                                    <input hidden id="number_of_options_exercise_{{$ex}}" name="number_of_options_exercise_{{$ex}}" value="0">
-                                </label>
-                                <label for="exercise-{{$ex}}-option" class="large-text-font">Variante de raspuns:
-                                    <div class="third-margin-left-exam-exercises">
-                                        <div class="inline-elements">
-                                            1.&nbsp;&nbsp;
-                                            <input id="exercise-{{$ex}}-option-0" name="exercise_{{$ex}}_option_0" type="text" size="100" class="form-control" placeholder="Varianta de raspuns">
-                                            &nbsp;<label>
-                                                <input id="exercise-{{$ex}}-option-0-true" value="true" name="exercise_{{$ex}}_option_0_answer" type="radio" checked>
-                                            </label>&nbsp;Corect &nbsp;
-                                            &nbsp;<label>
-                                                <input id="exercise-{{$ex}}-option-0-false" value="false" name="exercise_{{$ex}}_option_0_answer" type="radio">
-                                            </label>&nbsp;Gresit
-                                        </div>
-
-                                        @for($op = 1; $op < 20; $op++)
-                                            <div hidden id="exercise-{{$ex}}-hidden-option-{{$op}}" class="inline-elements">
-                                                {{$op + 1}}.&nbsp;&nbsp;
-                                                <input id="exercise-{{$ex}}-option-{{$op}}" name="exercise_{{$ex}}_option_{{$op}}" type="text" size="100" class="form-control" placeholder="Varianta de raspuns">
-                                                &nbsp;<label>
-                                                    <input id="exercise-{{$ex}}-option-{{$op}}-true" value="true" name="exercise_{{$ex}}_option_{{$op}}_answer" type="radio" checked>
-                                                </label>&nbsp;Corect &nbsp;
-                                                &nbsp;<label>
-                                                    <input id="exercise-{{$ex}}-option-{{$op}}-false" value="false" name="exercise_{{$ex}}_option_{{$op}}_answer" type="radio">
-                                                </label>&nbsp;Gresit
-                                            </div>
-                                        @endfor
-
-                                        <button type="button" class="btn btn-outline-info btn-sm" onclick="addExerciseOption({{$ex}})">Adăugați încă o varianta</button>
-                                        <button type="button" class="btn btn-outline-danger btn-sm" onclick="removeExerciseOption({{$ex}})">Stergeți ultima varianta</button>
-                                        <br>
-                                        <small>Numarul de variante de raspuns generate:</small>
-                                        <label>
-                                            <input id="number-of-options-exercise-{{$ex}}" name="number_of_generated_options_{{$ex}}" type="text" class="form-control nr-of-ops-per-ex" size="1" placeholder="Nr" onchange="$('#collapseExerciseCorrectness_{{$ex}}').collapse();">
-                                        </label>
-
-                                        <div class="collapse" id="collapseExerciseCorrectness_{{$ex}}">
-                                            <div class="card card-body" style="width: 8.1rem; height: 5.4rem;">
-                                                <div class="row" style=" padding-bottom: 30px;">
-                                                    <small>
-                                                            <label for="correct-options-ex-{{$ex}}">
-                                                                Corecte:&nbsp;
-                                                                <input id="correct-options-ex-{{$ex}}" name="correct_options_ex_{{$ex}}" type="text" class="form-control col correct-wrong-options" value="0">
-                                                            </label>
-                                                            <label for="wrong-options-ex-{{$ex}}">
-                                                                Gresite:&nbsp;
-                                                                <input id="wrong-options-ex-{{$ex}}" name="wrong_options_ex_{{$ex}}" type="text" class="form-control col correct-wrong-options" value="0">
-                                                            </label>
-                                                    </small>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </label>
-                                <!-- </OPTIONS> -->
-
-                                <label for="points-exercise-{{$ex}}" class="large-text-font">Puncte:
-                                    <input id="points-exercise-{{$ex}}" name="points_exercise_{{$ex}}" type="text" class="form-control" placeholder="Puncte">
-                                </label>
-                            </div>
-                        </div>
-                    @endfor
-
-                    <button type="button" class="btn btn-outline-primary" onclick="addExercise()">Adăugați încă un exercitiu</button>
-                    <button type="button" class="btn btn-outline-danger" onclick="removeExercise()">Stergeți ultimal exercitiu</button>
-
-                </div>
-            </div>
-
-            <!-- </EXERCITII> -->
-
-            <br>
-            <div class="position-relative">
-                <label for="exam-minimum" class="large-text-font"><b>Punctajul minim:</b>
-                    <input id="exam-minimum" name="exam_minimum" type="text" class="form-control @error('exam_minimum') is-invalid @enderror" placeholder="Punctaj minim">
-                    @error('exam_minimum')
-                        <div class="invalid-tooltip invalid-tooltip-upper">
-                            {{ $message }}
-                        </div>
-                    @enderror
-                </label>
-            </div>
 
             <br>
             <p class="large-text-font"><b>Penalizare:</b>

@@ -12,7 +12,7 @@
             <div class="text-center">
                 <h1>Nu aveți programat niciun examen momentan.</h1>
                 <br>
-                <button type="button" class="btn btn-info btn-lg"  onclick="window.location='{{ route('prepare_exam') }}'">
+                <button type="button" class="btn btn-info btn-lg"  onclick="window.location='{{ route('prepare_any_exam') }}'">
                     Pregatiți un examen
                 </button>
             </div>

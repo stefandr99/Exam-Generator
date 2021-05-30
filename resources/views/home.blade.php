@@ -18,7 +18,7 @@
                         </div>
                     @endif
 
-                    {{ __('Platformă de examinare pentru materia Baze de date') }}
+                    {{ __('Platformă de examinare pentru Facultatea de Informatica') }}
                 </div>
             </div>
         </div>

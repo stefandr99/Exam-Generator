@@ -121,7 +121,7 @@
                                 <br>
                                 <div class="second-margin-left-exam-exercises">
                                     <label for="exam-exercise-{{$ex}}" class="large-text-font">Tipul exercitiului:
-                                        <select id="exam-exercise-{{$ex}}" name="exam_exercise_{{$ex}}" class="form-control">
+                                        <select id="exam-exercise-{{$ex}}" name="exam_exercise_{{$ex}}" class="custom-select form-control">
                                             <option value="" selected disabled>--</option>
                                             <option value="type-1">
                                                 Determinarea dependețelor în funcție de o relație "r" dată tabelar

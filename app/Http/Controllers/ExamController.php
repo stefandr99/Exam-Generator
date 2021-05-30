@@ -143,7 +143,7 @@ class ExamController extends Controller
         $presentDate->add(new DateInterval('PT3H'));
 
         if($examsInformation[0] == 2)
-            return view('program/TeachersProgram', ['exams' => $examsInformation[1], 'presentDate' => $presentDate]);
+            return view('program/teachersProgram', ['exams' => $examsInformation[1], 'presentDate' => $presentDate]);
         else
             return view('program/studentsProgram', ['exams' => $examsInformation[1], 'teachers' => $examsInformation[2],
                 'presentDate' => $presentDate]);
