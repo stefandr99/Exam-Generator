@@ -14,46 +14,46 @@
             <div class="row">
                 <div class="col-sm-5 mx-auto">
 
-                        <div class="card mt-3 tab-card text-center">
-                            <div class="card-header tab-card-header">
-                                <ul class="nav nav-tabs card-header-tabs" id="examSubjectInfo" role="tablist">
-                                    <li class="nav-item">
-                                        <a class="nav-link" id="subject-tab" data-toggle="tab" href="#subject" role="tab" aria-controls="Materia" aria-selected="true">Materia</a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link" id="type-tab" data-toggle="tab" href="#type" role="tab" aria-controls="TipulExamenului" aria-selected="false">Tipul</a>
-                                    </li>
-                                </ul>
-                            </div>
-
-                            <div class="tab-content" id="subjectTypeContent">
-                                <div class="tab-pane fade show active p-3" id="subject" role="tabpanel" aria-labelledby="subject-tab">
-                                    <h5 class="card-title">Materia examenului</h5>
-                                    <p class="card-text">Va rugam sa selectati materia pentru acest examen.</p>
-
-                                    <select id="exam-subject" name="exam_course" class="form-control custom-select @error('exam_course') is-invalid @enderror" style="width: 70%">
-                                        <option disabled selected value="">--</option>
-                                        @foreach($courses as $course)
-                                            <option value="{{ $course->id }}" {{ (old("exam_course") == $course->id ? "selected":"") }}>{{ $course->name }}</option>
-                                        @endforeach
-
-                                    </select>
-
-                                </div>
-                                <div class="tab-pane fade p-3" id="type" role="tabpanel" aria-labelledby="type-tab">
-                                    <h5 class="card-title">Tipul Examenului</h5>
-                                    <p class="card-text">Va rugam sa selectati ce fel de examen va fi acesta.</p>
-
-                                    <select id="exam-type" name="exam_type" class="form-control custom-select align-content-center @error('exam_type') is-invalid @enderror" style="width: 50%;">
-                                        <option selected disabled value="">--</option>
-                                        @foreach(array('Parțial', 'Examen', 'Restanță') as $type)
-                                            <option value="{{$type}}" {{ (old("exam_type") == $type ? "selected":"") }}>{{$type}}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-
-                            </div>
+                    <div class="card mt-3 tab-card text-center">
+                        <div class="card-header tab-card-header">
+                            <ul class="nav nav-tabs card-header-tabs" id="examSubjectInfo" role="tablist">
+                                <li class="nav-item">
+                                    <a class="nav-link" id="subject-tab" data-toggle="tab" href="#subject" role="tab" aria-controls="Materia" aria-selected="true">Materia</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" id="type-tab" data-toggle="tab" href="#type" role="tab" aria-controls="TipulExamenului" aria-selected="false">Tipul</a>
+                                </li>
+                            </ul>
                         </div>
+
+                        <div class="tab-content" id="subjectTypeContent">
+                            <div class="tab-pane fade show active p-3" id="subject" role="tabpanel" aria-labelledby="subject-tab">
+                                <h5 class="card-title">Materia examenului</h5>
+                                <p class="card-text">Va rugam sa selectati materia pentru acest examen.</p>
+
+                                <select id="exam-subject" name="exam_course" class="form-control custom-select @error('exam_course') is-invalid @enderror" style="width: 70%">
+                                    <option disabled selected value="">--</option>
+                                    @foreach($courses as $course)
+                                        <option value="{{ $course->id }}" {{ (old("exam_course") == $course->id ? "selected":"") }}>{{ $course->name }}</option>
+                                    @endforeach
+
+                                </select>
+
+                            </div>
+                            <div class="tab-pane fade p-3" id="type" role="tabpanel" aria-labelledby="type-tab">
+                                <h5 class="card-title">Tipul Examenului</h5>
+                                <p class="card-text">Va rugam sa selectati ce fel de examen va fi acesta.</p>
+
+                                <select id="exam-type" name="exam_type" class="form-control custom-select align-content-center @error('exam_type') is-invalid @enderror" style="width: 50%;">
+                                    <option selected disabled value="">--</option>
+                                    @foreach(array('Parțial', 'Examen', 'Restanță') as $type)
+                                        <option value="{{$type}}" {{ (old("exam_type") == $type ? "selected":"") }}>{{$type}}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+
+                        </div>
+                    </div>
 
                 </div>
 
@@ -116,6 +116,9 @@
             </div>
 
             <!-- <EXERCITII> -->
+            @include('prepareTemplates.optionAny')
+            @include('prepareTemplates.exerciseAny')
+
             <div class="large-text-font">
                 <label>
                     <input hidden id="number_of_exercises" name="number_of_exercises" value="0">
@@ -124,18 +127,18 @@
                         <div class="card mt-3 tab-card">
                             <div class="card-header tab-card-header">
                                 <ul class="nav nav-tabs card-header-tabs" id="exercisesTab" role="tablist">
-                                    <li class="nav-item" id="exercise_1_tab">
-                                        <a class="nav-link" id="exercise_1_title" data-toggle="tab" href="#exercise_1" role="tab" aria-controls="Exercise1" aria-selected="true">Exercitiul 1 &nbsp;<span class="close mt-1" onclick="deleteTab(this.parentNode.parentNode.id);">&times;</span></a>
+                                    <li class="nav-item" id="exercise_0_tab">
+                                        <a class="nav-link" id="exercise_0_title" data-toggle="tab" href="#exercise_0" role="tab" aria-controls="Exercise1" aria-selected="true">Exercitiul 1 &nbsp;<span class="close mt-1" onclick="deleteTab(this.parentNode.parentNode.id);">&times;</span></a>
                                     </li>
                                     <li class="nav-item" id="add_exercise_tab">
-                                        <a class="nav-link" id="add_exercise_button" aria-selected="false" onclick="addNewTab();"><i class="fas fa-plus-circle"></i></a>
+                                        <a class="nav-link" id="add_exercise_button" aria-selected="false" onclick="addNewExercise();"><i class="fas fa-plus-circle"></i></a>
                                     </li>
                                 </ul>
                             </div>
 
                             <div class="tab-content" id="exercisesContent">
-                                <div class="tab-pane fade show active p-3" id="exercise_1" role="tabpanel" aria-labelledby="ex-1-tab">
-                                    <label for="text-exercise-0" class="card-text text-uppercase font-weight-bold">Enunt:</label>
+                                <div class="tab-pane fade show active p-3" id="exercise_0" role="tabpanel" aria-labelledby="ex-0-tab">
+                                    <label class="card-text text-uppercase font-weight-bold">Enunt:</label>
                                     <textarea id="text-exercise-0" name="text_exercise_0" class="form-control @error('text_exercise_0') is-invalid @enderror" rows="3" cols="100" placeholder="Enunt">
                                         {{old('text_exercise_0')}}
                                     </textarea>
@@ -146,7 +149,7 @@
                                     @enderror
 
                                     <input hidden id="number_of_options_exercise_0" name="number_of_options_exercise_0" value="0">
-                                    <label for="exercise-0-option" class="card-text text-uppercase font-weight-bold">Variante de raspuns:</label>
+                                    <label class="card-text text-uppercase font-weight-bold">Variante de raspuns:</label>
                                     <div id="div_exercise_0_options">
                                         <div id="div_exercise_0_option_0">
                                             <div class="inline-elements">
@@ -165,8 +168,8 @@
                                         </div>
                                     </div>
 
-                                    <button type="button" class="btn btn-outline-info btn-sm" onclick="addExerciseOption2(0)">Adăugați încă o varianta</button>
-                                    <button type="button" class="btn btn-outline-danger btn-sm" onclick="removeOption2(0)">Stergeți ultima varianta</button>
+                                    <button id="add_option_0" type="button" class="btn btn-outline-info btn-sm" onclick="addOption(0)">Adăugați încă o varianta</button>
+                                    <button id="delete_option_0" type="button" class="btn btn-outline-danger btn-sm" onclick="removeOption(0)">Stergeți ultima varianta</button>
 
                                     <br>
                                     <small>Numarul de variante de raspuns generate:</small>
@@ -345,6 +348,7 @@
 
             <div class="r_relationship">
                 <button type="submit" class="btn btn-success btn-lg btn-block">Programați examenul</button>
+            </div>
             </div>
         </form>
 
