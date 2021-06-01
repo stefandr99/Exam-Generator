@@ -84,18 +84,20 @@ function onRadioPenaltyLimitCollapse() {
     }
 }
 
-
+/**
+ * Prepare any exam --BEGIN--
+ */
 function addNewExercise() {
     var numberOfExercisesInput = document.getElementById('number_of_exercises');
     var numberOfExercises = parseInt(numberOfExercisesInput.value);
     numberOfExercises++;
     numberOfExercisesInput.value = numberOfExercises;
 
-    addNewTab(numberOfExercises);
+    addNewTab(numberOfExercises, 'any');
     addExerciseContent(numberOfExercises);
 }
 
-function addNewTab(numberOfExercises) {
+function addNewTab(numberOfExercises, subject) {
     var existingLi = document.querySelector('#exercise_0_tab');
     var clone = existingLi.cloneNode(true);
     clone.id = 'exercise_' + numberOfExercises + '_tab';
@@ -111,7 +113,7 @@ function addNewTab(numberOfExercises) {
     closeTabButton.innerHTML = '&times;';
 
     var closeId = 'exercise_' + numberOfExercises + '_tab';
-    let deleteTabFunction = "deleteTab('" + closeId + "')";
+    let deleteTabFunction = "deleteTab('" + closeId + "', '" + subject + "')";
     closeTabButton.setAttribute( "onClick", deleteTabFunction );
 
     aTabFile.appendChild(closeTabButton);
@@ -162,8 +164,6 @@ function setExerciseOptionBody(numberOfExercises, div) {
 
     var optionInputLabel = children[0];
     optionInputLabel.setAttribute( "for", 'exercise-' + numberOfExercises + '-option-0' );
-    //console.log(optionInputLabel.nodeName + ": " + optionInputLabel.for)
-    //console.log();
 
     var optionInput = children[2];
     optionInput.id = 'exercise-' + numberOfExercises + '-option-0';
@@ -222,14 +222,12 @@ function setExerciseOptionGenerated(numberOfExercises, children) {
 function setExercisePoints(numberOfExercises, pointsLabel) {
     pointsLabel.setAttribute( "for", 'points-exercise-' + numberOfExercises );
 
-    pointsInput = pointsLabel.childNodes[1];
+    var pointsInput = pointsLabel.childNodes[1];
     pointsInput.id = 'points-exercise-' + numberOfExercises;
     pointsInput.name = 'points_exercise_' + numberOfExercises;
 }
 
-
-
-function deleteTab(id) {
+function deleteTab(id, subject) {
     var numberOfExercisesInput = document.getElementById('number_of_exercises');
     var numberOfExercises = parseInt(numberOfExercisesInput.value);
 
@@ -239,7 +237,7 @@ function deleteTab(id) {
 
         var exerciseNumber = id.split("_")[1];
 
-        renameTabs(numberOfExercises, parseInt(exerciseNumber));
+        renameTabs(numberOfExercises, parseInt(exerciseNumber), subject);
 
         var exerciseId = 'exercise_' + numberOfExercises;
         var exerciseToRemove = document.getElementById(exerciseId);
@@ -251,7 +249,7 @@ function deleteTab(id) {
     }
 }
 
-function renameTabs(numberOfExercises, idDeleted) {
+function renameTabs(numberOfExercises, idDeleted, subject) {
     for(var ex = idDeleted + 1; ex <= numberOfExercises; ex++) {
         let currentExercise = ex - 1;
         var idTabLi = "exercise_" + ex + "_tab";
@@ -274,13 +272,12 @@ function renameTabs(numberOfExercises, idDeleted) {
         tabTitle.innerHTML = 'Exercitiul ' + (currentExercise + 1) + '&nbsp;';
         tabTitle.appendChild(closeTabButton);
 
-        /*var idContentCard = "exercise_" + ex;
-        var contentCard = document.getElementById(idContentCard);
-        if(contentCard != null)
-            contentCard.id = "exercise_" + currentExercise;*/
         tabTitle.href = "#exercise_" + currentExercise;
 
-        changeExerciseContent(ex - 1, ex);
+        if(subject === 'any')
+            changeExerciseContent(ex - 1, ex);
+        else
+            changeDbExerciseContent(ex - 1, ex);
     }
 }
 
@@ -336,14 +333,6 @@ function changeExerciseContent(decrementedExercise, currExercise) {
     decrPointsInput.value = currPointsInput.value;
 }
 
-
-
-
-
-
-
-
-
 function addOption(exercise) {
     var optionCounterId = 'number_of_options_exercise_' + exercise;
     var optionsCounter = document.getElementById(optionCounterId);
@@ -392,6 +381,10 @@ function removeOption(exercise) {
         optionsCounter.value = parseInt(optionsCounter.value) - 1;
     }
 }
+
+/**
+ * Prepare any Exam --END--
+ */
 
 
 

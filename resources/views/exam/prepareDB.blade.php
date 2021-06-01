@@ -11,75 +11,119 @@
         <form class="form-group" action="{{route('schedule_DB_exam')}}" method="POST">
             @csrf
 
-            <div class="d-flex  justify-content-between">
-
+            <div class="row">
                 <input name="exam_course" value="{{$dbCourse->id}}" hidden>
-                <div class="position-relative">
-                    <label for="exam-type" class="large-text-font"><b>Tipul examenului:</b></label><br>
-                        <select id="exam-type" name="exam_type" class="form-control custom-select @error('exam_type') is-invalid @enderror" style="width: 150px; margin-top: -8px">
-                            <option disabled selected value="">--</option>
-                            @foreach(array('Parțial', 'Examen', 'Restanță') as $type)
-                                <option value="{{$type}}">{{$type}} {{ (old("exam_type") == $type ? "selected":"") }}</option>
-                            @endforeach
-                        </select>
 
-                        @error('exam_type')
-                            <span class="invalid-tooltip invalid-tooltip-upper">
-                                {{ $message }}
-                            </span>
-                        @enderror
-                </div>
-
-                <div class="position-relative">
-                    <label for="exam-date" class="large-text-font">
-                        <b>Data și ora examenului:</b>
-                        <input id="exam-date" name="exam_date" class="form-control @error('exam_date') is-invalid @enderror" type="datetime-local" value="{{$tomorrow . "T08:00:00"}}">
-
-                        @error('exam_date')
-                            <script>
-                                document.getElementById("exam-date").value = {{old('exam_date')}}
-                            </script>
-                            <span class="invalid-tooltip">
-                                {{ $message }}
-                            </span>
-                        @enderror
-                    </label>
-                </div>
-
-                <label for="exam-duration" class="large-text-font"><b>Durata examenului:</b>
-                    <div class="min-and-hour-exam-parent">
-                        <div class="position-relative">
-                            <input id="exam-duration-hours" name="exam_hours" type="text" class="form-control hour-exam-column @error('exam_hours') is-invalid @enderror" value="{{old('exam_hours')}}" size="5" placeholder="Ore">
-                            @error('exam_hours')
-                            <div class="invalid-tooltip">
-                                {{ $message }}
-                            </div>
-                            @enderror
+                <div class="col-sm-5 mx-auto">
+                    <div class="card mt-3 tab-card text-center">
+                        <div class="card-header tab-card-header">
+                            <ul class="nav nav-tabs card-header-tabs" id="examSubjectInfo" role="tablist">
+                                <li class="nav-item">
+                                    <a class="nav-link" id="type-tab" data-toggle="tab" href="#type" role="tab" aria-controls="TipulExamenului" aria-selected="true">Tipul</a>
+                                </li>
+                            </ul>
                         </div>
 
-                        <div class="position-relative">
-                            <input id="exam-duration-minutes" name="exam_minutes" type="text" class="form-control min-exam-column @error('exam_minutes') is-invalid @enderror" value="{{old('exam_minutes')}}" size="5" placeholder="Minute">
-                            @error('exam_minutes')
-                            <div class="invalid-tooltip" style="margin-left: 15px;">
-                                {{ $message }}
+                        <div class="tab-content" id="subjectTypeContent">
+                            <div class="tab-pane fade show active p-3" id="type" role="tabpanel" aria-labelledby="type-tab">
+                                <h5 class="card-title">Tipul Examenului</h5>
+                                <p class="card-text">Va rugam sa selectati ce fel de examen va fi acesta.</p>
+
+                                <select id="exam-type" name="exam_type" class="form-control custom-select align-content-center @error('exam_type') is-invalid @enderror" style="width: 50%;">
+                                    <option selected disabled value="">--</option>
+                                    @foreach(array('Parțial', 'Examen', 'Restanță') as $type)
+                                        <option value="{{$type}}" {{ (old("exam_type") == $type ? "selected":"") }}>{{$type}}</option>
+                                    @endforeach
+                                </select>
+                                @error('exam_type')
+                                    <span class="invalid-tooltip invalid-tooltip-upper">
+                                        {{ $message }}
+                                    </span>
+                                @enderror
                             </div>
-                            @enderror
+
                         </div>
                     </div>
-                </label>
+                </div>
+
+                <div class="col-sm-5 mx-auto">
+                    <div class="card mt-3 tab-card text-center">
+                        <div class="card-header tab-card-header">
+                            <ul class="nav nav-tabs card-header-tabs" id="timeTab" role="tablist">
+                                <li class="nav-item">
+                                    <a class="nav-link" id="date-tab" data-toggle="tab" href="#dateTime" role="tab" aria-controls="Data" aria-selected="true">Data</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" id="hours-mins-tab" data-toggle="tab" href="#hoursAndMins" role="tab" aria-controls="OreMinute" aria-selected="false">Ore si minute</a>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div class="tab-content" id="dateTimeContent">
+                            <div class="tab-pane fade show active p-3" id="dateTime" role="tabpanel" aria-labelledby="date-tab">
+                                <h5 class="card-title">Data sustinerii examenului</h5>
+                                <p class="card-text">Va rugam sa alegeti data sustinerii examenului.</p>
+
+                                <input id="exam-date" name="exam_date" class="form-control mx-auto @error('exam_date') is-invalid @enderror" type="datetime-local" value="{{$tomorrow . "T08:00:00"}}" style="width: 60%;">
+
+                                @error('exam_date')
+                                    <span class="invalid-tooltip">
+                                        {{ $message }}
+                                    </span>
+                                @enderror
+
+                            </div>
+                            <div class="tab-pane fade p-3" id="hoursAndMins" role="tabpanel" aria-labelledby="hours-mins-tab">
+                                <h5 class="card-title">Durata examenului</h5>
+                                <p class="card-text">Va rugam sa introduceti durata examenului in ore si minute.</p>
+
+                                <div class="form-row">
+                                    <div class="col-4 mx-auto">
+                                        <input id="exam-duration-hours" name="exam_hours" type="text" class="form-control @error('exam_hours') is-invalid @enderror" placeholder="Ore" value="{{ old('exam_hours') }}" autofocus>
+                                        @error('exam_hours')
+                                            <div class="invalid-tooltip">
+                                                {{ $message }}
+                                            </div>
+                                        @enderror
+                                    </div>
+
+                                    <div class="col-4 mx-auto">
+                                        <input id="exam-duration-minutes" name="exam_minutes" type="text" class="form-control @error('exam_minutes') is-invalid @enderror" placeholder="Minute" value="{{ old('exam_minutes') }}" autofocus>
+                                        @error('exam_minutes')
+                                            <div class="invalid-tooltip">
+                                                {{ $message }}
+                                            </div>
+                                        @enderror
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
 
+            @include('prepareTemplates.exerciseDB')
             <!-- <EXERCITII> -->
             <div class="large-text-font">
-                <b>Exerciții:</b><label>
+                <label>
                     <input hidden id="number_of_exercises" name="number_of_exercises" value="0">
                 </label>
-                <div class="first-margin-left-exam-exercises">
-                    Exercițiul 1.
-                    <br>
-                    <div class="second-margin-left-exam-exercises">
-                        <div class="position-relative">
-                            <label for="exam-exercise-0" class="large-text-font">Tipul exercițiului:
+                <div class="col-12 mx-auto">
+                    <div class="card mt-3 tab-card">
+                        <div class="card-header tab-card-header">
+                            <ul class="nav nav-tabs card-header-tabs" id="exercisesTab" role="tablist">
+                                <li class="nav-item" id="exercise_0_tab">
+                                    <a class="nav-link" id="exercise_0_title" data-toggle="tab" href="#exercise_0" role="tab" aria-controls="Exercise1" aria-selected="true">Exercitiul 1 &nbsp;<span class="close mt-1" onclick="deleteTab(this.parentNode.parentNode.id);">&times;</span></a>
+                                </li>
+                                <li class="nav-item" id="add_exercise_tab">
+                                    <a class="nav-link" id="add_exercise_button" aria-selected="false" onclick="addNewDbExercise();"><i class="fas fa-plus-circle"></i></a>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div class="tab-content" id="exercisesContent">
+                            <div class="tab-pane fade show active p-3" id="exercise_0" role="tabpanel" aria-labelledby="ex-0-tab">
+                                <label for="exam-exercise-0" class="card-text text-uppercase font-weight-bold">Tipul exercițiului:</label>
                                 <select id="exam-exercise-0" name="exam_exercise_0"  class="custom-select form-control @error('exam_exercise_0') is-invalid @enderror">
                                     <option value="" selected disabled>--</option>
                                     <option value="type-1" {{ (old("exam_exercise_0") == "type-1" ? "selected":"") }}>
@@ -96,75 +140,36 @@
                                     </option>
                                 </select>
                                 @error('exam_exercise_0')
+                                    <div class="invalid-tooltip invalid-tooltip-upper">
+                                        {{ $message }}
+                                    </div>
+                                @enderror
+
+                                <label for="points-exercise-0" class="card-text text-uppercase font-weight-bold">Puncte:
+                                    <input id="points-exercise-0" name="points_exercise_0" type="text" class="form-control @error('points_exercise_0') is-invalid @enderror" placeholder="Puncte">
+                                    @error('points_exercise_0')
+                                    <div class="invalid-tooltip invalid-tooltip-upper">
+                                        {{ $message }}
+                                    </div>
+                                    @enderror
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="card-footer">
+                            <label for="exam-minimum" class="card-text text-uppercase font-weight-bold">Punctaj minim:
+                                <input id="exam-minimum" name="exam_minimum" type="text" class="form-control @error('exam_minimum') is-invalid @enderror" placeholder="Punctaj minim">
+                                @error('exam_minimum')
                                 <div class="invalid-tooltip invalid-tooltip-upper">
                                     {{ $message }}
                                 </div>
                                 @enderror
                             </label>
                         </div>
-                        <div class="position-relative">
-                            <label for="exercise-0-points" class="large-text-font">Puncte:
-                                <input id="exercise-0-points" name="points_exercise_0" type="text" class="form-control @error('points_exercise_0') is-invalid @enderror" value="{{old('points_exercise_0')}}" placeholder="Puncte">
-                                @error('points_exercise_0')
-                                <div class="invalid-tooltip invalid-tooltip-upper">
-                                    Va rugam adaugati punctajul exercitiului.
-                                </div>
-                                @enderror
-                            </label>
-                        </div>
                     </div>
-
-                    <div class="extra-exercises">
-                        @for($ex = 1; $ex < 100; $ex++)
-                            <div hidden id="exercise-{{$ex}}">
-                                Exercițiul {{ $ex + 1 }}.
-                                <br>
-                                <div class="second-margin-left-exam-exercises">
-                                    <label for="exam-exercise-{{$ex}}" class="large-text-font">Tipul exercitiului:
-                                        <select id="exam-exercise-{{$ex}}" name="exam_exercise_{{$ex}}" class="custom-select form-control">
-                                            <option value="" selected disabled>--</option>
-                                            <option value="type-1">
-                                                Determinarea dependețelor în funcție de o relație "r" dată tabelar
-                                            </option>
-                                            <option value="type-2">
-                                                Determinarea dependețelor în funcție de o relație "Catalog(elev, notă, materie, datăNotare, profesor)" ce impune anumite restricții
-                                            </option>
-                                            <option value="type-3">
-                                                Determinarea X+ în funcție de o schemă de relație "R" și o mulțime &Sigma; de dependențe funcționale
-                                            </option>
-                                            <option value="type-4">
-                                                Determinarea cheilor candidat pentru o schemă de relație "R" și mulțimile de dependență &Sigma; și &Delta;
-                                            </option>
-                                        </select>
-                                    </label>
-                                    <br>
-                                    <label for="exercise-{{$ex}}-points" class="large-text-font">Puncte:
-                                        <input id="exercise-{{$ex}}-points" name="points_exercise_{{$ex}}" type="text" class="form-control" placeholder="Puncte">
-                                    </label>
-                                </div>
-                            </div>
-                        @endfor
-                    </div>
-
-
-                    <br>
-                    <button type="button" class="btn btn-outline-primary" onclick="addDBExercise()">Adăugați încă un exercițiu</button>
-                    <button type="button" class="btn btn-outline-danger" onclick="removeDBExercise()">Stergeți ultimul exercițiu</button>
                 </div>
             </div>
-            <br>
 
-            <div class="position-relative">
-                <label for="exam-minimum" class="large-text-font"><b>Punctajul minim:</b>
-                    <input id="exam-minimum" name="exam_minimum" type="text" class="form-control @error('exam_minimum') is-invalid @enderror" value="{{old('exam_minimum')}}" placeholder="Punctaj minim">
-                    @error('exam_minimum')
-                    <div class="invalid-tooltip invalid-tooltip-upper">
-                        {{ $message }}
-                    </div>
-                    @enderror
-                </label>
-            </div>
-            <br>
             <p class="large-text-font"><b>Penalizare:</b>
                 <br>
                 <small>
