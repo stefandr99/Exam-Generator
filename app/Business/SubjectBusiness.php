@@ -92,7 +92,6 @@ class SubjectBusiness
                 break;
             default:
                 $exercises = $this->generateAny($examInfo);
-                //$exercises = $this->generateDBSubject($examInfo);
                 break;
         }
 

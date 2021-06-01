@@ -274,10 +274,10 @@ function renameTabs(numberOfExercises, idDeleted) {
         tabTitle.innerHTML = 'Exercitiul ' + (currentExercise + 1) + '&nbsp;';
         tabTitle.appendChild(closeTabButton);
 
-        var idContentCard = "exercise_" + ex;
+        /*var idContentCard = "exercise_" + ex;
         var contentCard = document.getElementById(idContentCard);
         if(contentCard != null)
-            contentCard.id = "exercise_" + currentExercise;
+            contentCard.id = "exercise_" + currentExercise;*/
         tabTitle.href = "#exercise_" + currentExercise;
 
         changeExerciseContent(ex - 1, ex);
@@ -285,15 +285,15 @@ function renameTabs(numberOfExercises, idDeleted) {
 }
 
 function changeExerciseContent(decrementedExercise, currExercise) {
-    console.log(decrementedExercise);
-    console.log(currExercise);
 
     let decrementedTextarea = document.getElementById('text-exercise-' + decrementedExercise);
     let currTextarea = document.getElementById('text-exercise-' + currExercise);
     decrementedTextarea.value = currTextarea.value;
 
-    let decrementedNumberOfOp = document.getElementById('number_of_options_exercise_' + decrementedExercise);
-    let currentNumberOfOp = document.getElementById('number_of_options_exercise_' + currExercise);
+    var decrementedNumberOfOp = document.getElementById('number_of_options_exercise_' + decrementedExercise).value;
+    decrementedNumberOfOp = parseInt(decrementedNumberOfOp);
+    var currentNumberOfOp = document.getElementById('number_of_options_exercise_' + currExercise).value;
+    currentNumberOfOp = parseInt(currentNumberOfOp);
 
     for(let i = 0; i <= currentNumberOfOp; i++) {
         if(i > decrementedNumberOfOp)
@@ -305,7 +305,7 @@ function changeExerciseContent(decrementedExercise, currExercise) {
 
         let radioInputAnswer = 'exercise_' + currExercise + '_option_' + i + '_answer';
         var answer = document.querySelector('input[name=' + radioInputAnswer + ']:checked').value;
-        if(answer === true) {
+        if(answer === 'true') {
             let trueRadioInput = document.getElementById('exercise-' + decrementedExercise + '-option-' + i + '-true')
             trueRadioInput.checked = true;
         }
@@ -317,7 +317,19 @@ function changeExerciseContent(decrementedExercise, currExercise) {
 
     while(decrementedNumberOfOp > currentNumberOfOp) {
         removeOption(decrementedExercise);
+        decrementedNumberOfOp--;
     }
+
+    var decrOptionsGenInput = document.getElementById('number-of-options-exercise-' + decrementedExercise);
+    var currOptionsGenInput = document.getElementById('number-of-options-exercise-' + currExercise);
+    decrOptionsGenInput.value = currOptionsGenInput.value;
+
+    var decrCorrectOptionsGenInput = document.getElementById('correct-options-ex-' + decrementedExercise);
+    var currCorrectOptionsGenInput = document.getElementById('correct-options-ex-' + currExercise);
+    decrCorrectOptionsGenInput.value = currCorrectOptionsGenInput.value;
+    var decrWrongOptionsGenInput = document.getElementById('wrong-options-ex-' + decrementedExercise);
+    var currWrongOptionsGenInput = document.getElementById('wrong-options-ex-' + currExercise);
+    decrWrongOptionsGenInput.value = currWrongOptionsGenInput.value;
 
     let decrPointsInput = document.getElementById('points-exercise-' + decrementedExercise);
     let currPointsInput = document.getElementById('points-exercise-' + currExercise);
