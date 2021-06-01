@@ -19,34 +19,99 @@
         @else
             <div class="row">
                 @foreach($exams as $exam)
-                    <div class="col-sm-6">
-                        <div class="card text-center">
+                    <div class="col-sm-5 mx-auto">
+                        <div class="card">
                             <div class="card-header">
-                                <h4>{{$exam->type}}</h4>
+                                <h3>
+                                    {{$exam->course_name}}
+                                    <span class="badge rounded-pill bg-info text-white float-right">
+                                        {{$exam->type}}
+                                    </span>
+                                </h3>
                             </div>
                             <div class="card-body">
-                                <h2 class="card-title">{{$exam->course_name}}</h2>
-                                <h5 class="card-text"><b>Catedra</b>:
-                                    @foreach($teachers[$exam->exam_id] as $teacher)
-                                        @if($teacher->name != $teachers[$exam->exam_id][count($teachers[$exam->exam_id]) - 1]->name)
-                                            {{ $teacher->name }},
-                                        @else
-                                            {{ $teacher->name }}
-                                        @endif
-                                    @endforeach
-                                </h5>
-                                <h5 class="card-text"><b>Durata</b>:
-                                    @if($exam->hours == 1)
-                                        {{ $exam->hours }} oră și
-                                    @elseif($exam->hours > 1)
-                                        {{ $exam->hours }} ore și
-                                    @endif
-                                    {{ $exam->minutes }} minute,
-                                    <b>Număr de exerciții</b>: {{ $exam->number_of_exercises }},
-                                    <br>
-                                    <b>Punctaj</b>: {{$exam->total_points}},
-                                    <b>Punctaj minim necesar</b>: {{$exam->minimum_points}}
-                                </h5>
+                                <div class="float-left px-4">
+                                    <i class="fas fa-calendar-alt fa-5x" data-toggle="collapse" href="#examDateCollapse-{{$exam->exam_id}}" style="cursor: pointer"></i>
+                                </div>
+
+                                <div class="float-right px-4">
+                                    <i class="fas fa-stopwatch fa-5x" data-toggle="collapse" href="#examTimeCollapse-{{$exam->exam_id}}" style="cursor: pointer"></i>
+                                </div>
+
+                                <div id="acc-{{$exam->exam_id}}">
+                                    <div class="text-center my-3">
+                                        <div class="collapse text-center show" id="examDateCollapse-{{$exam->exam_id}}" data-parent="#acc-{{$exam->exam_id}}">
+                                            <div class="card rounded border text-center">
+                                                <div class="card-body program-info-text-m"  style="padding: 0;">
+                                                    <i class="far fa-calendar-alt"> {{ date_format(date_create($exam->starts_at), 'd-m-Y') }}</i>
+                                                    <br>
+                                                    <i class="far fa-clock"> {{ date_format(date_create($exam->starts_at), 'H:i') }}</i>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="text-center my-3">
+                                        <div class="collapse text-center" id="examTimeCollapse-{{$exam->exam_id}}" data-parent="#acc-{{$exam->exam_id}}">
+                                            <div class="card rounded border text-center">
+                                                <div class="card-body program-time-text"  style="padding: 0;">
+                                                    <i class="fas fa-stopwatch"></i>
+                                                    @if($exam->hours == 1)
+                                                        {{ $exam->hours }} ora
+                                                    @elseif($exam->hours > 1)
+                                                        {{ $exam->hours }} ore
+                                                    @endif
+                                                    {{ $exam->minutes }} minute
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="card-body" style="margin-top: -30px;">
+                                <div class="row">
+                                    <div class="m-auto">
+                                        <div class="card rounded border text-center" >
+                                            <div class="card-body">
+                                                <div class="row">
+                                                    <table>
+                                                        <tr>
+                                                            <td class="program-numbers" id="program-nr-exercises">{{ $exam->number_of_exercises }}</td>
+                                                            <td class="program-info-text-m" style="width: 50%;">Exerciții</td>
+                                                        </tr>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="mx-auto">
+                                        <div class="card rounded border text-center" >
+                                            <div class="card-body">
+                                                <div class="row">
+                                                    <table>
+                                                        <tr>
+                                                            <td class="program-numbers" id="program-max-points">{{$exam->total_points}}</td>
+                                                            <td class="program-info-text-m" style="width: 50%;">Punctaj maxim</td>
+                                                        </tr>
+                                                    </table>
+                                                </div>
+                                                <div class="row">
+                                                    <table>
+                                                        <tr>
+                                                            <td class="program-numbers" id="program-min-points">{{$exam->minimum_points}}</td>
+                                                            <td class="program-info-text-m" style="width: 50%;">Punctaj minim</td>
+                                                        </tr>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            </div>
+                            <div class="card-footer text-center">
                                 @if(new DateTime($exam->starts_at) > $presentDate)
                                     <button type="button" class="btn btn-primary" onclick="window.location='{{ route('generate_exam', $exam->exam_id) }}'" disabled>
                                         Începe
@@ -56,9 +121,6 @@
                                         Începe
                                     </button>
                                 @endif
-                            </div>
-                            <div class="card-footer text-muted">
-                                <h4><b>Data:</b> {{ date_format(date_create($exam->starts_at), 'd-m-Y') }} <b>Ora:</b> {{ date_format(date_create($exam->starts_at), 'H:i') }}</h4>
                             </div>
                         </div>
 

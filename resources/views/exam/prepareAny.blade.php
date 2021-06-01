@@ -166,43 +166,46 @@
                                     </div>
                                 </div>
 
-                                <button id="add_option_0" type="button" class="btn btn-outline-info btn-sm" onclick="addOption(0)">Adăugați încă o varianta</button>
-                                <button id="delete_option_0" type="button" class="btn btn-outline-danger btn-sm" onclick="removeOption(0)">Stergeți ultima varianta</button>
+                                    <div class="float-left">
+                                        <button id="add_option_0" type="button" class="btn btn-outline-info btn-sm" onclick="addOption(0)">Adăugați încă o varianta</button>
+                                        <button id="delete_option_0" type="button" class="btn btn-outline-danger btn-sm" onclick="removeOption(0)">Stergeți ultima varianta</button>
 
-                                <br>
-                                <small>Numarul de variante de raspuns generate:</small>
-                                <label for="number-of-options-exercise-0">
-                                    <input id="number-of-options-exercise-0" name="number_of_generated_options_0" type="text" class="form-control nr-of-ops-per-ex @error('number_of_generated_options_0') is-invalid @enderror" size="1" placeholder="Nr" onchange="$('#collapseExerciseCorrectness_0').collapse();">
-                                </label>
+                                        <br>
+                                        <small>Numarul de variante de raspuns generate:</small>
+                                        <label for="number-of-options-exercise-0">
+                                            <input id="number-of-options-exercise-0" name="number_of_generated_options_0" type="text" class="form-control nr-of-ops-per-ex @error('number_of_generated_options_0') is-invalid @enderror" size="1" placeholder="Nr" onchange="$('#collapseExerciseCorrectness_0').collapse();">
+                                        </label>
 
-                                <div class="collapse" id="collapseExerciseCorrectness_0">
-                                    <div class="card card-body" style="width: 8.1rem; height: 5.4rem;">
-                                        <div class="row" style="padding-bottom: 30px;">
-                                            <small>
-                                                <div class="position-relative">
-                                                    <label for="correct-options-ex-0">
-                                                        Corecte: &nbsp;
-                                                        <input id="correct-options-ex-0" name="correct_options_ex_0" type="text" class="form-control col correct-wrong-options @error('correct_options_ex_0') is-invalid @enderror" value="0">
-                                                    </label>
-                                                    <label for="wrong-options-ex-0">
-                                                        Gresite:&nbsp;
-                                                        <input id="wrong-options-ex-0" name="wrong_options_ex_0" type="text" class="form-control col correct-wrong-options @error('wrong_options_ex_0') is-invalid @enderror" value="0">
-                                                    </label>
+                                        <div class="collapse" id="collapseExerciseCorrectness_0">
+                                            <div class="card card-body" style="width: 8.1rem; height: 5.4rem;">
+                                                <div class="row" style="padding-bottom: 30px;">
+                                                    <small>
+                                                        <div class="position-relative">
+                                                            <label for="correct-options-ex-0">
+                                                                Corecte: &nbsp;
+                                                                <input id="correct-options-ex-0" name="correct_options_ex_0" type="text" class="form-control col correct-wrong-options @error('correct_options_ex_0') is-invalid @enderror" value="0">
+                                                            </label>
+                                                            <label for="wrong-options-ex-0">
+                                                                Gresite:&nbsp;
+                                                                <input id="wrong-options-ex-0" name="wrong_options_ex_0" type="text" class="form-control col correct-wrong-options @error('wrong_options_ex_0') is-invalid @enderror" value="0">
+                                                            </label>
+                                                        </div>
+                                                    </small>
                                                 </div>
-                                            </small>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                                <br>
 
-                                <label for="points-exercise-0" class="card-text text-uppercase font-weight-bold">Puncte:
-                                    <input id="points-exercise-0" name="points_exercise_0" type="text" class="form-control @error('points_exercise_0') is-invalid @enderror" placeholder="Puncte">
-                                    @error('points_exercise_0')
-                                        <div class="invalid-tooltip invalid-tooltip-upper">
-                                            {{ $message }}
-                                        </div>
-                                    @enderror
-                                </label>
+                                    <div class="float-right form-inline mt-2">
+                                        <label for="points-exercise-0" class="card-text text-uppercase font-weight-bold">Puncte: &nbsp;
+                                            <input id="points-exercise-0" name="points_exercise_0" type="text" class="form-control @error('points_exercise_0') is-invalid @enderror" placeholder="Puncte">
+                                            @error('points_exercise_0')
+                                                <div class="invalid-tooltip invalid-tooltip-upper">
+                                                    {{ $message }}
+                                                </div>
+                                            @enderror
+                                        </label>
+                                    </div>
                             </div>
                         </div>
 
