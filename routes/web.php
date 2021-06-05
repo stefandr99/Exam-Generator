@@ -44,6 +44,7 @@ Route::get('/exam/{examId}/result/{userId}', 'ExamController@showResult')->name(
 Route::get('/exam/{examId}/modify/db', 'ExamController@modifyDbExam')->name('modify_db_exam');
 Route::get('/exam/{examId}/modify', 'ExamController@modifyAnyExam')->name('modify_any_exam');
 Route::put('/exam/update', 'ExamController@updateExam')->name('update_exam');
+Route::get('/exam/history', 'ExamController@history')->name('exams_history');
 
 Route::get('/program/last30Days', 'ExamController@showLast30DaysExams')->name('show_last_30days_exams');
 Route::get('/program', 'ExamController@showExams')->name('show_exams');

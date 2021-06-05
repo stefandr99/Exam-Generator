@@ -212,4 +212,9 @@ class ExamBusiness
 
         return $info;
     }
+
+    public function history($id) {
+        $exams = $this->examRepository->history($id);
+        return $exams;
+    }
 }

@@ -36,7 +36,7 @@
         <div class="row float-left mx-auto">
             <div class="card rounded">
                 <div class="card-body" style="padding: 10px;">
-                    <form class="form-inline col" action="{{route('search_user_from_exam_stats')}}">
+                    <form class="form-inline col" action="{{route('search_user_from_exam_stats')}}" style="padding: 0">
                         <div class="form-group search-subject">
                             <input name="exam" value="{{$exam->exam_id}}" hidden>
                             <label for="search-exam-subject"><b>Student:</b></label>
@@ -50,10 +50,10 @@
         <div class="row float-right mx-auto">
             <div class="card rounded">
                 <div class="card-body" style="padding: 10px;">
-                    <form class="form-inline col" action="{{route('filter_exam_stats')}}">
+                    <form class="form-inline col" action="{{route('filter_exam_stats')}}" style="padding: 0">
                         <div class="form-group">
                             <input name="exam" value="{{$exam->exam_id}}" hidden>
-                            <label for="filter_students"><b>Filtrează:</b></label>
+                            <label for="filter_students"><i class="fas fa-filter" style="font-size: 25px;"></i></label>
                             <select id="filter_students" name="filter" class="form-control mx-sm-4" onchange="this.form.submit()">
                                 @if($filter == 'all')
                                 <option value="all" selected>Toți</option>

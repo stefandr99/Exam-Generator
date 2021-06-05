@@ -337,4 +337,14 @@ class ExamRepository implements IExamRepository
             'subject' => $subjectInfo
         );
     }
+
+    public function history($id) {
+        return DB::table('exams as e')
+            ->join('subjects as s', 'exams.id', '=', 'subjects.exam_id')
+            ->join('courses as s', 'exams.course_id', '=', 'c.id')
+            ->select('e.id as exam_id', 'e.type', 'e.starts_at', 'e.number_of_exercises', 'total_points', 'e.minimum_points',
+                's.obtained_points', 'c.name as course_name', 'c.year', 'c.semester')
+                ->where('subjects.user_id', $id)
+            ->orderBy('exams.starts_at', 'desc');
+    }
 }

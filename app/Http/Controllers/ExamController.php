@@ -245,4 +245,13 @@ class ExamController extends Controller
             'filter' => 'all'
         ]);
     }
+
+    public function history() {
+        $id = Auth::id();
+        $exams = $this->examBusiness->history($id);
+
+        return view('exam/student/history', [
+            'exam' => $exams
+        ]);
+    }
 }
