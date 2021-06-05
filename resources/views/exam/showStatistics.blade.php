@@ -7,39 +7,49 @@
 @section('content')
     <div class="container my-4">
         <div class="d-flex">
-            <div class="mr-auto p-2">
-                <h4>
-                    <b>Total puncte:</b> {{$exam->total_points}}
-                    <br>
-                    <b>Minimul de puncte:</b> {{$exam->minimum_points}}
-                </h4>
-            </div>
             <div class="p-2">
-                <h4><b>Data începerii examenului:</b> {{ date_format(date_create($exam->starts_at), 'd-m-Y') }}, {{ date_format(date_create($exam->starts_at), 'H:i') }}</h4>
-                <h4><b>Data încheierii examenului:</b> {{ date_format(date_create($exam->ends_at), 'd-m-Y') }}, {{ date_format(date_create($exam->ends_at), 'H:i') }}</h4>
+                <div class="card">
+                    <div class="card-body">
+                        <h4>
+                            <b>Total puncte:</b> {{$exam->total_points}}
+                            <br>
+                            <b>Minimul de puncte:</b> {{$exam->minimum_points}}
+                        </h4>
+                    </div>
+                </div>
+            </div>
+
+            <div class="text-center m-auto">
+                <h2><b>{{ $exam->type }} {{ $exam->course_name }}</b></h2>
+            </div>
+
+            <div class="p-2">
+                <div class="card">
+                    <div class="card-body">
+                        <h4><i class="fas fa-hourglass-start"></i> {{ date_format(date_create($exam->starts_at), 'd-m-Y') }} <i class="far fa-clock"></i> {{ date_format(date_create($exam->starts_at), 'H:i') }}</h4>
+                        <h4><i class="fas fa-hourglass-end"></i> {{ date_format(date_create($exam->ends_at), 'd-m-Y') }} <i class="fas fa-clock"></i> {{ date_format(date_create($exam->ends_at), 'H:i') }}</h4>
+                    </div>
+                </div>
             </div>
         </div>
 
-        <div class="d-flex justify-content-center">
-            <h2>{{ $exam->type }} {{ $exam->course_name }}</h2>
-        </div>
-        <br>
-
-        <div class="d-flex">
-            <div class="mr-auto p-2">
-                <div class="row">
+        <div class="row float-left mx-auto">
+            <div class="card rounded">
+                <div class="card-body" style="padding: 10px;">
                     <form class="form-inline col" action="{{route('search_user_from_exam_stats')}}">
                         <div class="form-group search-subject">
                             <input name="exam" value="{{$exam->exam_id}}" hidden>
                             <label for="search-exam-subject"><b>Student:</b></label>
                             <input type="text" name="name" id="search-exam-subject" class="form-control mx-sm-4" placeholder="Nume">
-                            <button type="submit" class="btn btn-primary">Caută</button>
+                            <button type="submit" class="btn btn-primary"><i class="fas fa-search"></i> Caută</button>
                         </div>
                     </form>
                 </div>
             </div>
-            <div class="p-2">
-                <div class="row">
+        </div>
+        <div class="row float-right mx-auto">
+            <div class="card rounded">
+                <div class="card-body" style="padding: 10px;">
                     <form class="form-inline col" action="{{route('filter_exam_stats')}}">
                         <div class="form-group">
                             <input name="exam" value="{{$exam->exam_id}}" hidden>
@@ -82,6 +92,8 @@
             </div>
         </div>
         <br>
+        <br>
+        <br>
 
         <table class="table table-striped">
             <thead class="table-primary">
@@ -94,6 +106,7 @@
                 <th scope="col">Trimiterea răspunsurilor forțată?</th>
                 <th scope="col">Rezultat</th>
                 <th scope="col">Acțiune</th>
+                <th scope="col"></th>
             </tr>
             </thead>
             <tbody>
@@ -190,8 +203,8 @@
                                     </div>
                                 </div>
                             </div>
-
                         </td>
+                           <td onclick="window.location='{{ route("show_exam_result", ['examId' => $exam->exam_id, 'userId' => $subject->user_id]) }}'" style="cursor: pointer"><i class="far fa-file-alt fa-3x"></i></td>
                     </tr>
             @endforeach
             </tbody>
