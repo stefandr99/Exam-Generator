@@ -111,7 +111,6 @@ class ExamController extends Controller
         $this->anyExamValidator($request->all())->validate();
         $data = $request->all();
 
-        //print_r($data);
         $this->examBusiness->scheduleAny($data);
 
         return redirect()->route('show_exams');
@@ -168,29 +167,32 @@ class ExamController extends Controller
     }
 
 
-    public function modifyExam($examId) {
+    public function modifyDbExam($examId) {
         $dbCourse = $this->courseBusiness->getDatabasesId();
         $exam = $this->examBusiness->getExamById($examId);
         $exam->exercises = json_decode($exam->exercises, true);
         $exam->penalization = json_decode($exam->penalization, true);
-        return view('exam/modifyDB', [
+        return view('exam/modify/database', [
             'exam' => $exam,
             'dbCourse' => $dbCourse
         ]);
     }
 
-    public function updateExam(Request $request) {
-        if ($request->ajax()) {
-            $examInfo = $request->input('info');
-            $examExercises = $request->input('exercises');
-            $penalization = $request->input('penalization');
-            $examId = $request->input('id');
-            $examInfo = json_decode($examInfo, true);
-            $examExercises = json_decode($examExercises, true);
-            $penalization = json_decode($penalization, true);
+    public function modifyAnyExam($examId) {
+        $exam = $this->examBusiness->getExamById($examId);
+        $exam->exercises = json_decode($exam->exercises, true);
+        $exam->penalization = json_decode($exam->penalization, true);
+        return view('exam/modify/any', [
+            'exam' => $exam
+        ]);
+    }
 
-            $this->examBusiness->updateExam($examId, $examInfo, $examExercises, $penalization);
-        }
+    public function updateExam(Request $request) {
+        $data = $request->all();
+
+        $this->examBusiness->update($data);
+
+        return redirect()->route('show_exams');
     }
 
     public function showExamStats($id) {

@@ -9,6 +9,7 @@ interface ICourseRepository
     public function getIdByName($name);
     public function getNameById($id);
     public function getDatabasesId();
+    public function getCourseId($courseId);
     public function getCoursesTeachers($courses);
     public function getCoursesNoTeachers($courses);
 

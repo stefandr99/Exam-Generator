@@ -110,7 +110,6 @@
                                 </div>
                             </div>
 
-                            </div>
                             <div class="card-footer text-center">
                                 @if(new DateTime($exam->starts_at) > $presentDate)
                                     <button type="button" class="btn btn-primary" onclick="window.location='{{ route('generate_exam', $exam->exam_id) }}'" disabled>
@@ -127,7 +126,6 @@
                         <br>
                     </div>
                 @endforeach
-
             </div>
         @endif
     </div>

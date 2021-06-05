@@ -133,7 +133,6 @@ class ExamRepository implements IExamRepository
         DB::table('exams')
             ->where('id', $exam['id'])
             ->update([
-                'course_id' => $exam['course_id'],
                 'type' => $exam['type'],
                 'starts_at' => $exam['starts_at'],
                 'ends_at' => $exam['ends_at'],

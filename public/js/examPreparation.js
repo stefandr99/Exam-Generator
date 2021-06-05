@@ -1,69 +1,4 @@
 
-var exerciseNumber = 0;
-function addDBExercise() {
-    exerciseNumber++;
-    let exerciseId = "exercise-" + exerciseNumber;
-    let ex = document.getElementById(exerciseId);
-    ex.removeAttribute("hidden");
-
-    nrOfExercisesId = "number_of_exercises";
-    document.getElementById(nrOfExercisesId).value = exerciseNumber;
-}
-
-function removeDBExercise() {
-    if(exerciseNumber > 0) {
-        let exerciseId = "exercise-" + exerciseNumber;
-        let ex = document.getElementById(exerciseId);
-
-        ex.hidden = true;
-
-        let exerciseTextId = "exam-exercise-" + exerciseNumber;
-        document.getElementById(exerciseTextId).value = '';
-
-        let exercisePointsId = "exercise-" + exerciseNumber + "-points";
-        document.getElementById(exercisePointsId).value = '';
-
-        let exerciseTypeId = "exam-exercise-" + exerciseNumber;
-        document.getElementById(exerciseTypeId).value = 'no-exercise';
-
-        exerciseNumber--;
-
-        nrOfExercisesId = "number_of_exercises";
-        document.getElementById(nrOfExercisesId).value = numberOfExamExercises;
-    }
-}
-
-var exerciseModifyNumber;
-function setNumberOfExercises(exercisesNr) {
-    exerciseModifyNumber = exercisesNr - 1;
-}
-
-function addOnModifyExercise() {
-    exerciseModifyNumber++;
-    let exerciseId = "exercise-" + exerciseModifyNumber;
-    let ex = document.getElementById(exerciseId);
-    ex.removeAttribute("hidden");
-}
-
-function removeOnModifyExercise() {
-    if(exerciseModifyNumber > 0) {
-        let exerciseId = "exercise-" + exerciseModifyNumber;
-        let ex = document.getElementById(exerciseId);
-
-        ex.hidden = true;
-
-        let exerciseTypeId = "exam-exercise-" + exerciseModifyNumber;
-        let exerciseType = document.getElementById(exerciseTypeId);
-        let exercisePointsId = "exercise-" + exerciseModifyNumber + "-points";
-        let exercisePoints = document.getElementById(exercisePointsId);
-        exerciseType.value = 'no-exercise';
-        exercisePoints.value = '';
-
-        exerciseModifyNumber--;
-    }
-}
-
-
 function onRadioPenaltyCollapse() {
     for (var i = 1; i < 4; i++) {
         var id = "examPenalty" + i.toString();
@@ -95,6 +30,23 @@ function addNewExercise() {
 
     addNewTab(numberOfExercises, 'any');
     addExerciseContent(numberOfExercises);
+
+    deactivateFirstContent(numberOfExercises);
+}
+
+function deactivateFirstContent(numberOfExercises) {
+    var firstId = 'exercise_0_title';
+    var firstExerciseTab = document.getElementById(firstId);
+    firstExerciseTab.ariaSelected = "false";
+    firstExerciseTab.classList.remove("active");
+    var firstContent = 'exercise_0';
+    var firstExerciseContent = document.getElementById(firstContent);
+    firstExerciseContent.classList.remove("active");
+    firstExerciseContent.classList.remove("show");
+
+    var newId = 'exercise_' + numberOfExercises + '_title';
+    var newExerciseGroup = document.getElementById(newId);
+    newExerciseGroup.click();
 }
 
 function addNewTab(numberOfExercises, subject) {
@@ -131,13 +83,12 @@ function addExerciseContent(numberOfExercises) {
     clone.id = 'exercise_' + numberOfExercises;
 
     var children = clone.childNodes;
-
     setExerciseTextarea(numberOfExercises, children[2]);
     setExerciseOptionDivs(numberOfExercises, children);
     setExerciseOptionBody(numberOfExercises, children[8].firstChild.firstChild);
-    setExerciseOptionButtons(numberOfExercises, children[10], children[12])
-    setExerciseOptionGenerated(numberOfExercises, children)
-    setExercisePoints(numberOfExercises, children[24]);
+    setExerciseOptionButtons(numberOfExercises, children[10].childNodes[0], children[10].childNodes[2])
+    setExerciseOptionGenerated(numberOfExercises, children[10])
+    setExercisePoints(numberOfExercises, children[12].firstChild);
 
     exerciseCardContent.appendChild(clone);
 }
@@ -189,7 +140,7 @@ function setExerciseOptionButtons(numberOfExercises, addButton, removeButton) {
 }
 
 function setExerciseOptionGenerated(numberOfExercises, children) {
-    var optionsGeneratedLabel = children[18];
+    var optionsGeneratedLabel = children.childNodes[8];
     optionsGeneratedLabel.setAttribute( "for", 'number-of-options-exercise-' + numberOfExercises );
 
     var optionsGenerated = optionsGeneratedLabel.firstChild;
@@ -200,7 +151,7 @@ function setExerciseOptionGenerated(numberOfExercises, children) {
         $(id).collapse();
     });
 
-    var collapseOptions = children[20];
+    var collapseOptions = children.childNodes[10];
     collapseOptions.id = 'collapseExerciseCorrectness_' + numberOfExercises;
 
     var collapseOptionsDiv = collapseOptions.firstChild.firstChild.firstChild.firstChild;
@@ -386,5 +337,23 @@ function removeOption(exercise) {
  * Prepare any Exam --END--
  */
 
+/**
+ * Modify exams
+ */
+function clickExercisesTabs() {
+    var numberOfExercisesInput = document.getElementById('number_of_exercises');
+    var numberOfExercises = parseInt(numberOfExercisesInput.value);
 
+    for(var i = 0; i <= numberOfExercises; i++) {
+        var exId = 'exercise_' + i + '_title';
+        var exerciseGroup = document.getElementById(exId);
+        exerciseGroup.click();
+    }
+    /*var firstId = 'exercise_0_title';
+    var firstExerciseGroup = document.getElementById(firstId);
+    firstExerciseGroup.ariaSelected = "false";
+    firstExerciseGroup.classList.remove("active");*/
+
+
+}
 

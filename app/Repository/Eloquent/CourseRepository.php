@@ -40,7 +40,15 @@ class CourseRepository implements ICourseRepository
     public function getDatabasesId() {
         return DB::table('courses')
             ->select('id')
-            ->where('name', "Baze de date")
+            ->where('name', 'Baze de date')
+            ->get()
+            ->first();
+    }
+
+    public function getCourseId($courseId) {
+        return DB::table('courses')
+            ->select('id')
+            ->where('id', $courseId)
             ->get()
             ->first();
     }

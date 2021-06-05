@@ -7,6 +7,8 @@ function addNewDbExercise() {
 
     addNewTab(numberOfExercises, 'db');
     addDbExerciseContent(numberOfExercises);
+
+    deactivateFirstContent(numberOfExercises);
 }
 
 function addDbExerciseContent(numberOfExercises) {

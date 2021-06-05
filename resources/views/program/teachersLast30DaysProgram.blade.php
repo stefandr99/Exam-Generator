@@ -115,7 +115,6 @@
                                 <button type="button" class="btn btn-primary" onclick="window.location='{{ route('show_exam_stats', $exam->exam_id) }}'">
                                     Vizualizare statistici
                                 </button>
-
                             </div>
                         </div>
 

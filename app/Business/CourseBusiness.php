@@ -30,6 +30,10 @@ class CourseBusiness
         return $this->courseRepository->getDatabasesId();
     }
 
+    public function getCourseId($courseId) {
+        return $this->courseRepository->getCourseId($courseId);
+    }
+
     public function addCourse($course) {
         $this->courseRepository->create($course);
     }

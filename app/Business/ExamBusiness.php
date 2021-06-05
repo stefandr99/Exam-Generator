@@ -139,25 +139,26 @@ class ExamBusiness
         return $this->examRepository->getExamById($examId);
     }
 
-    public function updateExam($id, $info, $exercises, $penalization) {
-        $endTime = $this->getExamEndTime($info[2], $info[3], $info[4]);
+    public function update($exam) {
+        $updatedExam = array();
+        $updatedExam['id'] = $exam['exam_id'];
+        $updatedExam['type'] = $exam['exam_type'];
+        $updatedExam['starts_at'] = $exam['exam_date'];
+        $updatedExam['ends_at'] = $this->getExamEndTime($exam['exam_date'], $exam['exam_hours'], $exam['exam_minutes']);
+        $updatedExam['hours'] = $exam['exam_hours'];
+        $updatedExam['minutes'] = $exam['exam_minutes'];
+        $updatedExam['number_of_exercises'] = $exam['number_of_exercises'] + 1;
 
-        $exam = array(
-            'id' => $id,
-            'course_id' => $info[0],
-            'type' => $info[1],
-            'starts_at' => $info[2],
-            'ends_at' => $endTime,
-            'hours' => $info[3],
-            'minutes' => $info[4],
-            'number_of_exercises' => $exercises[0],
-            'exercises' => json_encode($exercises[1]),
-            'total_points' => $exercises[2],
-            'minimum_points' => $info[5],
-            'penalization' => $penalization
-        );
+        if($exam['exam_course'] == 'any')
+            $exercisesInfo = $this->examService->createExercisesJSON($exam);
+        else
+            $exercisesInfo = $this->examService->createDBExercisesJSON($exam);
+        $updatedExam['exercises'] = json_encode($exercisesInfo[0]);
+        $updatedExam['total_points'] = $exercisesInfo[1];
+        $updatedExam['minimum_points'] = $exam['exam_minimum'];
+        $updatedExam['penalization'] = json_encode($this->examService->getExamPenalization($exam));
 
-        $this->examRepository->update($exam);
+        $this->examRepository->update($updatedExam);
     }
 
     public function getExamStats($examId) {

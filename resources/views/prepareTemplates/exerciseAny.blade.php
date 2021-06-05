@@ -25,37 +25,40 @@
             </div>
         </div>
 
-        <button id="add_option_x" type="button" class="btn btn-outline-info btn-sm">Adăugați încă o varianta</button>
-        <button id="delete_option_x" type="button" class="btn btn-outline-danger btn-sm">Stergeți ultima varianta</button>
+        <div class="float-left">
+            <button id="add_option_x" type="button" class="btn btn-outline-info btn-sm">Adăugați încă o varianta</button>
+            <button id="delete_option_x" type="button" class="btn btn-outline-danger btn-sm">Stergeți ultima varianta</button>
 
-        <br>
-        <small>Numarul de variante de raspuns generate:</small>
-        <label for="number-of-options-exercise-x">
-            <input id="number-of-options-exercise-x" name="number_of_generated_options_x" type="text" class="form-control nr-of-ops-per-ex" size="1" placeholder="Nr" onchange="$('#collapseExerciseCorrectness_x').collapse();">
-        </label>
+            <br>
+            <small>Numarul de variante de raspuns generate:</small>
+            <label for="number-of-options-exercise-x">
+                <input id="number-of-options-exercise-x" name="number_of_generated_options_x" type="text" class="form-control nr-of-ops-per-ex" size="1" placeholder="Nr" onchange="$('#collapseExerciseCorrectness_x').collapse();">
+            </label>
 
-        <div class="collapse" id="collapseExerciseCorrectness_x">
-            <div class="card card-body" style="width: 8.1rem; height: 5.4rem;">
-                <div class="row" style="padding-bottom: 30px;">
-                    <small>
-                        <div class="position-relative">
-                            <label for="correct-options-ex-x">
-                                Corecte: &nbsp;
-                                <input id="correct-options-ex-x" name="correct_options_ex_x" type="text" class="form-control col correct-wrong-options" value="0">
-                            </label>
-                            <label for="wrong-options-ex-x">
-                                Gresite:&nbsp;
-                                <input id="wrong-options-ex-x" name="wrong_options_ex_x" type="text" class="form-control col correct-wrong-options" value="0">
-                            </label>
-                        </div>
-                    </small>
+            <div class="collapse" id="collapseExerciseCorrectness_x">
+                <div class="card card-body" style="width: 8.1rem; height: 5.4rem;">
+                    <div class="row" style="padding-bottom: 30px;">
+                        <small>
+                            <div class="position-relative">
+                                <label for="correct-options-ex-x">
+                                    Corecte: &nbsp;
+                                    <input id="correct-options-ex-x" name="correct_options_ex_x" type="text" class="form-control col correct-wrong-options" value="0">
+                                </label>
+                                <label for="wrong-options-ex-x">
+                                    Gresite:&nbsp;
+                                    <input id="wrong-options-ex-x" name="wrong_options_ex_x" type="text" class="form-control col correct-wrong-options" value="0">
+                                </label>
+                            </div>
+                        </small>
+                    </div>
+                    <br>
                 </div>
             </div>
         </div>
-        <br>
-
-        <label for="points-exercise-x" class="card-text text-uppercase font-weight-bold">Puncte:
-            <input id="points-exercise-x" name="points_exercise_x" type="text" class="form-control" placeholder="Puncte">
-        </label>
+        <div class="float-right form-inline mt-2">
+            <label for="points-exercise-x" class="card-text text-uppercase font-weight-bold">Puncte:&nbsp;
+                <input id="points-exercise-x" name="points_exercise_x" type="text" class="form-control" placeholder="Puncte">
+            </label>
+        </div>
     </div>
 </div>

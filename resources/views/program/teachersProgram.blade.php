@@ -29,9 +29,11 @@
                                 </span>
                                 <br>
                                 @if(new DateTime($exam->ends_at) > $presentDate && new DateTime($exam->starts_at) < $presentDate)
+                                    <div class="text-center">
                                     <span class="badge rounded-pill bg-info text-dark">
                                         In desfasurare...
                                     </span>
+                                    </div>
                                 @endif
                             </h3>
                         </div>
@@ -118,8 +120,20 @@
 
                         @if(new DateTime($exam->starts_at) > $presentDate)
                             <div class="card-footer text-center">
-                                <button type="button" class="btn btn-primary" onclick="window.location='{{ route('modify_exam', $exam->exam_id) }}'">
-                                    Modifică
+                                @if($exam->course_name == 'Baze de date')
+                                    <button type="button" class="btn btn-primary" onclick="window.location='{{ route('modify_db_exam', $exam->exam_id) }}'">
+                                        Modifică
+                                    </button>
+                                @else
+                                    <button type="button" class="btn btn-primary" onclick="window.location='{{ route('modify_any_exam', $exam->exam_id) }}'">
+                                        Modifică
+                                    </button>
+                                @endif
+                            </div>
+                        @else
+                            <div class="card-footer text-center">
+                                <button type="button" class="btn btn-success" onclick="window.location='{{ route('show_exam_stats', $exam->exam_id) }}'">
+                                    Vizualizare statistici
                                 </button>
                             </div>
                         @endif
