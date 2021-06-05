@@ -85,4 +85,10 @@ class CourseRepository implements ICourseRepository
         $newCourse->credits = intval($course['credits']);
         $newCourse->save();
     }
+
+    public function delete($id) {
+        DB::table('courses')
+            ->where('id', $id)
+            ->delete();
+    }
 }

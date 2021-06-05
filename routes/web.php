@@ -63,3 +63,4 @@ Route::get('/course/all', 'CourseController@showCourses')->name('show_courses');
 Route::get('/course/search', 'CourseController@search')->name('search_course');
 Route::post('/course/addTeacher', 'DidacticController@addTeacherToCourse')->name('add_teacher_to_course');
 Route::delete('/course/deleteTeacher', 'DidacticController@deleteTeacherFromCourse')->name('delete_teacher_from_course');
+Route::delete('/course/{id}', 'CourseController@deleteCourse')->name('delete_course');

@@ -6,8 +6,11 @@ function addTeacherToUList() {
 
     var spann = document.createElement("span");
     spann.classList.add("close");
-    spann.innerHTML = "&times;";
+    spann.classList.add("text-center");
+    spann.innerHTML = "&nbsp&times;";
     spann.id = "span-" + selectedTeacher;
+    spann.style.cursor = 'pointer';
+    spann.style.marginRight = '15px';
 
     spann.onclick = function() {
         teacherName = spann.id.split("-")[1]
@@ -23,9 +26,11 @@ function addTeacherToUList() {
     li.classList.add("list-group-item");
     li.classList.add("add-course-teachers-list");
     li.classList.add("list-group-item-success");
+    li.classList.add("text-center");
+    li.classList.add("align-items-center");
+    li.style.width = '65px';
     li.id = selectedTeacher;
     li.appendChild(document.createTextNode(selectedTeacher));
-
 
     li.appendChild(spann);
 
@@ -36,7 +41,7 @@ function addTeacherToUList() {
 
 
 function addCourse() {
-    var courseName = document.getElementById("course-name").value;
+    var courseName = document.getElementById("course_name").value;
 
     var lis = document.getElementById("selected-teachers").getElementsByTagName("li");
     teachers = [];
@@ -48,6 +53,10 @@ function addCourse() {
     var semester = document.getElementById("course-semester").value;
     var credits = document.getElementById("course-credits").value
 
+    if(courseName === '' || year === '' || semester === '' || credits === '') {
+        window.location.href = "/examgenerator/course/all";
+        return;
+    }
 
     result = {
         name: courseName,

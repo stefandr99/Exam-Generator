@@ -14,8 +14,88 @@
                     <button type="submit" class="btn btn-primary">Caută</button>
                 </div>
             </form>
-            <button type="button" class="btn btn-primary add-course-button" onclick="window.location='{{route('prepare_new_course')}}'">Adaugă curs</button>
+            <button type="button" class="btn btn-primary add-course-button" data-toggle="modal" data-target="#addCourseModal">Adaugă curs</button>
         </div>
+
+        <div class="modal fade" id="addCourseModal" tabindex="-1" role="dialog" aria-labelledby="addCourseModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="addCourseModalLabel">Adaugă un nou curs</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+
+                    <form method="POST">
+                        @csrf
+
+                        <br>
+                        <div class="form-group row">
+                            <label for="course_name" class="col-md-4 col-form-label text-md-right">{{ __('Denumirea cursului') }}</label>
+                            <div class="col-md-6">
+                                <input id="course_name" name="name" type="text" class="form-control @error('name') is-invalid @enderror" value="{{ old('name') }}" required autocomplete="name" autofocus placeholder="Denumire">
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label for="course-teachers" class="col-md-4 col-form-label text-md-right">{{ __('Profesorii cursului') }}</label>
+                            <div class="col-md-6">
+                                <select id="course-teachers" class="form-control" onchange="addTeacherToUList();">
+                                    <option selected value="no-teacher">Adaugati</option>
+                                    @foreach($allTeachers as $teach)
+                                        <option value="{{ $teach->name }}">{{ $teach->name }}</option>
+                                    @endforeach
+                                </select>
+                                <ul id="selected-teachers" class="form-group list-group list-group-horizontal text-center" style="margin-top: 10px;">
+
+                                </ul>
+                            </div>
+                        </div>
+
+
+                        <div class="form-group row">
+                            <label for="course-year" class="col-md-4 col-form-label text-md-right">{{ __('Anul') }}</label>
+                            <div class="col-md-6">
+                                <select id="course-year" class="form-control col-3">
+                                    <option value="">--</option>
+                                    <option value="1">1</option>
+                                    <option value="2">2</option>
+                                    <option value="3">3</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="course-semester" class="col-md-4 col-form-label text-md-right">{{ __('Semestrul') }}</label>
+                            <div class="col-md-6">
+                                <select id="course-semester" class="form-control col-3">
+                                    <option value="">--</option>
+                                    <option value="1">I</option>
+                                    <option value="2">II</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="course-credits" class="col-md-4 col-form-label text-md-right">{{ __('Numarul de credite') }}</label>
+                            <div class="col-md-6">
+                                <select id="course-credits" class="form-control col-3">
+                                    <option value="">--</option>
+                                    @for($i = 1; $i < 9; $i++)
+                                        <option value="{{$i}}">{{ $i }}</option>
+                                    @endfor
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="modal-footer">
+                            <button class="btn btn-success" type="button" onclick="addCourse();">Adaugă</button>
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Anulează</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
         <br>
 
 
@@ -52,7 +132,9 @@
                         </td>
                         <td>
                             <button type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#addTeacherToCourse{{$course->id}}Modal">Adaugă profesor</button>
-                            <button type="button" class="btn btn-danger btn-sm"  data-toggle="modal" data-target="#deleteTeacherFromCourse{{$course->id}}Modal">Șterge profesor</button>
+                            <button type="button" class="btn btn-warning btn-sm"  data-toggle="modal" data-target="#deleteTeacherFromCourse{{$course->id}}Modal">Șterge profesor</button>
+                            <button type="button" class="btn btn-danger btn-sm"  data-toggle="modal" data-target="#deleteCourse{{$course->id}}Modal">Șterge curs</button>
+
 
                             <div class="modal fade" id="addTeacherToCourse{{$course->id}}Modal" tabindex="-1" role="dialog" aria-labelledby="addTeacherToCourse{{$course->id}}ModalLabel" aria-hidden="true">
                                 <div class="modal-dialog" role="document">
@@ -128,6 +210,29 @@
                                 </div>
                             </div>
 
+                            <div class="modal fade" id="deleteCourse{{$course->id}}Modal" tabindex="-1" role="dialog" aria-labelledby="deleteCourse{{$course->id}}ModalLabel" aria-hidden="true">
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="deleteCourse{{$course->id}}ModalLabel">Confirmare stergere curs</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <form action="{{ route('delete_course', ['id' => $course->id]) }}" method="POST" >
+                                            @csrf
+                                            @method('DELETE')
+                                            <div class="modal-body">
+                                                Sunteti sigur ca doriti sa stergeti cursul <b>{{ $course->name }}</b>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button class="btn btn-danger" type="submit">Da</button>
+                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Nu</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
 
                         </td>
                     </tr>

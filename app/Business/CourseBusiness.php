@@ -69,4 +69,8 @@ class CourseBusiness
         );
         return $result;
     }
+
+    public function delete($id) {
+        $this->courseRepository->delete($id);
+    }
 }

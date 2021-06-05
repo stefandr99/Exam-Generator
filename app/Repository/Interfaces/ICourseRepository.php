@@ -16,4 +16,5 @@ interface ICourseRepository
     public function search($toMatch);
 
     public function create($course);
+    public function delete($id);
 }

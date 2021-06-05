@@ -58,10 +58,13 @@ class CourseController extends Controller
         $teachers = $teachersAndNoTeachers['teachers'];
         $noTeachers = $teachersAndNoTeachers['noTeachers'];
 
+        $allTeachers = $this->userBusiness->getTeachers();
+
         return view('course/showAll', [
             'courses' => $courses,
             'teachers' => $teachers,
-            'noTeachers' => $noTeachers
+            'noTeachers' => $noTeachers,
+            'allTeachers' => $allTeachers
         ]);
     }
 
@@ -77,6 +80,11 @@ class CourseController extends Controller
             'teachers' => $teachers,
             'noTeachers' => $noTeachers
         ]);
+    }
+
+    public function deleteCourse($id) {
+        $this->courseBusiness->delete($id);
+        return redirect()->route('show_courses');
     }
 
 }
