@@ -52,13 +52,13 @@
                                     </div>
                                     <div class="st-program-meeting-info">
                                         <span class="st-program-pro-title">{{$exam->course_name}}</span>
-                                        <span class="st-program-meeting-time">De la {{date_format(date_create($exam->starts_at), 'H:i')}} la 13.30</span>
+                                        <span class="st-program-meeting-time">De la {{date_format(date_create($exam->starts_at), 'H:i')}} la {{date_format(date_create($exam->ends_at), 'H:i')}}</span>
                                     </div>
                                 </div>
                                 <div class="row my-2">
                                     <div class="media-body text-center st-program-meeting-points">
                                         <h3>{{ $exam->number_of_exercises }}</h3>
-                                        <span>Exercitii</span>
+                                        <span>{{ $exam->number_of_exercises == 1 ? "Exercitiu" : "Exercitii"}}</span>
                                     </div>
                                     <div class="media-body text-center">
                                         <h3>{{$exam->total_points}}</h3>
