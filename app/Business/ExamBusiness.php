@@ -215,6 +215,7 @@ class ExamBusiness
 
     public function history($id) {
         $exams = $this->examRepository->history($id);
+
         return $exams;
     }
 }

@@ -153,6 +153,7 @@ class ExamController extends Controller
         $yearAndSem = $this->userBusiness->getYearAndSemesterById($userId);
 
         $examsInformation = $this->examBusiness->getLast30DaysExams($userId, $yearAndSem);
+
         return view('program/teachersLast30DaysProgram', ['exams' => $examsInformation]);
     }
 
@@ -251,7 +252,8 @@ class ExamController extends Controller
         $exams = $this->examBusiness->history($id);
 
         return view('exam/student/history', [
-            'exam' => $exams
+            'exams' => $exams,
+            'user_id' => $id
         ]);
     }
 }

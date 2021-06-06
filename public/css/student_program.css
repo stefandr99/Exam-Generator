@@ -1,0 +1,211 @@
+
+.card-margin {
+    margin-bottom: 1.875rem;
+}
+
+.card.student-program-card {
+    border: 0;
+    box-shadow: 0px 0px 10px 0px rgba(82, 63, 105, 0.1);
+    -webkit-box-shadow: 0px 0px 10px 0px rgba(82, 63, 105, 0.1);
+    -moz-box-shadow: 0px 0px 10px 0px rgba(82, 63, 105, 0.1);
+    -ms-box-shadow: 0px 0px 10px 0px rgba(82, 63, 105, 0.1);
+}
+.card.student-program-card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    word-wrap: break-word;
+    background-color: #ffffff;
+    background-clip: border-box;
+    border: 1px solid #e6e4e9;
+    border-radius: 8px;
+}
+
+.card.student-program-card .card-header.no-border {
+    border: 0;
+}
+.card.student-program-card .card-header {
+    background: none;
+    padding: 0 0.9375rem;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    min-height: 50px;
+    font-size: large;
+}
+.card-header:first-child {
+    border-radius: calc(8px - 1px) calc(8px - 1px) 0 0;
+}
+
+.st-program .st-program-title-wrapper {
+    display: flex;
+    align-items: center;
+}
+
+.st-program .st-program-title-wrapper .st-program-date-primary {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    background-color: #edf1fc;
+    width: 5rem;
+    height: 5rem;
+    border-radius: 50%;
+}
+
+.st-program .st-program-title-wrapper .st-program-date-primary .st-program-date-day {
+    color: #4e73e5;
+    font-weight: 500;
+    font-size: 1.5rem;
+    line-height: 1;
+}
+
+.st-program .st-program-title-wrapper .st-program-date-primary .st-program-date-month {
+    color: #4e73e5;
+    line-height: 1;
+    font-size: 1rem;
+    text-transform: uppercase;
+}
+
+.st-program .st-program-title-wrapper .st-program-date-success {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    background-color: #e8faf8;
+    width: 5rem;
+    height: 5rem;
+    border-radius: 50%;
+}
+
+.st-program .st-program-title-wrapper .st-program-date-success .st-program-date-day {
+    color: #17d1bd;
+    font-weight: 500;
+    font-size: 1.5rem;
+    line-height: 1;
+}
+
+.st-program .st-program-title-wrapper .st-program-date-success .st-program-date-month {
+    color: #17d1bd;
+    line-height: 1;
+    font-size: 1rem;
+    text-transform: uppercase;
+}
+
+.st-program .st-program-title-wrapper .st-program-date-warning {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    background-color: floralwhite;
+    width: 5rem;
+    height: 5rem;
+    border-radius: 50%;
+}
+
+.st-program .st-program-title-wrapper .st-program-date-warning .st-program-date-day {
+    color: #FFC868;
+    font-weight: 500;
+    font-size: 1.5rem;
+    line-height: 1;
+}
+
+.st-program .st-program-title-wrapper .st-program-date-warning .st-program-date-month {
+    color: #FFC868;
+    line-height: 1;
+    font-size: 1rem;
+    text-transform: uppercase;
+}
+
+.st-program .st-program-title-wrapper .st-program-date-danger {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    background-color: #feeeef;
+    width: 5rem;
+    height: 5rem;
+    border-radius: 50%;
+}
+
+.st-program .st-program-title-wrapper .st-program-date-danger .st-program-date-day {
+    color: #F95062;
+    font-weight: 500;
+    font-size: 1.5rem;
+    line-height: 1;
+}
+
+.st-program .st-program-title-wrapper .st-program-date-danger .st-program-date-month {
+    color: #F95062;
+    line-height: 1;
+    font-size: 1rem;
+    text-transform: uppercase;
+}
+
+.st-program .st-program-title-wrapper .st-program-meeting-info {
+    display: flex;
+    flex-direction: column;
+    margin-left: 1rem;
+}
+
+.st-program .st-program-title-wrapper .st-program-meeting-info .st-program-pro-title {
+    color: #3c4142;
+    font-size: 25px;
+}
+
+.st-program .st-program-title-wrapper .st-program-meeting-info .st-program-meeting-time {
+    color: #B1BAC5;
+    font-size: 20px;
+}
+
+.st-program .st-program-meeting-action {
+    text-align: right;
+}
+
+.st-program .st-program-meeting-action a {
+    text-transform: uppercase;
+}
+
+.custom-btn-start-exam {
+    width: 130px;
+    height: 40px;
+    padding: 8px 25px 10px 25px;
+    border: 2px solid #000;
+    font-family: 'Lato', sans-serif;
+    font-weight: 500;
+    background: transparent;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    display: inline-block;
+}
+
+.btn-start-exam {
+    background: #000;
+    color: #fff;
+    z-index: 1;
+}
+.btn-start-exam:after {
+    position: absolute;
+    content: "";
+    width: 0;
+    height: 100%;
+    top: 0;
+    left: 0;
+    direction: rtl;
+    z-index: -1;
+    background: #e0e5ec;
+    transition: all 0.3s ease;
+}
+.btn-start-exam:hover {
+    color: #000;
+}
+.btn-start-exam:hover:after {
+    left: auto;
+    right: 0;
+    width: 100%;
+}
+.btn-start-exam:active {
+    top: 2px;
+}

@@ -1,0 +1,113 @@
+body {
+    background-color: #eee
+}
+
+.card.history-cards {
+    border: none;
+    border-radius: 10px
+}
+
+.c-details span {
+    font-weight: 300;
+    font-size: 13px
+}
+
+.icon {
+    width: 50px;
+    height: 50px;
+    background-color: #eee;
+    border-radius: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 39px
+}
+
+.badge button {
+    background-color: black;
+    width: 70px;
+    height: 45px;
+    border-radius: 8px;
+    border: 0;
+    display: flex;
+    color: #fed85d;
+    justify-content: center;
+    align-items: center;
+}
+
+.progress.history {
+    height: 20px;
+    border-radius: 10px
+}
+
+.progress.passed-exam-bar div {
+    background-color: #50C878;
+    --color-icon: #535c68;
+    --social-icon1: #e4405f;
+    --social-icon2: #3b5999;
+    --social-icon3: #e4405f;
+    --social-icon4: #cd201f;
+    --social-icon5: #0077B5;
+}
+progress.failed-exam-bar div {
+    background-color: #e4405f;
+}
+
+.text1 {
+    font-size: 14px;
+    font-weight: 600
+}
+
+.text2 {
+    color: #a5aec0
+}
+
+
+.view-subject-item {
+    list-style: none
+}
+
+.view-subject-link {
+    display: inline-flex;
+    font-size: 2rem;
+    text-decoration: none;
+    color: #535c68;
+    width: 4rem;
+    height: 4rem;
+    transition: .5s linear;
+    position: relative;
+    z-index: 1;
+    margin: auto
+}
+
+.view-subject-link:hover {
+    color: #fff;
+}
+
+.view-subject-link i {
+    margin: auto;
+}
+
+.view-subject-link::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 4rem;
+    height: 4rem;
+    border-radius: 50%;
+    z-index: -1;
+    transform: scale(0);
+    transition: 0.3s cubic-bezier(.95, .32, .37, 1.21);
+}
+
+.view-subject-link:hover::before {
+    transform: scale(1);
+}
+
+.view-subject-item a:hover:before {
+    background: #e4405f;
+}
+

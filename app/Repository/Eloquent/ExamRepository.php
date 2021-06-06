@@ -339,12 +339,22 @@ class ExamRepository implements IExamRepository
     }
 
     public function history($id) {
-        return DB::table('exams as e')
-            ->join('subjects as s', 'exams.id', '=', 'subjects.exam_id')
-            ->join('courses as s', 'exams.course_id', '=', 'c.id')
-            ->select('e.id as exam_id', 'e.type', 'e.starts_at', 'e.number_of_exercises', 'total_points', 'e.minimum_points',
-                's.obtained_points', 'c.name as course_name', 'c.year', 'c.semester')
-                ->where('subjects.user_id', $id)
-            ->orderBy('exams.starts_at', 'desc');
+        /*return DB::table('exams')
+            ->join('subjects', 'exams.id', '=', 'subjects.exam_id')
+            ->join('courses', 'exams.course_id', '=', 'courses.id')
+            ->select('exams.id as exam_id', 'exams.type', 'exams.starts_at', 'exams.number_of_exercises',
+                'exams.total_points', 'exams.minimum_points', 'subjects.obtained_points', 'courses.name as course_name',
+                'courses.year', 'courses.semester')
+            ->where('subjects.user_id', $id)
+            ->orderBy('exams.starts_at', 'desc');*/
+        return DB::table('exams')
+            ->join('subjects', 'exams.id', '=', 'subjects.exam_id')
+            ->join('courses', 'exams.course_id', '=', 'courses.id')
+            ->select('exams.id as exam_id', 'exams.type', 'exams.starts_at', 'exams.number_of_exercises',
+                'exams.total_points', 'exams.minimum_points', 'subjects.obtained_points', 'courses.name as course_name',
+                'courses.year', 'courses.semester')
+            ->where('subjects.user_id', $id)
+            ->orderBy('exams.starts_at', 'desc')
+            ->get();
     }
 }
