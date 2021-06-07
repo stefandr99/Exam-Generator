@@ -40,12 +40,15 @@ input[type="checkbox"] {
     font-size: 60px;
 }
 
-#correct-answer {
-    background-color: lawngreen;
+.correct-answer {
+    background-color: #00b712;
+    background-image: linear-gradient(315deg, #00b712 0%, #5aff15 74%);
 }
 
-#wrong-answer {
-    background-color: red;
+.wrong-answer {
+    background-color: #a40606;
+    background-image: linear-gradient(315deg, #a40606 0%, #d98324 74%);
+
 }
 
 #correct-answer-text {

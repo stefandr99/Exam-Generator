@@ -177,7 +177,6 @@
         Countdown.init();
     };
 
-
     window.addEventListener('blur', function () {
         Countdown.makePenalization('{{json_encode($penalization)}}');
     });
