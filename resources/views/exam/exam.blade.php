@@ -5,6 +5,7 @@
 @endsection
 
 @section('content')
+
     <form action="{{route('correct_exam')}}" method="POST">
         @csrf
 
@@ -21,36 +22,49 @@
                 </b>
             </h1>
             <br>
+
             @for($index = 0; $index < $exercises['counter']; $index++)
-                <h2><b>Exercițiul {{ $index + 1 }} ({{$exercises['exercises'][$index]['points']}} puncte)</b></h2>
-                @foreach($exercises['exercises'][$index]["content"] as $field)
-                    @if(str_starts_with($field, 'text'))
-                        @include('examTemplates.text', ['text' => $exercises['exercises'][$index]['text'][intval($field[4])]])
-                    @else
-                        @switch($field)
-                            @case("list")
-                            @include('examTemplates.list', ['list' => $exercises['exercises'][$index]['list']])
-                            @break
-                            @case("options")
-                            @include('examTemplates.options', ['options' => $exercises['exercises'][$index]['options'],
-                                                                    'number' => $index])
-                            @break
-                            @case("optionsAndTable")
-                            @include('examTemplates.optionsAndTable', ['options' => $exercises['exercises'][$index]['options'],
-                                                                            'table' => $exercises['exercises'][$index]['table'],
-                                                                            'number' => $index])
-                            @break
-                            @case("table")
-                            @include('examTemplates.table', ['table' => $exercises['exercises'][$index]['table']])
-                        @endswitch
-                    @endif
-                @endforeach
+                <div class="card-container">
+                    <div class="card">
+                        <div class="card-content">
+                            <div class="card-count">{{ $index + 1 }}</div>
+                            @foreach($exercises['exercises'][$index]["content"] as $field)
+                                @if(str_starts_with($field, 'text'))
+                                    @include('examTemplates.text', ['text' => $exercises['exercises'][$index]['text'][intval($field[4])]])
+                                @else
+                                    @switch($field)
+                                        @case("list")
+                                        @include('examTemplates.list', ['list' => $exercises['exercises'][$index]['list']])
+                                        @break
+                                        @case("options")
+                                        @include('examTemplates.options', ['options' => $exercises['exercises'][$index]['options'],
+                                                                                'number' => $index])
+                                        @break
+                                        @case("optionsAndTable")
+                                        @include('examTemplates.optionsAndTable', ['options' => $exercises['exercises'][$index]['options'],
+                                                                                        'table' => $exercises['exercises'][$index]['table'],
+                                                                                        'number' => $index])
+                                        @break
+                                        @case("table")
+                                        @include('examTemplates.table', ['table' => $exercises['exercises'][$index]['table']])
+                                    @endswitch
+                                @endif
+                            @endforeach
+                        </div>
+                        <div class="card-footer">
+                            {{$exercises['exercises'][$index]['points']}} puncte
+                        </div>
+                    </div>
+                </div>
                 <br>
             @endfor
             <input class="form-check-input" id="is_forced" name="forced" type="hidden" value="0">
-            <div class="r_relationship">
-                <button id="submitExam" type="submit" class="btn btn-primary r_relationship">
-                    Trimite răspunsurile
+
+            <div class="text-center">
+                <button class="submit-exam-button" type="submit" style="outline: none;">
+                    <div class="button_content">
+                        <p class="button_text">Trimite răspunsurile</p>
+                    </div>
                 </button>
             </div>
         </div>

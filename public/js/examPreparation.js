@@ -146,6 +146,7 @@ function setExerciseOptionGenerated(numberOfExercises, children) {
     var optionsGenerated = optionsGeneratedLabel.firstChild;
     optionsGenerated.id = 'number-of-options-exercise-' + numberOfExercises;
     optionsGenerated.name = 'number_of_generated_options_' + numberOfExercises;
+
     optionsGenerated.addEventListener('change', function () {
         var id = '#collapseExerciseCorrectness_' + numberOfExercises
         $(id).collapse();

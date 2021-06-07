@@ -77,7 +77,7 @@
                                             <button class="custom-btn-start-exam btn-start-exam" onclick="window.location='{{ route('modify_any_exam', $exam->exam_id) }}'">Modifica</button>
                                         @endif
                                     @else
-                                        <button class="custom-btn-start-exam btn-start-exam" onclick="window.location='{{ route('show_exam_stats', $exam->exam_id) }}'">Vizualizare statistici</button>
+                                        <button class="custom-btn-start-exam btn-start-exam" onclick="window.location='{{ route('show_exam_stats', $exam->exam_id) }}'">Rezultate</button>
                                     @endif
                                 </div>
                             </div>

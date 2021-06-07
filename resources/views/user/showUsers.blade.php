@@ -6,6 +6,7 @@
 
 @section('content')
     <div class="container my-4">
+        <h1 class="text-center mb-4">Utilizatori</h1>
         <div class="row">
             <form class="form-inline col" action="{{route('search_user')}}">
                 <div class="form-group search-user">
@@ -48,9 +49,6 @@
 
             </div>
         @endif
-        <br>
-
-
 
         <table class="table table-striped">
             <thead class="table-primary">

@@ -32,7 +32,7 @@
             <br>
             <small>Numarul de variante de raspuns generate:</small>
             <label for="number-of-options-exercise-x">
-                <input id="number-of-options-exercise-x" name="number_of_generated_options_x" type="text" class="form-control nr-of-ops-per-ex" size="1" placeholder="Nr" onchange="$('#collapseExerciseCorrectness_x').collapse();">
+                <input id="number-of-options-exercise-x" name="number_of_generated_options_x" type="text" class="form-control nr-of-ops-per-ex" size="1" placeholder="Nr">
             </label>
 
             <div class="collapse" id="collapseExerciseCorrectness_x">
@@ -51,8 +51,8 @@
                             </div>
                         </small>
                     </div>
-                    <br>
                 </div>
+                <br>
             </div>
         </div>
         <div class="float-right form-inline mt-2">

@@ -151,7 +151,6 @@ class ExamController extends Controller
     public function showLast30DaysExams() {
         $userId = Auth::id();
         $yearAndSem = $this->userBusiness->getYearAndSemesterById($userId);
-
         $examsInformation = $this->examBusiness->getLast30DaysExams($userId, $yearAndSem);
 
         return view('program/teachersLast30DaysProgram', ['exams' => $examsInformation]);

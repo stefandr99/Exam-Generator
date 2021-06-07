@@ -36,6 +36,8 @@
     <link href="{{ asset('css/exam.css') }}" rel="stylesheet">
     <link href="{{ asset('css/program.css') }}" rel="stylesheet">
     <link href="{{ asset('css/history.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/s-exam.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/exam-exercises.css') }}" rel="stylesheet">
     <link href="{{ asset('css/student_program.css') }}" rel="stylesheet">
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/timepicker/1.3.5/jquery.timepicker.min.css">
     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
