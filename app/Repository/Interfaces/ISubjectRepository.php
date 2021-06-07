@@ -15,4 +15,8 @@ interface ISubjectRepository
     public function getPenalizationInfoById($id);
 
     public function getExamDate($examId);
+
+    public function checkExistence($examId, $userId);
+
+    public function allowRepeat($examId, $userId);
 }

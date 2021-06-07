@@ -54,6 +54,7 @@ Route::get('/exam/statistics/{examId}', 'ExamController@showExamStats')->name('s
 Route::put('/exam/promote_student/exam={examId}&user={userId}', 'ExamController@promoteStudent')->name('promote_student')->middleware('teacher');
 Route::put('/exam/no_promote_student/exam={examId}&user={userId}', 'ExamController@undoPromoteStudent')->name('undo_promote_student')->middleware('teacher');
 Route::get('/exam/statistics/search', 'ExamController@searchSubject')->name('search_user_from_exam_stats')->middleware('teacher');
+Route::delete('/exam/allow_repeat/exam={examId}&user={userId}', 'SubjectController@allowRepeat')->name('allow_repeat')->middleware('teacher');
 
 Route::get('/exam/{id}', 'SubjectController@generate')->name('generate_exam')->middleware('exam');
 Route::post('/exam/increase_penalty', 'SubjectController@increasePenalty')->name('increase_penalty');

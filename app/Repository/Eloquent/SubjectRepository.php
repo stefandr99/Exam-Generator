@@ -9,6 +9,14 @@ use Illuminate\Support\Facades\DB;
 
 class SubjectRepository implements ISubjectRepository
 {
+    public function checkExistence($examId, $userId) {
+        return DB::table('subjects')
+            ->select('subjects.id')
+            ->where('user_id', $userId)
+            ->where('exam_id', $examId)
+            ->get()
+            ->first();
+    }
 
     public function createSubject($subject)
     {
@@ -61,5 +69,12 @@ class SubjectRepository implements ISubjectRepository
             ->select('ends_at')
             ->get()
             ->first();
+    }
+
+    public function allowRepeat($examId, $userId) {
+        DB::table('subjects')
+            ->where('exam_id', $examId)
+            ->where('user_id', $userId)
+            ->delete();
     }
 }

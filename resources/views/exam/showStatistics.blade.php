@@ -106,6 +106,7 @@
                 <th scope="col">Trimiterea răspunsurilor forțată?</th>
                 <th scope="col">Rezultat</th>
                 <th scope="col">Acțiune</th>
+                <th scope="col">Repeta</th>
                 <th scope="col"></th>
             </tr>
             </thead>
@@ -204,7 +205,36 @@
                                 </div>
                             </div>
                         </td>
-                           <td onclick="window.location='{{ route("show_exam_result", ['examId' => $exam->exam_id, 'userId' => $subject->user_id]) }}'" style="cursor: pointer"><i class="far fa-file-alt fa-3x"></i></td>
+                        <td>
+                            <button class="btn btn-dark btn-sm" data-toggle="modal" data-target="#allowRepeat{{$subject->id}}Modal">Permiteti</button>
+
+                            <div class="modal fade" id="allowRepeat{{$subject->id}}Modal" tabindex="-1" role="dialog" aria-labelledby="allowRepeat{{$subject->id}}ModalLabel" aria-hidden="true">
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="allowRepeat{{$subject->id}}ModalLabel">Confirmare permisiune</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+
+                                        <form action="{{route('allow_repeat', ['examId' => $exam->exam_id, 'userId' => $subject->user_id])}}" method="POST">
+                                            @csrf
+                                            @method('DELETE')
+                                            <div class="modal-body">
+                                                Sunteți sigur că doriți să permiteti repetarea examenului pentru studenta/ul {{ $subject->user_name }}?
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="submit" class="btn to-no-promote-button">Da</button>
+                                                <button type="button" class="btn to-promote-button" data-dismiss="modal">Nu</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                       <td onclick="window.location='{{ route("show_exam_result", ['examId' => $exam->exam_id, 'userId' => $subject->user_id]) }}'" style="cursor: pointer"><i class="far fa-file-alt fa-3x"></i></td>
+
                     </tr>
             @endforeach
             </tbody>

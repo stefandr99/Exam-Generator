@@ -23,10 +23,13 @@ class SubjectController extends Controller
     }
 
     public function generate($id) {
+        $userId = Auth::id();
+        if($this->subjectBusiness->alreadyGenerated($id, $userId) == true) {
+            return redirect('/home');
+        }
+
         $examInfo = $this->examBusiness->getExamInfo($id);
         $penalization = json_decode($examInfo->penalization, true);
-
-        $userId = Auth::id();
 
         if($this->examBusiness->checkStealExamStart($examInfo))
             return redirect()->route('steal_start_exam', array('examId' => $id, 'userId' => $userId));
@@ -74,5 +77,11 @@ class SubjectController extends Controller
         else
             return 0;
         */
+    }
+
+    public function allowRepeat($examId, $userId) {
+        $this->subjectBusiness->allowRepeat($examId, $userId);
+
+        return redirect()->route('show_exam_stats', $examId);
     }
 }

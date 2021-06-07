@@ -18,6 +18,13 @@ class SubjectBusiness
         $this->subjectRepository = $subjectRepository;
     }
 
+    public function alreadyGenerated($examId, $userId) {
+        $subject = $this->subjectRepository->checkExistence($examId, $userId);
+        if($subject)
+            return true;
+        return false;
+    }
+
     private function generateDBType1() {
         $url = "http://localhost/bd/generator1.php";
 
@@ -293,5 +300,9 @@ class SubjectBusiness
         session()->forget('userPenalty');
 
         return array($examId, $userId);
+    }
+
+    public function allowRepeat($examId, $userId) {
+        $this->subjectRepository->allowRepeat($examId, $userId);
     }
 }
