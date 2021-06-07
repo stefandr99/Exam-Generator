@@ -114,4 +114,6 @@
     margin-top: -18px;
 }
 
-
+button {
+    outline: none;
+}

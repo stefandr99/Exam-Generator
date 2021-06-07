@@ -7,6 +7,7 @@ var Countdown = {
     // Params
     countdown_interval: null,
     total_seconds     : 0,
+    limit             : -1,
 
     // Initialize the countdown
     init: function() {
@@ -26,8 +27,7 @@ var Countdown = {
         };
 
         // Initialize total seconds
-        this.total_seconds = this.values.hours * 60 * 60 + (this.values.minutes * 60) + this.values.seconds;
-
+        this.total_seconds = parseInt(this.values.hours) * 60 * 60 + (parseInt(this.values.minutes) * 60) + parseInt(this.values.seconds);
         // Animate countdown to the end
         this.count();
     },
@@ -73,7 +73,7 @@ var Countdown = {
                 --that.total_seconds;
             }
             else {
-                clearInterval(that.countdown_interval);
+                document.getElementById("submitExam").click();
             }
         }, 1000);
     },
@@ -134,8 +134,91 @@ var Countdown = {
             if(fig_1_value !== '0') this.animateFigure($el_1, 0);
             if(fig_2_value !== val_1) this.animateFigure($el_2, val_1);
         }
+    },
+
+    decodeHTML: function(html) {
+        var txt = document.createElement('textarea');
+        txt.innerHTML = html;
+        return txt.value;
+    },
+
+    makePenalization: function (data) {
+        data = this.decodeHTML(data);
+        let penalty = JSON.parse(data);
+
+        if(penalty.type !== 'without') {
+            jQuery.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+            $.post("/examgenerator/exam/increase_penalty");
+        }
+
+        switch (penalty.type) {
+            case 'time':
+                this.penalizesTime(penalty.body.minutes, penalty.body.seconds);
+                break;
+            case 'limitations':
+                if(this.limit === -1) {
+                    this.limit = penalty.body.limit;
+                }
+                this.penalizesLimit(penalty);
+                break;
+            case 'end':
+                document.getElementById("is_forced").value = 1;
+                document.getElementById("submitExam").click();
+                break;
+            default:
+                break;
+        }
+
+    },
+
+    penalizesTime: function(minutes, seconds) {
+        var that = this;
+
+        that.values.seconds = that.values.seconds - parseInt(seconds);
+        that.values.minutes = that.values.minutes - parseInt(minutes);
+        that.total_seconds = that.total_seconds - (parseInt(minutes) * 60 + parseInt(seconds));
+
+        if(that.total_seconds <= 0) {
+            document.getElementById("is_forced").value = 1;
+            document.getElementById("submitExam").click();
+        }
+
+        if(that.values.minutes >= 0 && that.values.seconds < 0) {
+            that.values.seconds = (that.values.seconds + 60) % 60;
+            --that.values.minutes;
+        }
+
+        if(that.values.hours >= 0 && that.values.minutes < 0) {
+            that.values.minutes = (that.values.minutes + 60) % 60;
+            --that.values.hours;
+        }
+    },
+
+    penalizesLimit: function(penalty) {
+        if(this.limit > 0) {
+            if(penalty.body.warnings) {
+                $("#fraudTheExam").modal();
+                this.limit--;
+            }
+        }
+        else {
+            switch (penalty.body.exceeded.type) {
+                case 'time':
+                    this.penalizesTime(penalty.body.exceeded.minutes, penalty.body.exceeded.seconds);
+                    break;
+                case 'end':
+                    document.getElementById("is_forced").value = 1;
+                    document.getElementById("submitExam").click();
+                    break;
+                default:
+                    break;
+            }
+        }
     }
 };
 
-// Let's go !
 

@@ -1,7 +1,7 @@
 
 .countdown {
-    width: 500px;
-    margin: 0 auto;
+    width: 450px;
+    margin: auto;
 }
 .countdown .bloc-time {
     float: left;
@@ -139,43 +139,130 @@
     width: 500px;
 }
 
-@media (max-width: 767px) {
+@media (max-width: 1199px) {
     .countdown {
-        width: 300px;
+        width: 380px;
         margin: 0 auto;
     }
-    .timer-card {
-        width: 300px;
+    .countdown .figure {
+        height: 60px;
+        width: 50px;
+    }
+    .countdown .figure > span {
+        font: normal 4.0em/60px "Lato";
+    }
+}
+
+@media (max-width: 991px) {
+    .countdown {
+        width: 260px;
+        margin: 0 auto;
     }
     .countdown .figure {
         height: 40px;
         width: 30px;
     }
     .countdown .figure > span {
-        font: normal 2.4em/35px "Lato";
+        font: normal 2.8em/40px "Lato";
     }
 }
 
-@media (max-width: 374px) {
+@media (max-width: 767px) {
     .countdown {
-        width: 230px;
+        width: 200px;
         margin: 0 auto;
     }
-    .timer-card {
-        width: 230px;
-    }
     .countdown .figure {
-        height: 25px;
-        width: 15px;
+        height: 27px;
+        width: 17px;
     }
     .countdown .figure > span {
-        font: normal 2.0em/25px "Lato";
+        font: normal 1.7em/26px "Lato";
     }
     .countdown .count-title {
-        display: block;
-        margin-bottom: 15px;
-        font: normal 0.7em "Lato";
-        color: #1a1a1a;
-        text-transform: uppercase;
+        margin-bottom: 5px;
+        font: normal 0.70em "Lato";
+    }
+}
+
+@media (max-width: 540px) {
+    .countdown .count-title {
+        margin-bottom: 5px;
+        font: normal 0.60em "Lato";
+    }
+    .countdown .bloc-time {
+        margin-right: 15px;
+    }
+    .countdown .figure {
+        margin-right: 5px;
+    }
+}
+
+@media (max-width: 450px) {
+    .countdown {
+        width: 170px;
+        margin: 0 auto;
+    }
+    .countdown .figure {
+        height: 20px;
+        width: 13px;
+    }
+    .countdown .figure > span {
+        font: normal 1.3em/20px "Lato";
+    }
+    .countdown .count-title {
+        margin-bottom: 5px;
+        font: normal 0.60em "Lato";
+    }
+    .countdown .bloc-time {
+        margin-right: 10px;
+    }
+}
+
+@media (max-width: 400px) {
+    .countdown {
+        width: 140px;
+        margin: 0 auto;
+    }
+    .countdown .figure {
+        height: 17px;
+        width: 10px;
+    }
+    .countdown .figure > span {
+        font: normal 1.0em/18px "Lato";
+    }
+    .countdown .count-title {
+        margin-bottom: 2px;
+        font: normal 0.50em "Lato";
+    }
+    .countdown .bloc-time {
+        margin-right: 6px;
+    }
+    .countdown .figure {
+        margin-right: 2px;
+    }
+}
+
+@media (max-width: 350px) {
+    .countdown {
+        width: 110px;
+        margin: 0 auto;
+    }
+    .countdown .figure {
+        height: 16px;
+        width: 8px;
+    }
+    .countdown .figure > span {
+        font: normal 0.9em/15px "Lato";
+    }
+    .countdown .count-title {
+        margin-bottom: 1px;
+        font: normal 0.40em "Lato";
+    }
+    .countdown .bloc-time {
+        margin-right: 4px;
+    }
+    .countdown .figure {
+        margin-right: 1px;
     }
 }

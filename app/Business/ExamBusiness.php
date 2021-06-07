@@ -20,8 +20,7 @@ class ExamBusiness
         $this->examService = new ExamServices();
     }
 
-    public function getExamInfo($examId)
-    {
+    public function getExamInfo($examId){
         return $this->examRepository->getInfoById($examId);
     }
 
@@ -33,14 +32,16 @@ class ExamBusiness
     }
 
     public function getExamTime($examInfo) {
-        $examDate = new DateTime($examInfo->starts_at);
-        $presentDate = new DateTime("now", new DateTimeZone('Europe/Tiraspol'));
+        $endDate = new DateTime($examInfo->ends_at);
+        $presentDate = new DateTime("now");
+        $presentDate->add(new DateInterval("PT3H"));
+        $result = $endDate->diff($presentDate);
 
-        $examHours = intval($examDate->format('H')) + $examInfo->hours - intval($presentDate->format('H'));
-        $examMinutes = intval($examDate->format('i')) + $examInfo->minutes - intval($presentDate->format('i'));
-        $examSeconds = intval($examDate->format('s')) - intval($presentDate->format('s'));
+        $examHours = $result->h;
+        $examMinutes = $result->i;
+        $examSeconds = $result->s;
 
-        return (3600 * $examHours + 60 * $examMinutes + $examSeconds);
+        return array($examHours, $examMinutes, $examSeconds);
     }
 
     public function getExamResult($examId, $userId) {

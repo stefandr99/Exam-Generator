@@ -15,12 +15,91 @@
                     {{ $info->type }} {{ $info->course_name }}
                     <br>
                     {{ date_format(date_create($info->starts_at), 'l, d-m-Y, H:i') }}
-                    <br>
-                    <div class="remaining-exam-time">
-                        Timp rămas: <p id="hourss"></p>:<p id="mins"></p>:<p id="secs"></p>
-                    </div>
                 </b>
             </h1>
+            <div class="col-6 mx-auto sticky-top">
+                <div class="card card-body text-center">
+                    <div class="countdown">
+                        <div class="bloc-time hours" data-init-value="{{$examTime[0]}}">
+                            <span class="count-title">Hours</span>
+
+                            <div class="figure hours hours-1">
+                                <span class="top">{{floor($examTime[0] / 10)}}</span>
+                                <span class="top-back">
+                                    <span>{{floor($examTime[0] / 10)}}</span>
+                                </span>
+                                <span class="bottom">{{floor($info->hours / 10)}}</span>
+                                <span class="bottom-back">
+                                    <span>{{floor($examTime[0] / 10)}}</span>
+                                </span>
+                            </div>
+
+                            <div class="figure hours hours-2">
+                                <span class="top">{{$examTime[0] % 10}}</span>
+                                <span class="top-back">
+                                    <span>{{$examTime[0] % 10}}</span>
+                                </span>
+                                <span class="bottom">{{$examTime[0] % 10}}</span>
+                                <span class="bottom-back">
+                                    <span>{{$examTime[0] % 10}}</span>
+                                </span>
+                            </div>
+                        </div>
+
+                        <div class="bloc-time min" data-init-value="{{$examTime[1]}}">
+                            <span class="count-title">Minutes</span>
+
+                            <div class="figure min min-1">
+                                <span class="top">{{floor($examTime[1] / 10)}}</span>
+                                <span class="top-back">
+                                    <span>{{floor($examTime[1] / 10)}}</span>
+                                </span>
+                                <span class="bottom">{{floor($examTime[1] / 10)}}</span>
+                                <span class="bottom-back">
+                                    <span>{{floor($examTime[1] / 10)}}</span>
+                                </span>
+                            </div>
+
+                            <div class="figure min min-2">
+                                <span class="top">{{$examTime[1] % 10}}</span>
+                                <span class="top-back">
+                                    <span>{{$examTime[1] % 10}}</span>
+                                </span>
+                                <span class="bottom">{{$examTime[1] % 10}}</span>
+                                <span class="bottom-back">
+                                    <span>{{$examTime[1] % 10}}</span>
+                                </span>
+                            </div>
+                        </div>
+
+                        <div class="bloc-time sec" data-init-value="{{$examTime[2]}}">
+                            <span class="count-title">Seconds</span>
+
+                            <div class="figure sec sec-1">
+                                <span class="top">{{floor($examTime[2] / 10)}}</span>
+                                <span class="top-back">
+                                    <span>{{floor($examTime[2] / 10)}}</span>
+                                </span>
+                                <span class="bottom">{{floor($examTime[2] / 10)}}</span>
+                                <span class="bottom-back">
+                                    <span>{{floor($examTime[2] / 10)}}</span>
+                                </span>
+                            </div>
+
+                            <div class="figure sec sec-2">
+                                <span class="top">{{$examTime[2] % 10}}</span>
+                                <span class="top-back">
+                                    <span>{{$examTime[2] % 10}}</span>
+                                </span>
+                                <span class="bottom">{{$examTime[2] % 10}}</span>
+                                <span class="bottom-back">
+                                    <span>{{$examTime[2] % 10}}</span>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <br>
 
             @for($index = 0; $index < $exercises['counter']; $index++)
@@ -61,7 +140,7 @@
             <input class="form-check-input" id="is_forced" name="forced" type="hidden" value="0">
 
             <div class="text-center">
-                <button class="submit-exam-button" type="submit" style="outline: none;">
+                <button id="submitExam" class="submit-exam-button" type="submit" style="outline: none;">
                     <div class="button_content">
                         <p class="button_text">Trimite răspunsurile</p>
                     </div>
@@ -95,12 +174,11 @@
 
 <script>
     window.onload = function () {
-        var examTime = '{{$examTime}}';
-        startTimer(examTime);
+        Countdown.init();
     };
 
 
     window.addEventListener('blur', function () {
-        penalization('{{json_encode($penalization)}}');
+        Countdown.makePenalization('{{json_encode($penalization)}}');
     });
 </script>

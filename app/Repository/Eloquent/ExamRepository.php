@@ -33,7 +33,7 @@ class ExamRepository implements IExamRepository
     public function getInfoById($id) {
         return DB::table('exams')
             ->join('courses', 'courses.id', '=', 'exams.course_id')
-            ->select('courses.name as course_name', 'type', 'starts_at', 'hours', 'minutes',
+            ->select('courses.name as course_name', 'type', 'starts_at', 'ends_at', 'hours', 'minutes',
                 'number_of_exercises', 'exercises', 'total_points', 'penalization')
             ->where('exams.id', $id)
             ->get()
