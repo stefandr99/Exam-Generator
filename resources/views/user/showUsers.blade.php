@@ -46,8 +46,8 @@
                         Treceti in anul urmator <i class="fas fa-angle-double-right"></i>
                     @endif
                 </button>
-
             </div>
+            <br>
         @endif
 
         <table class="table table-striped">
@@ -127,7 +127,7 @@
                                     <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                         Student
                                     </button>
-                                    @if ($user->role == 1)
+                                    @if (\Illuminate\Support\Facades\Auth::user()->role == 1)
                                         <button type="button" class="btn btn-danger float-right" data-toggle="modal" data-target="#deleteUser{{$user->id}}Modal">
                                             <i class="fas fa-trash-alt"></i>
                                         </button>
