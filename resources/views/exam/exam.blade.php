@@ -18,7 +18,7 @@
                 </b>
             </h1>
             <div class="col-6 mx-auto sticky-top">
-                <div class="card card-body text-center">
+                <div class="card card-body timer-card text-center">
                     <div class="countdown">
                         <div class="bloc-time hours" data-init-value="{{$examTime[0]}}">
                             <span class="count-title">Hours</span>
