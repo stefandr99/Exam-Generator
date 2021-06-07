@@ -250,7 +250,7 @@ class ExamController extends Controller
         $id = Auth::id();
         $exams = $this->examBusiness->history($id);
 
-        return view('exam/student/history', [
+        return view('exam/student/timer', [
             'exams' => $exams,
             'user_id' => $id
         ]);

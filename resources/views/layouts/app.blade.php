@@ -19,9 +19,11 @@
     <script src="{{ asset('js/examSubject.js') }}" defer></script>
     <script src="{{ asset('js/examStatistics.js') }}" defer></script>
     <script src="{{ asset('js/user.js') }}" defer></script>
+    <script src="{{ asset('js/timer.js') }}" defer></script>
     <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/1.20.3/TweenMax.min.js"></script>
     <script src="https://kit.fontawesome.com/2c4278887e.js" crossorigin="anonymous"></script>
 
 
@@ -39,6 +41,7 @@
     <link href="{{ asset('css/s-exam.css') }}" rel="stylesheet">
     <link href="{{ asset('css/exam-exercises.css') }}" rel="stylesheet">
     <link href="{{ asset('css/student_program.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/timer.css') }}" rel="stylesheet">
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/timepicker/1.3.5/jquery.timepicker.min.css">
     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 
