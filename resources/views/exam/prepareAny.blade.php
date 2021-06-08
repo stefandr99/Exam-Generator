@@ -28,7 +28,7 @@
                         <div class="tab-content" id="subjectTypeContent">
                             <div class="tab-pane fade show active p-3" id="subject" role="tabpanel" aria-labelledby="subject-tab">
                                 <h5 class="card-title">Materia examenului</h5>
-                                <p class="card-text">Va rugam sa selectati materia pentru acest examen.</p>
+                                <p class="card-text">Vă rugăm să selectați materia pentru acest examen.</p>
 
                                 <select id="exam-subject" name="exam_course" class="form-control custom-select @error('exam_course') is-invalid @enderror" style="width: 70%">
                                     <option disabled selected value="">--</option>
@@ -41,7 +41,7 @@
                             </div>
                             <div class="tab-pane fade p-3" id="type" role="tabpanel" aria-labelledby="type-tab">
                                 <h5 class="card-title">Tipul Examenului</h5>
-                                <p class="card-text">Va rugam sa selectati ce fel de examen va fi acesta.</p>
+                                <p class="card-text">Vă rugăm să selectați ce fel de examen va fi acesta.</p>
 
                                 <select id="exam-type" name="exam_type" class="form-control custom-select align-content-center @error('exam_type') is-invalid @enderror" style="width: 50%;">
                                     <option selected disabled value="">--</option>
@@ -71,8 +71,8 @@
 
                         <div class="tab-content" id="dateTimeContent">
                             <div class="tab-pane fade show active p-3" id="dateTime" role="tabpanel" aria-labelledby="date-tab">
-                                <h5 class="card-title">Data sustinerii examenului</h5>
-                                <p class="card-text">Va rugam sa alegeti data sustinerii examenului.</p>
+                                <h5 class="card-title">Data susținerii examenului</h5>
+                                <p class="card-text">Vă rugăm să alegeți data susținerii examenului.</p>
 
                                 <input id="exam-date" name="exam_date" class="form-control mx-auto @error('exam_date') is-invalid @enderror" type="datetime-local" value="{{$tomorrow . "T08:00:00"}}" style="width: 60%;">
 
@@ -85,7 +85,7 @@
                             </div>
                             <div class="tab-pane fade p-3" id="hoursAndMins" role="tabpanel" aria-labelledby="hours-mins-tab">
                                 <h5 class="card-title">Durata examenului</h5>
-                                <p class="card-text">Va rugam sa introduceti durata examenului in ore si minute.</p>
+                                <p class="card-text">Vă rugăm să introduceți durata examenului în ore și minute.</p>
 
                                 <div class="form-row">
                                     <div class="col-4 mx-auto">
@@ -126,7 +126,7 @@
                         <div class="card-header tab-card-header">
                             <ul class="nav nav-tabs card-header-tabs" id="exercisesTab" role="tablist">
                                 <li class="nav-item" id="exercise_0_tab">
-                                    <a class="nav-link" id="exercise_0_title" data-toggle="tab" href="#exercise_0" role="tab" aria-controls="Exercise1" aria-selected="true">Exercitiul 1 &nbsp;<span class="close mt-1" onclick="deleteTab(this.parentNode.parentNode.id);">&times;</span></a>
+                                    <a class="nav-link" id="exercise_0_title" data-toggle="tab" href="#exercise_0" role="tab" aria-controls="Exercise1" aria-selected="true">Exercițiul 1 &nbsp;<span class="close mt-1" onclick="deleteTab(this.parentNode.parentNode.id);">&times;</span></a>
                                 </li>
                                 <li class="nav-item" id="add_exercise_tab">
                                     <a class="nav-link" id="add_exercise_button" aria-selected="false" onclick="addNewExercise();"><i class="fas fa-plus-circle"></i></a>
@@ -136,7 +136,7 @@
 
                         <div class="tab-content" id="exercisesContent">
                             <div class="tab-pane fade show active p-3" id="exercise_0" role="tabpanel" aria-labelledby="ex-0-tab">
-                                <label class="card-text text-uppercase font-weight-bold">Enunt:</label>
+                                <label class="card-text text-uppercase font-weight-bold">Enunț:</label>
                                 <textarea id="text-exercise-0" name="text_exercise_0" class="form-control @error('text_exercise_0') is-invalid @enderror" rows="3" cols="100" placeholder="Enunt">
                                     {{old('text_exercise_0')}}
                                 </textarea>
@@ -147,7 +147,7 @@
                                 @enderror
 
                                 <input hidden id="number_of_options_exercise_0" name="number_of_options_exercise_0" value="0">
-                                <label class="card-text text-uppercase font-weight-bold">Variante de raspuns:</label>
+                                <label class="card-text text-uppercase font-weight-bold">Variante de răspuns:</label>
                                 <div id="div_exercise_0_options">
                                     <div id="div_exercise_0_option_0">
                                         <div class="inline-elements">
@@ -161,7 +161,7 @@
                                             <label>
                                                 <input id="exercise-0-option-0-false" value="false" name="exercise_0_option_0_answer" type="radio">
                                             </label>
-                                            <p>&nbsp;Gresit</p>
+                                            <p>&nbsp;Greșit</p>
                                         </div>
                                     </div>
                                 </div>
@@ -171,7 +171,7 @@
                                     <button id="delete_option_0" type="button" class="btn btn-outline-danger btn-sm" onclick="removeOption(0)">Stergeți ultima varianta</button>
 
                                     <br>
-                                    <small>Numarul de variante de raspuns generate:</small>
+                                    <small>Numărul de variante de răspuns generate:</small>
                                     <label for="number-of-options-exercise-0">
                                         <input id="number-of-options-exercise-0" name="number_of_generated_options_0" type="text" class="form-control nr-of-ops-per-ex @error('number_of_generated_options_0') is-invalid @enderror" size="1" placeholder="Nr" onchange="$('#collapseExerciseCorrectness_0').collapse();">
                                     </label>
@@ -186,7 +186,7 @@
                                                             <input id="correct-options-ex-0" name="correct_options_ex_0" type="text" class="form-control col correct-wrong-options @error('correct_options_ex_0') is-invalid @enderror" value="0">
                                                         </label>
                                                         <label for="wrong-options-ex-0">
-                                                            Gresite:&nbsp;
+                                                            Greșite:&nbsp;
                                                             <input id="wrong-options-ex-0" name="wrong_options_ex_0" type="text" class="form-control col correct-wrong-options @error('wrong_options_ex_0') is-invalid @enderror" value="0">
                                                         </label>
                                                     </div>

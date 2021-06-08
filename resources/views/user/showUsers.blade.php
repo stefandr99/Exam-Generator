@@ -41,9 +41,9 @@
                 <button type="button" class="btn btn-primary add-user-button"  data-toggle="modal" data-target="#addUserModal">Adaugă un utilizator</button>
                 <button type="button" class="btn btn-primary next-semester"  data-toggle="modal" data-target="#nextSemesterModal">
                     @if($users[1]->semester == 1)
-                        Treceti in semestrul urmator <i class="fas fa-angle-double-right"></i>
+                        Treceți în semestrul următor <i class="fas fa-angle-double-right"></i>
                     @else
-                        Treceti in anul urmator <i class="fas fa-angle-double-right"></i>
+                        Treceți în anul următor <i class="fas fa-angle-double-right"></i>
                     @endif
                 </button>
             </div>
@@ -101,7 +101,7 @@
                                     <div class="modal-dialog" role="document">
                                         <div class="modal-content">
                                             <div class="modal-header">
-                                                <h5 class="modal-title" id="mkStudent{{$user->id}}ModalLabel">Confirmare schimbare de rol</h5>
+                                                <h5 class="modal-title" id="mkStudent{{$user->id}}ModalLabel">Confirmare schimbare rol</h5>
                                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                                     <span aria-hidden="true">&times;</span>
                                                 </button>
@@ -143,7 +143,7 @@
                                     <div class="modal-dialog" role="document">
                                         <div class="modal-content">
                                             <div class="modal-header">
-                                                <h5 class="modal-title" id="mkTeacher{{$user->id}}ModalLabel">Confirmare schimbare de rol</h5>
+                                                <h5 class="modal-title" id="mkTeacher{{$user->id}}ModalLabel">Confirmare schimbare rol</h5>
                                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                                     <span aria-hidden="true">&times;</span>
                                                 </button>
@@ -177,7 +177,7 @@
                                 <div class="modal-dialog" role="document">
                                     <div class="modal-content">
                                         <div class="modal-header">
-                                            <h5 class="modal-title" id="deleteUser{{$user->id}}ModalLabel">Confirmare stergere utilizator</h5>
+                                            <h5 class="modal-title" id="deleteUser{{$user->id}}ModalLabel">Confirmare ștergere utilizator</h5>
                                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                                 <span aria-hidden="true">&times;</span>
                                             </button>
@@ -335,9 +335,9 @@
                     <div class="modal-header">
                         @foreach($users as $user)
                             @if($user->semester == 1)
-                                <h5 class="modal-title" id="nextSemesterModalLabel">Confirmare trecere in semestrul urmator</h5>
+                                <h5 class="modal-title" id="nextSemesterModalLabel">Confirmare trecere în semestrul următor</h5>
                             @else
-                                <h5 class="modal-title" id="nextSemesterModalLabel">Confirmare trecere in anul urmator</h5>
+                                <h5 class="modal-title" id="nextSemesterModalLabel">Confirmare trecere în anul următor</h5>
                             @endif
                             @break
                         @endforeach
@@ -355,9 +355,9 @@
                         <div class="modal-body">
                             @foreach($users as $user)
                                 @if($user->semester == 1)
-                                    Sunteți sigur că doriți să treceti in semestrul urmator?
+                                    Sunteți sigur că doriți să treceți în semestrul următor?
                                 @else
-                                    Sunteți sigur că doriți să treceti in anul urmator?
+                                    Sunteți sigur că doriți să treceți în anul următor?
                                 @endif
                                 @break
                             @endforeach

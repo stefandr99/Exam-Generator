@@ -6,7 +6,7 @@
 
 @section('content')
     <div class="container my-4">
-        <h1 class="text-center"><b>Modificati examenul la {{ $exam->course_name }}</b></h1>
+        <h1 class="text-center"><b>Modificați examenul la {{ $exam->course_name }}</b></h1>
         <br>
         <form class="form-group" action="{{route('update_exam')}}" method="POST">
             @method('PUT')
@@ -28,7 +28,7 @@
                         <div class="tab-content" id="subjectTypeContent">
                             <div class="tab-pane fade show active p-3" id="type" role="tabpanel" aria-labelledby="type-tab">
                                 <h5 class="card-title">Tipul Examenului</h5>
-                                <p class="card-text">Va rugam sa selectati ce fel de examen va fi acesta.</p>
+                                <p class="card-text">Vă rugăm să selectați ce fel de examen va fi acesta.</p>
 
                                 <select id="exam-type" name="exam_type" class="form-control custom-select align-content-center @error('exam_type') is-invalid @enderror" style="width: 50%;">
                                     <option selected disabled value="">--</option>
@@ -55,21 +55,21 @@
                                     <a class="nav-link" id="date-tab" data-toggle="tab" href="#dateTime" role="tab" aria-controls="Data" aria-selected="true">Data</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" id="hours-mins-tab" data-toggle="tab" href="#hoursAndMins" role="tab" aria-controls="OreMinute" aria-selected="false">Ore si minute</a>
+                                    <a class="nav-link" id="hours-mins-tab" data-toggle="tab" href="#hoursAndMins" role="tab" aria-controls="OreMinute" aria-selected="false">Ore și minute</a>
                                 </li>
                             </ul>
                         </div>
 
                         <div class="tab-content" id="dateTimeContent">
                             <div class="tab-pane fade show active p-3" id="dateTime" role="tabpanel" aria-labelledby="date-tab">
-                                <h5 class="card-title">Data sustinerii examenului</h5>
-                                <p class="card-text">Va rugam sa alegeti data sustinerii examenului.</p>
+                                <h5 class="card-title">Data susținerii examenului</h5>
+                                <p class="card-text">Vă rugăm să alegeți data susținerii examenului.</p>
 
                                 <input id="exam-date" name="exam_date" class="form-control mx-auto" type="datetime-local" value="{{explode(" ", $exam->starts_at)[0] . "T" . explode(" ", $exam->starts_at)[1]}}" style="width: 60%;">
                             </div>
                             <div class="tab-pane fade p-3" id="hoursAndMins" role="tabpanel" aria-labelledby="hours-mins-tab">
                                 <h5 class="card-title">Durata examenului</h5>
-                                <p class="card-text">Va rugam sa introduceti durata examenului in ore si minute.</p>
+                                <p class="card-text">Vă rugăm să introduceți durata examenului în ore și minute.</p>
 
                                 <div class="form-row">
                                     <div class="col-4 mx-auto">
@@ -123,7 +123,7 @@
                         <div class="tab-content" id="exercisesContent">
                             @for($i = 0; $i < $exam->number_of_exercises; $i++)
                                 <div class="tab-pane fade show active p-3" id="exercise_{{$i}}" role="tabpanel" aria-labelledby="ex-{{$i}}-tab">
-                                    <label class="card-text text-uppercase font-weight-bold">Enunt:</label>
+                                    <label class="card-text text-uppercase font-weight-bold">Enunț:</label>
                                     <textarea id="text-exercise-{{$i}}" name="text_exercise_{{$i}}" class="form-control" rows="3" cols="100" placeholder="Enunt">{{$exam->exercises['exercises'][$i]['text']}}</textarea>
                                     @error("text_exercise_{{$i}}")
                                     <div class="invalid-tooltip invalid-tooltip-upper">
@@ -132,7 +132,7 @@
                                     @enderror
 
                                     <input hidden id="number_of_options_exercise_{{$i}}" name="number_of_options_exercise_{{$i}}" value="{{$exam->exercises['exercises'][$i]['options']['counter'] - 1}}">
-                                    <label class="card-text text-uppercase font-weight-bold">Variante de raspuns:</label>
+                                    <label class="card-text text-uppercase font-weight-bold">Variante de răspuns:</label>
                                     <div id="div_exercise_{{$i}}_options">
                                         @for($j = 0; $j < $exam->exercises['exercises'][$i]['options']['counter']; $j++)
                                             <div id="div_exercise_{{$i}}_option_{{$j}}">
@@ -147,7 +147,7 @@
                                                     <label>
                                                         <input id="exercise-{{$i}}-option-{{$j}}-false" value="false" name="exercise_{{$i}}_option_{{$j}}_answer" type="radio" {{ $exam->exercises['exercises'][$i]['options']['solution'][$j]['answer'] == false ? "checked": "" }}>
                                                     </label>
-                                                    <p>&nbsp;Gresit</p>
+                                                    <p>&nbsp;Greșit</p>
                                                 </div>
                                             </div>
                                         @endfor
@@ -158,7 +158,7 @@
                                         <button id="delete_option_{{$i}}" type="button" class="btn btn-outline-danger btn-sm" onclick="removeOption({{$i}})">Stergeți ultima varianta</button>
 
                                         <br>
-                                        <small>Numarul de variante de raspuns generate:</small>
+                                        <small>Numărul de variante de răspuns generate:</small>
                                         <label for="number-of-options-exercise-{{$i}}">
                                             <input id="number-of-options-exercise-{{$i}}" name="number_of_generated_options_{{$i}}" type="text" class="form-control nr-of-ops-per-ex" size="1" placeholder="Nr" onchange="$('#collapseExerciseCorrectness_{{$i}}').collapse();" value="{{$exam->exercises['exercises'][$i]['options']['generate']['total']}}">
                                         </label>
@@ -173,7 +173,7 @@
                                                                 <input id="correct-options-ex-{{$i}}" name="correct_options_ex_{{$i}}" type="text" class="form-control col correct-wrong-options" value="{{$exam->exercises['exercises'][$i]['options']['generate']['correct']}}">
                                                             </label>
                                                             <label for="wrong-options-ex-{{$i}}">
-                                                                Gresite:&nbsp;
+                                                                Greșite:&nbsp;
                                                                 <input id="wrong-options-ex-{{$i}}" name="wrong_options_ex_{{$i}}" type="text" class="form-control col correct-wrong-options" value="{{$exam->exercises['exercises'][$i]['options']['generate']['wrong']}}">
                                                             </label>
                                                         </div>

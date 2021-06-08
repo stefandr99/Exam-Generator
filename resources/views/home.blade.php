@@ -4,24 +4,31 @@
     <title>Exam Generator</title>
 @endsection
 
+<body class="home">
 @section('content')
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card">
-                <div class="card-header">{{ __('Pagina principală') }}</div>
-
-                <div class="card-body">
-                    @if (session('status'))
-                        <div class="alert alert-success" role="alert">
-                            {{ session('status') }}
-                        </div>
-                    @endif
-
-                    {{ __('Platformă de examinare pentru Facultatea de Informatica') }}
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
+    <main style="padding-right: 450px;" class="text-center">
+    <h1 class="home-title">
+        <span>
+            Exam Generator
+        </span>
+    </h1>
+    <h3 class="home-title">
+        <span>
+            Platformă de examinare pentru studenți și profesori
+        </span>
+    </h3>
+        @if(auth()->user()->role == 1)
+            <button class="custom-home-btn home-btn ml-3 px-0" style="margin-top: 80px; outline: none;" onclick="window.location='{{ route("show_courses") }}'">Gestionează cursuri</button>
+            <button class="custom-home-btn home-btn ml-3 px-0" style="margin-top: 80px; outline: none;" onclick="window.location='{{ route("users") }}'">Gestionează utilizatori</button>
+        @endif
+        @if(auth()->user()->role == 2)
+            <button class="custom-home-btn home-btn mr-3" style="margin-top: 80px; outline: none;" onclick="window.location='{{ route("show_exams") }}'">Examenele mele</button>
+            <button class="custom-home-btn home-btn ml-3 px-0" style="margin-top: 80px; outline: none;" onclick="window.location='{{ route("prepare_DB_exam") }}'">Pregătește examen la BD</button>
+            <button class="custom-home-btn home-btn ml-3 px-0" style="margin-top: 80px; outline: none;" onclick="window.location='{{ route("prepare_any_exam") }}'">Pregătește orice examen</button>
+        @endif
+        @if(auth()->user()->role == 3)
+            <button class="custom-home-btn home-btn" style="margin-top: 80px; outline: none;" onclick="window.location='{{ route("show_exams") }}'">Examenele mele</button>
+        @endif
+    </main>
 @endsection
+</body>

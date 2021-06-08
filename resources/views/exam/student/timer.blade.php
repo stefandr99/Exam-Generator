@@ -8,7 +8,7 @@
     <div class="card card-body timer-card">
         <div class="countdown">
             <div class="bloc-time hours" data-init-value="14">
-                <span class="count-title">Hours</span>
+                <span class="count-title">Ore</span>
 
                 <div class="figure hours hours-1">
                     <span class="top">1</span>
@@ -34,7 +34,7 @@
             </div>
 
             <div class="bloc-time min" data-init-value="0">
-                <span class="count-title">Minutes</span>
+                <span class="count-title">Minute</span>
 
                 <div class="figure min min-1">
                     <span class="top">0</span>
@@ -60,7 +60,7 @@
             </div>
 
             <div class="bloc-time sec" data-init-value="0">
-                <span class="count-title">Seconds</span>
+                <span class="count-title">Secunde</span>
 
                 <div class="figure sec sec-1">
                     <span class="top">0</span>

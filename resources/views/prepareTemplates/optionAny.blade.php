@@ -12,7 +12,7 @@
                 <label>
                     <input id="exercise-x-option-0-false" value="false" name="exercise_x_option_0_answer" type="radio">
                 </label>
-                <p>&nbsp;Gresit</p>
+                <p>&nbsp;Greșit</p>
             </div>
         </div>
     </div>

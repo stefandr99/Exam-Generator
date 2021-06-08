@@ -13,7 +13,7 @@ return [
     |
     */
 
-    'name' => env('APP_NAME', 'Examiner'),
+    'name' => env('APP_NAME', 'Exam Generator'),
 
     /*
     |--------------------------------------------------------------------------

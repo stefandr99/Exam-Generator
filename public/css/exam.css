@@ -117,3 +117,7 @@
 button {
     outline: none;
 }
+
+.home {
+    background-image: url('http://localhost/examgenerator/img/home2.png');
+}

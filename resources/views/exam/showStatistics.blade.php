@@ -106,7 +106,7 @@
                 <th scope="col">Trimiterea răspunsurilor forțată?</th>
                 <th scope="col">Rezultat</th>
                 <th scope="col">Acțiune</th>
-                <th scope="col">Repeta</th>
+                <th scope="col">Repetă</th>
                 <th scope="col"></th>
             </tr>
             </thead>
@@ -146,12 +146,12 @@
                             @if($subject->time_promoted == 0 &&
                                 $subject->obtained_points >= $exam->minimum_points &&
                                 $subject->second_diff > 30)
-                                <button class="btn btn-sm to-promote-button" data-toggle="modal" data-target="#promoteStudent{{$subject->id}}Modal">Promoveaza</button>
+                                <button class="btn btn-sm to-promote-button" data-toggle="modal" data-target="#promoteStudent{{$subject->id}}Modal">Promovează</button>
                             @elseif($subject->time_promoted == 1 &&
                                     $subject->obtained_points >= $exam->minimum_points &&
                                     $subject->second_diff > 30)
                                 <button class="btn btn-sm to-no-promote-button" data-toggle="modal" data-target="#noPromoteStudent{{$subject->id}}Modal">
-                                    Pica <i class="fas fa-info-circle" data-toggle="tooltip" title="Anuleaza actiunea de promovare a acestui student"></i>
+                                    Pică <i class="fas fa-info-circle" data-toggle="tooltip" title="Anulează acțiunea de promovare a acestui student"></i>
                                 </button>
                             @endif
 
@@ -169,7 +169,7 @@
                                             @csrf
                                             @method('PUT')
                                             <div class="modal-body">
-                                                Sunteți sigur că doriți să il/o promovati pe {{ $subject->user_name }}?
+                                                Sunteți sigur că doriți să il/o promovați pe {{ $subject->user_name }}?
                                             </div>
                                             <div class="modal-footer">
                                                 <button type="submit" class="btn to-promote-button">Da</button>
@@ -194,7 +194,7 @@
                                             @csrf
                                             @method('PUT')
                                             <div class="modal-body">
-                                                Sunteți sigur că doriți să anulati promovarea pentru {{ $subject->user_name }}?
+                                                Sunteți sigur că doriți să anulați promovarea pentru {{ $subject->user_name }}?
                                             </div>
                                             <div class="modal-footer">
                                                 <button type="submit" class="btn to-no-promote-button">Da</button>
@@ -206,7 +206,7 @@
                             </div>
                         </td>
                         <td>
-                            <button class="btn btn-dark btn-sm" data-toggle="modal" data-target="#allowRepeat{{$subject->id}}Modal">Permiteti</button>
+                            <button class="btn btn-dark btn-sm" data-toggle="modal" data-target="#allowRepeat{{$subject->id}}Modal">Permiteți</button>
 
                             <div class="modal fade" id="allowRepeat{{$subject->id}}Modal" tabindex="-1" role="dialog" aria-labelledby="allowRepeat{{$subject->id}}ModalLabel" aria-hidden="true">
                                 <div class="modal-dialog" role="document">
@@ -222,7 +222,7 @@
                                             @csrf
                                             @method('DELETE')
                                             <div class="modal-body">
-                                                Sunteți sigur că doriți să permiteti repetarea examenului pentru studenta/ul {{ $subject->user_name }}?
+                                                Sunteți sigur că doriți să permiteți repetarea examenului pentru studenta/ul {{ $subject->user_name }}?
                                             </div>
                                             <div class="modal-footer">
                                                 <button type="submit" class="btn to-no-promote-button">Da</button>

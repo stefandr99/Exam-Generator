@@ -42,7 +42,7 @@
                             <label for="course-teachers" class="col-md-4 col-form-label text-md-right">{{ __('Profesorii cursului') }}</label>
                             <div class="col-md-6">
                                 <select id="course-teachers" class="form-control" onchange="addTeacherToUList();">
-                                    <option selected value="no-teacher">Adaugati</option>
+                                    <option selected value="no-teacher">Adăugați</option>
                                     @foreach($allTeachers as $teach)
                                         <option value="{{ $teach->name }}">{{ $teach->name }}</option>
                                     @endforeach
@@ -76,7 +76,7 @@
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label for="course-credits" class="col-md-4 col-form-label text-md-right">{{ __('Numarul de credite') }}</label>
+                            <label for="course-credits" class="col-md-4 col-form-label text-md-right">{{ __('Numărul de credite') }}</label>
                             <div class="col-md-6">
                                 <select id="course-credits" class="form-control col-3">
                                     <option value="">--</option>
@@ -214,7 +214,7 @@
                                 <div class="modal-dialog" role="document">
                                     <div class="modal-content">
                                         <div class="modal-header">
-                                            <h5 class="modal-title" id="deleteCourse{{$course->id}}ModalLabel">Confirmare stergere curs</h5>
+                                            <h5 class="modal-title" id="deleteCourse{{$course->id}}ModalLabel">Confirmare ștergere curs</h5>
                                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                                 <span aria-hidden="true">&times;</span>
                                             </button>
@@ -223,7 +223,7 @@
                                             @csrf
                                             @method('DELETE')
                                             <div class="modal-body">
-                                                Sunteti sigur ca doriti sa stergeti cursul <b>{{ $course->name }}</b>
+                                                Sunteți sigur că doriți să ștergeți cursul <b>{{ $course->name }}</b>
                                             </div>
                                             <div class="modal-footer">
                                                 <button class="btn btn-danger" type="submit">Da</button>

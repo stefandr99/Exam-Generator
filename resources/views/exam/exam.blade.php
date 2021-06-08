@@ -21,7 +21,7 @@
                 <div class="card card-body timer-card text-center">
                     <div class="countdown">
                         <div class="bloc-time hours" data-init-value="{{$examTime[0]}}">
-                            <span class="count-title">Hours</span>
+                            <span class="count-title">Ore</span>
 
                             <div class="figure hours hours-1">
                                 <span class="top">{{floor($examTime[0] / 10)}}</span>
@@ -47,7 +47,7 @@
                         </div>
 
                         <div class="bloc-time min" data-init-value="{{$examTime[1]}}">
-                            <span class="count-title">Minutes</span>
+                            <span class="count-title">Minute</span>
 
                             <div class="figure min min-1">
                                 <span class="top">{{floor($examTime[1] / 10)}}</span>
@@ -73,7 +73,7 @@
                         </div>
 
                         <div class="bloc-time sec" data-init-value="{{$examTime[2]}}">
-                            <span class="count-title">Seconds</span>
+                            <span class="count-title">Secunde</span>
 
                             <div class="figure sec sec-1">
                                 <span class="top">{{floor($examTime[2] / 10)}}</span>
@@ -152,18 +152,18 @@
             <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="fraudTheExamLongTitle">Tentativa de frauda</h5>
+                        <h5 class="modal-title" id="fraudTheExamLongTitle">Tentativă de fraudă</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
                     <div class="modal-body">
-                        Nu incerca sa copiezi, concentreaza-te pe subiectul tau.
+                        Nu încerca să copiezi, concentreaza-te pe subiectul tau.
                         <br>
-                        Acesta este un avertisment, daca se repeta vom fi nevoiti sa te sanctionam.
+                        Acesta este un avertisment, dacă se repetă vom fi nevoiți să te sancționam.
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-primary" data-dismiss="modal">Am inteles</button>
+                        <button type="button" class="btn btn-primary" data-dismiss="modal">Am ințeles</button>
                     </div>
                 </div>
             </div>

@@ -27,7 +27,7 @@
                         <div class="tab-content" id="subjectTypeContent">
                             <div class="tab-pane fade show active p-3" id="type" role="tabpanel" aria-labelledby="type-tab">
                                 <h5 class="card-title">Tipul Examenului</h5>
-                                <p class="card-text">Va rugam sa selectati ce fel de examen va fi acesta.</p>
+                                <p class="card-text">Vă rugăm să selectați ce fel de examen va fi acesta.</p>
 
                                 <select id="exam-type" name="exam_type" class="form-control custom-select align-content-center @error('exam_type') is-invalid @enderror" style="width: 50%;">
                                     <option selected disabled value="">--</option>
@@ -60,8 +60,8 @@
 
                         <div class="tab-content" id="dateTimeContent">
                             <div class="tab-pane fade show active p-3" id="dateTime" role="tabpanel" aria-labelledby="date-tab">
-                                <h5 class="card-title">Data sustinerii examenului</h5>
-                                <p class="card-text">Va rugam sa alegeti data sustinerii examenului.</p>
+                                <h5 class="card-title">Data susținerii examenului</h5>
+                                <p class="card-text">Vă rugăm să alegeti data susținerii examenului.</p>
 
                                 <input id="exam-date" name="exam_date" class="form-control mx-auto @error('exam_date') is-invalid @enderror" type="datetime-local" value="{{$tomorrow . "T08:00:00"}}" style="width: 60%;">
 
@@ -74,7 +74,7 @@
                             </div>
                             <div class="tab-pane fade p-3" id="hoursAndMins" role="tabpanel" aria-labelledby="hours-mins-tab">
                                 <h5 class="card-title">Durata examenului</h5>
-                                <p class="card-text">Va rugam sa introduceti durata examenului in ore si minute.</p>
+                                <p class="card-text">Vă rugăm să introduceți durata examenului în ore și minute.</p>
 
                                 <div class="form-row">
                                     <div class="col-4 mx-auto">
@@ -112,7 +112,7 @@
                         <div class="card-header tab-card-header">
                             <ul class="nav nav-tabs card-header-tabs" id="exercisesTab" role="tablist">
                                 <li class="nav-item" id="exercise_0_tab">
-                                    <a class="nav-link" id="exercise_0_title" data-toggle="tab" href="#exercise_0" role="tab" aria-controls="Exercise1" aria-selected="true">Exercitiul 1 &nbsp;<span class="close mt-1" onclick="deleteTab(this.parentNode.parentNode.id);">&times;</span></a>
+                                    <a class="nav-link" id="exercise_0_title" data-toggle="tab" href="#exercise_0" role="tab" aria-controls="Exercise1" aria-selected="true">Exercițiul 1 &nbsp;<span class="close mt-1" onclick="deleteTab(this.parentNode.parentNode.id);">&times;</span></a>
                                 </li>
                                 <li class="nav-item" id="add_exercise_tab">
                                     <a class="nav-link" id="add_exercise_button" aria-selected="false" onclick="addNewDbExercise();"><i class="fas fa-plus-circle"></i></a>

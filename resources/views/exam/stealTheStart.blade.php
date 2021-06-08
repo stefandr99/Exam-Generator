@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('title')
-    <title>Frauda - Ai furat startul</title>
+    <title>Fraudă - Ai furat startul</title>
 @endsection
 
 @section('content')
