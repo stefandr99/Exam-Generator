@@ -6,7 +6,7 @@
 
 @section('content')
     <div class="container my-4">
-        <h1 class="text-center mb-4">Utilizatori</h1>
+        <h1 class="text-center mb-5 page-title"><b>Utilizatori</b></h1>
         <div class="row">
             <form class="form-inline col" action="{{route('search_user')}}">
                 <div class="form-group search-user">
@@ -82,10 +82,10 @@
                             @endif
                             @if ($user->role == 2)
                                 <div class="dropdown show">
-                                    <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <button type="button" class="btn btn-success" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                         Profesor
                                     </button>
-                                    @if ($user->role == 1)
+                                    @if (\Illuminate\Support\Facades\Auth::user()->role == 1)
                                         <button type="button" class="btn btn-danger float-right" data-toggle="modal" data-target="#deleteUser{{$user->id}}Modal">
                                             <i class="fas fa-trash-alt"></i>
                                         </button>
@@ -124,7 +124,7 @@
                             @endif
                             @if ($user->role == 3)
                                 <div class="dropdown show">
-                                    <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <button type="button" class="btn btn-primary" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                         Student
                                     </button>
                                     @if (\Illuminate\Support\Facades\Auth::user()->role == 1)

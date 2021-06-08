@@ -1,0 +1,76 @@
+
+.page-title {
+    font-family: Bradley Hand, cursive;
+}
+
+.card-header {
+    background-color: #c8e4f4;
+}
+
+.btn {
+    font-family: 'Lato', sans-serif;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    display: inline-block;
+}
+.btn {
+    color: #fff;
+    z-index: 1;
+}
+.btn-warning {
+    color: #000
+}
+
+.btn:after {
+    position: absolute;
+    content: "";
+    width: 0;
+    height: 100%;
+    top: 0;
+    left: 0;
+    direction: rtl;
+    z-index: -1;
+    background: #e0e5ec;
+    transition: all 0.3s ease;
+}
+.btn {
+}.btn-primary:hover {
+     color: #087cfc;
+     border: 1px solid #087cfc;
+ }
+ .btn-secondary:hover {
+     color: #60646c;
+     border: 1px solid #60646c;
+ }
+.btn-success:hover {
+    color: #289c44;
+    border: 1px solid #289c44;
+}
+.btn-danger:hover {
+    color: #d02434;
+    border: 1px solid #d02434;
+}
+.btn-warning:hover {
+    color: yellow;
+    border: 1px solid #000;
+}
+.btn-warning:after {
+    background: #282c2c;
+}
+.btn-info:hover {
+    color: #18a4bc;
+    border: 1px solid #18a4bc;
+}
+.btn-dark:hover {
+    color: #000;
+    border: 1px solid #000;
+}
+.btn:hover:after {
+    left: auto;
+    right: 0;
+    width: 100%;
+}
+.btn:active {
+    top: 2px;
+}

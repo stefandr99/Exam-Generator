@@ -167,8 +167,8 @@
                                 </div>
 
                                 <div class="float-left">
-                                    <button id="add_option_0" type="button" class="btn btn-outline-info btn-sm" onclick="addOption(0)">Adăugați încă o varianta</button>
-                                    <button id="delete_option_0" type="button" class="btn btn-outline-danger btn-sm" onclick="removeOption(0)">Stergeți ultima varianta</button>
+                                    <button id="add_option_0" type="button" class="btn btn-info btn-sm" onclick="addOption(0)">Adăugați încă o varianta</button>
+                                    <button id="delete_option_0" type="button" class="btn btn-danger btn-sm" onclick="removeOption(0)">Stergeți ultima varianta</button>
 
                                     <br>
                                     <small>Numărul de variante de răspuns generate:</small>

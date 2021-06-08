@@ -4,7 +4,7 @@
     <title>Exam Generator</title>
 @endsection
 
-<body class="home">
+<body style="background-image: url('http://localhost/examgenerator/img/home2.png');">
 @section('content')
     <main style="padding-right: 450px;" class="text-center">
     <h1 class="home-title">

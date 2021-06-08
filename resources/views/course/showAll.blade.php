@@ -6,12 +6,13 @@
 
 @section('content')
     <div class="container my-4">
+        <h1 class="text-center mb-5 page-title"><b>Cursuri</b></h1>
         <div class="row">
             <form class="form-inline col" action="{{route('search_course')}}">
                 <div class="form-group search-user">
                     <label for="search-course"><b>Curs:</b></label>
                     <input type="text" name="name" id="search-course" class="form-control mx-sm-4" placeholder="Nume">
-                    <button type="submit" class="btn btn-primary">Caută</button>
+                    <button type="submit" class="custom-btn btn btn-primary"><i class="fas fa-search"></i> Caută</button>
                 </div>
             </form>
             <button type="button" class="btn btn-primary add-course-button" data-toggle="modal" data-target="#addCourseModal">Adaugă curs</button>

@@ -168,6 +168,7 @@
                     </div>
                 </div>
             </div>
+            <br>
 
             <p class="large-text-font"><b>Penalizare:</b>
                 <br>
